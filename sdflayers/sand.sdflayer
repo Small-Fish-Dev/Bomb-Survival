@@ -1,0 +1,15 @@
+{
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "solid",
+  "Depth": 64,
+  "Offset": 0,
+  "TexCoordSize": 256,
+  "FrontFaceMaterial": "materials/generic/floor_gravel_sand_a.vmat",
+  "BackFaceMaterial": "materials/generic/floor_gravel_sand_a.vmat",
+  "CutFaceMaterial": "materials/generic/floor_gravel_sand_a.vmat",
+  "LayerTextures": [],
+  "QualityLevel": "Medium",
+  "ChunkResolution": 16,
+  "ChunkSize": 256,
+  "MaxDistance": 64
+}

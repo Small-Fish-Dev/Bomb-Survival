@@ -10,19 +10,23 @@
   "ResourcePaths": [],
   "HasCode": true,
   "CodePath": "/code/",
-  "PackageReferences": [],
+  "PackageReferences": [
+    "facepunch.libsdf"
+  ],
   "EditorReferences": null,
   "Metadata": {
     "MaxPlayers": 64,
     "MinPlayers": 1,
     "GameNetworkType": "Multiplayer",
-    "MapSelect": "Unrestricted",
+    "MapSelect": "Official",
     "MapList": [
-      "facepunch.flatgrass"
+      "empty"
     ],
     "RankType": "None",
     "PerMapRanking": false,
     "LeaderboardType": "None",
-    "ProjectTemplate": null
+    "ProjectTemplate": null,
+    "CsProjName": "",
+    "HttpAllowList": null
   }
 }

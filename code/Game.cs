@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.Sdf;
 using Sandbox.UI.Construct;
 using System;
 using System.IO;
@@ -47,5 +48,27 @@ public partial class MyGame : GameManager
 			tx.Position = tx.Position + Vector3.Up * 50.0f; // raise it up
 			pawn.Transform = tx;
 		}
+	}
+
+	public override void PostLevelLoaded()
+	{
+		base.PostLevelLoaded();
+
+		if ( Game.IsClient ) return;
+
+		var sdfWorld = new Sdf2DWorld
+		{
+			// Rotate so that Y is up
+			LocalRotation = Rotation.FromRoll( 90f )
+		};
+
+		var material = ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/sand.sdflayer" );
+
+		var worldBox = new BoxSdf( new Vector2( -500f, 1000f ), new Vector2( 500f, 2000f ) );
+		sdfWorld.Add( worldBox, material );
+
+
+		var newBox = new BoxSdf( new Vector2( -250f, 1250f ), new Vector2( 250f, 1750f ) );
+		sdfWorld.Subtract( newBox, material );
 	}
 }
