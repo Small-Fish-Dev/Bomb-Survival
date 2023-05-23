@@ -5,6 +5,7 @@ global using System;
 global using System.IO;
 global using System.Linq;
 global using System.Threading.Tasks;
+using System.Numerics;
 
 namespace BombSurvival;
 
@@ -21,22 +22,18 @@ public partial class BombSurvival : GameManager
 	{
 		base.ClientJoined( client );
 
-		// Create a pawn for this client to play with
 		var pawn = new Player();
 		client.Pawn = pawn;
+		pawn.Position = PointToTop( Vector3.Zero );
 
-		// Get all of the spawnpoints
-		var spawnpoints = Entity.All.OfType<SpawnPoint>();
+	}
 
-		// chose a random one
-		var randomSpawnPoint = spawnpoints.OrderBy( x => Guid.NewGuid() ).FirstOrDefault();
-
-		// if it exists, place the pawn there
-		if ( randomSpawnPoint != null )
+	[Event("TerrainLoaded")]
+	public static void PlacePlayers()
+	{
+		foreach( var player in Entity.All.OfType<Player>() )
 		{
-			var tx = randomSpawnPoint.Transform;
-			tx.Position = tx.Position + Vector3.Up * 50.0f; // raise it up
-			pawn.Transform = tx;
+			player.Position = PointToTop( Vector3.Zero );
 		}
 	}
 }

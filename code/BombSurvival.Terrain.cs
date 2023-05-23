@@ -19,6 +19,11 @@ public partial class BombSurvival
 		var terrainSdf = new TextureSdf( TerrainTexture, 4, TerrainTexture.Width * 2 );
 
 		Terrain?.Add( terrainSdf, TerrainLayer );
+		GameTask.RunInThreadAsync( async () =>
+		{
+			await GameTask.NextPhysicsFrame();
+			Event.Run( "TerrainLoaded" );
+		} );
 	}
 
 	public static Vector2 PointToLocal( Vector3 point )
@@ -32,6 +37,18 @@ public partial class BombSurvival
 		var worldPosition = Terrain.Transform.PointToWorld( point );
 		return new Vector3( worldPosition.x, Terrain.Position.y, worldPosition.z );
 	}
+
+	public static Vector3 PointToTop( Vector3 point, float traceSize = 24f )
+	{
+		var worldPosition = point.WithY( Terrain.Position.y );
+		var testTrace = Trace.Ray( worldPosition.WithZ( 9999f ), worldPosition.WithZ( -9999f ) ) // TODO: Put min max when it's an option
+			.WithTag( "terrain" )
+			.Size( traceSize )
+			.Run();
+
+		return testTrace.HitPosition;
+	}
+	public static Vector3 PointToTop( Vector2 point, float traceSize = 24f ) => PointToTop( PointToWorld( point ), traceSize );
 
 	public static void CarveCircle( Vector2 position, float radius ) => Terrain?.Subtract( new CircleSdf( position, radius ), TerrainLayer );
 	public static void CarveCircle( Vector3 position, float radius ) => CarveCircle( PointToLocal( position ), radius );
