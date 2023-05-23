@@ -4,8 +4,8 @@ namespace BombSurvival;
 
 public partial class Player
 {
-	public float WalkSpeed => 200f;
-	public float RunSpeed => 350f;
+	public float WalkSpeed => 120f;
+	public float RunSpeed => 200f;
 	public float AccelerationSpeed => 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
@@ -23,7 +23,7 @@ public partial class Player
 		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
 		if ( Direction != Vector3.Zero )
-			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "sprint" ) ? RunSpeed : WalkSpeed );
+			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "run" ) ? RunSpeed : WalkSpeed );
 		else
 			WishSpeed = 0f;
 
@@ -33,6 +33,19 @@ public partial class Player
 		if ( TimeSinceLostFooting > Time.Delta * 2f )
 			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta * 5f;
 
+		if ( Input.Down( "jump" ) )
+		{
+			if ( GroundEntity != null )
+			{
+				GroundEntity = null;
+				Velocity += Vector3.Up * 300f;
+				Animations.TriggerJump();
+			}
+
+			if ( Velocity.z > 0f ) // Floaty jump
+				Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
+		}
+
 		var helper = new MoveHelper( Position, Velocity );
 		helper.MaxStandableAngle = MaxWalkableAngle;
 
@@ -40,7 +53,11 @@ public partial class Player
 			.Size( CollisionBox.Mins, CollisionBox.Maxs )
 			.Ignore( this );
 
-		helper.TryMoveWithStep( Time.Delta, StepSize );
+		if ( GroundEntity == null )
+			helper.TryMove( Time.Delta );
+		else
+			helper.TryMoveWithStep( Time.Delta, StepSize );
+
 
 		Position = helper.Position;
 		Velocity = helper.Velocity;
@@ -57,9 +74,8 @@ public partial class Player
 		}
 		else
 		{
-			GroundEntity = null;
 			TimeSinceLostFooting = 0f;
-			Velocity -= Vector3.Down * Game.PhysicsWorld.Gravity * Time.Delta;
+			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
 		}
 	}
 }
