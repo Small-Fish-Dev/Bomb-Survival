@@ -13,7 +13,7 @@ public partial class Player
 	public Vector3 WishVelocity => Direction.Normal * WishSpeed;
 	public Rotation WishRotation => Rotation.LookAt( Direction, Vector3.Up );
 	public float StepSize => 8f;
-	public float MaxWalkableAngle => 45f;
+	public float MaxWalkableAngle => 70f;
 
 
 	public TimeSince TimeSinceLostFooting = 0f;
@@ -31,7 +31,7 @@ public partial class Player
 			.WithZ( Velocity.z ); // Don't smooth vertical movement
 
 		if ( TimeSinceLostFooting > Time.Delta * 2f )
-			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta * 5f;
+			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
 
 		if ( Input.Down( "jump" ) )
 		{

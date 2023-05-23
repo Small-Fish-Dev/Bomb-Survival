@@ -64,4 +64,12 @@ public partial class BombSurvival
 
 		GenerateLevel();
 	}
+
+	[ConCmd.Admin( "testexplosion")]
+	public static void TestExplosion()
+	{
+		var pawn = ConsoleSystem.Caller.Pawn as Player;
+
+		CarveCircle( pawn.Position, 50f );
+	}
 }
