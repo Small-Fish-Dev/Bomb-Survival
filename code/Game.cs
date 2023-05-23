@@ -64,11 +64,17 @@ public partial class MyGame : GameManager
 
 		var material = ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/sand.sdflayer" );
 
-		var worldBox = new BoxSdf( new Vector2( -500f, 1000f ), new Vector2( 500f, 2000f ) );
+		var terrainTexture = Texture.Load( FileSystem.Mounted, "terrains/hill.png" );
+		var terrainSdf = new TextureSdf( terrainTexture, 4, terrainTexture.Width * 4 );
+
+		sdfWorld.Add( terrainSdf, material );
+
+		/*var worldBox = new BoxSdf( new Vector2( -500f, 1000f ), new Vector2( 500f, 2000f ) );
 		sdfWorld.Add( worldBox, material );
 
 
 		var newBox = new BoxSdf( new Vector2( -250f, 1250f ), new Vector2( 250f, 1750f ) );
 		sdfWorld.Subtract( newBox, material );
+		sdfWorld.Subtract( newBox.Translate( new Vector3( 300f, 0f )), material );*/
 	}
 }
