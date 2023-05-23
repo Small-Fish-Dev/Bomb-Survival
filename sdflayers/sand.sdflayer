@@ -8,8 +8,8 @@
   "BackFaceMaterial": "materials/generic/floor_gravel_sand_a.vmat",
   "CutFaceMaterial": "materials/generic/floor_gravel_sand_a.vmat",
   "LayerTextures": [],
-  "QualityLevel": "Extreme",
-  "ChunkResolution": 16,
+  "QualityLevel": "Custom",
+  "ChunkResolution": 64,
   "ChunkSize": 256,
-  "MaxDistance": 64
+  "MaxDistance": 16
 }

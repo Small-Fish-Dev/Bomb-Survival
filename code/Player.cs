@@ -1,21 +1,11 @@
-﻿using Sandbox;
-using System;
-using System.Linq;
+﻿namespace BombSurvival;
 
-namespace Sandbox;
-
-partial class Pawn : AnimatedEntity
+partial class Player : AnimatedEntity
 {
-	/// <summary>
-	/// Called when the entity is first created 
-	/// </summary>
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		//
-		// Use a watermelon model
-		//
 		SetModel( "models/sbox_props/watermelon/watermelon.vmdl" );
 
 		EnableDrawing = true;
