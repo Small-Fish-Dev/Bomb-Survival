@@ -19,7 +19,7 @@ Layer0
 	g_flScorchBlendDistance "32.000"
 	g_vScorchTint_Colour "[0.000000 0.000000 0.000000 1.000000]"
 	ScorchAO "materials/default/default_ao.tga"
-	ScorchBlendMask "materials/foreground_sponge/test_mask.png"
+	ScorchBlendMask "materials/foreground_sponge/sponge_mask.png"
 	ScorchColour "materials/foreground_sponge/sponge_color.png"
 	ScorchNormal "materials/foreground_sponge/sponge_normal.png"
 	ScorchRough "materials/default/default_rough.tga"

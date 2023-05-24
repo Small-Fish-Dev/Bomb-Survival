@@ -10,7 +10,7 @@
   "LayerTextures": [
     {
       "TargetAttribute": "ScorchLayer",
-      "SourceLayer": "layers/examples/scorch.sdflayer"
+      "SourceLayer": "sdflayers/scorch.sdflayer"
     }
   ],
   "QualityLevel": "Custom",
