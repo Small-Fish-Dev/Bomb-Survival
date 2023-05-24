@@ -37,7 +37,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": "textures/environment/sand_shells_color_png_7343c749.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Colour",
@@ -57,7 +57,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": "textures/environment/sand_a_normal_png_4d9e3190.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Normal",
@@ -79,7 +79,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": "textures/environment/sand_a_rough_png_ce45b348.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Rough",
@@ -386,7 +386,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": "textures/environment/sand_a_rough_png_ce45b348.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "AO",
@@ -422,7 +422,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": "textures/environment/sand_shells_blend_png_acc24e2f.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Blend Mask",
@@ -703,7 +703,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": "textures/environment/rocks_a_color_png_57cea3a9.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Scorch Colour",
@@ -724,7 +724,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": "textures/environment/rocks_a_ao_png_e1d0d96f.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Scorch AO",
@@ -818,7 +818,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": "textures/environment/rocks_a_rough_png_e678fd68.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Scorch Rough",
@@ -840,7 +840,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": "textures/environment/rocks_a_normal_png_7c26211f.generated.vtex",
+      "Texture": null,
       "Sampler": {},
       "UI": {
         "Name": "Scorch Normal",
