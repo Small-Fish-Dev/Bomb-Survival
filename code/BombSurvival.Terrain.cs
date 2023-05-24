@@ -5,7 +5,8 @@ namespace BombSurvival;
 public partial class BombSurvival
 {
 	public static Sdf2DWorld Terrain { get; set; }
-	public static Sdf2DLayer TerrainLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/sand.sdflayer" );
+	public static Sdf2DLayer TerrainLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/sponge.sdflayer" );
+	public static Sdf2DLayer ScorchLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch.sdflayer" );
 	public static Texture TerrainTexture => Texture.Load( FileSystem.Mounted, "terrains/hill.png" );
 
 	[ConCmd.Admin("regenerate_terrain")]
@@ -50,10 +51,14 @@ public partial class BombSurvival
 	}
 	public static Vector3 PointToTop( Vector2 point, float traceSize = 24f ) => PointToTop( PointToWorld( point ), traceSize );
 
-	public static void CarveCircle( Vector2 position, float radius ) => Terrain?.Subtract( new CircleSdf( position, radius ), TerrainLayer );
+	public static void AddCircle( Vector2 position, float radius, Sdf2DLayer layer ) => Terrain?.Add( new CircleSdf( position, radius ), layer );
+	public static void AddCircle( Vector3 position, float radius, Sdf2DLayer layer ) => AddCircle( PointToLocal( position ), radius, layer );
+	public static void CarveCircle( Vector2 position, float radius ) => Terrain?.Subtract( new CircleSdf( position, radius ) );
 	public static void CarveCircle( Vector3 position, float radius ) => CarveCircle( PointToLocal( position ), radius );
 
-	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.Subtract( new BoxSdf( min, max, cornerRadius ), TerrainLayer );
+	public static void AddBox( Vector2 min, Vector2 max, Sdf2DLayer layer, float cornerRadius = 0f ) => Terrain?.Add( new BoxSdf( min, max, cornerRadius ), layer );
+	public static void AddBox( Vector3 min, Vector3 max, Sdf2DLayer layer, float cornerRadius = 0f ) => AddBox( PointToLocal( min ), PointToLocal( max ), layer, cornerRadius );
+	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.Subtract( new BoxSdf( min, max, cornerRadius ) );
 	public static void CarveBox( Vector3 min, Vector3 max, float cornerRadius = 0f ) => CarveBox( PointToLocal( min ), PointToLocal( max ), cornerRadius );
 
 	public override void PostLevelLoaded()
@@ -70,6 +75,7 @@ public partial class BombSurvival
 	{
 		var pawn = ConsoleSystem.Caller.Pawn as Player;
 
-		CarveCircle( pawn.Position, 50f );
+		AddCircle( pawn.CollisionWorldSpaceCenter, 100f, TerrainLayer );
+		CarveCircle( pawn.CollisionWorldSpaceCenter, 75f );
 	}
 }
