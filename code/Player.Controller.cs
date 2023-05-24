@@ -38,7 +38,7 @@ public partial class Player
 			if ( GroundEntity != null )
 			{
 				GroundEntity = null;
-				Velocity += Vector3.Up * 300f;
+				Velocity = Velocity.WithZ( 300f );
 				Animations.TriggerJump();
 			}
 

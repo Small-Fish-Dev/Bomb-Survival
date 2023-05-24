@@ -75,7 +75,6 @@ public partial class BombSurvival
 	{
 		var pawn = ConsoleSystem.Caller.Pawn as Player;
 
-		AddCircle( pawn.CollisionWorldSpaceCenter, 100f, TerrainLayer );
-		CarveCircle( pawn.CollisionWorldSpaceCenter, 75f );
+		CarveCircle( pawn.CollisionWorldSpaceCenter, 100f );
 	}
 }
