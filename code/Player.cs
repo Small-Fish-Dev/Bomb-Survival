@@ -17,6 +17,13 @@ public partial class Player : AnimatedEntity
 		SetupPhysicsFromCapsule( PhysicsMotionType.Keyframed, CollisionCapsule );
 	}
 
+	public  void Respawn()
+	{
+		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+
+		Position = spawnPoint.Position.WithY( 0 );
+	}
+
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
 	TimeSince lastRotation = 0f;

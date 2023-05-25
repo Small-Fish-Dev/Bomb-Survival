@@ -32,9 +32,7 @@ public partial class BombSurvival : GameManager
 	public static void PlacePlayers()
 	{
 		foreach( var player in Entity.All.OfType<Player>() )
-		{
-			player.Position = PointToTop( Vector3.Zero );
-		}
+			player.Respawn();
 	}
 
 	[GameEvent.Physics.PreStep]
@@ -47,7 +45,6 @@ public partial class BombSurvival : GameManager
 			if ( entity.PhysicsEnabled )
 			{
 				entity.Velocity = entity.Velocity.WithY( 0 );
-				entity.Position = entity.Position.WithY( 0 );
 			}
 		}
 	}

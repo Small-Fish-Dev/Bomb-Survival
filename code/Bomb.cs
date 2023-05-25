@@ -42,8 +42,7 @@ public partial class Bomb : ModelEntity
 		var pawn = ConsoleSystem.Caller.Pawn as Player;
 		new Bomb
 		{
-			Position = pawn.Position + Vector3.Up * 100f + Vector3.Forward * 100f
+			Position = pawn.Position + pawn.InputRotation.Forward * 100f
 		};
-
 	}
 }
