@@ -8,6 +8,7 @@ public partial class Player : AnimatedEntity
 	public float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
 	public Capsule CollisionCapsule => new Capsule( Vector3.Zero.WithZ( CollisionWidth / 2f ) * Scale, Vector3.Zero.WithZ( CollisionHeight - CollisionWidth / 2f ) * Scale, CollisionWidth / 2f * Scale );
+	[Net] public bool IsDead { get; set; } = false;
 
 	public override void Spawn()
 	{
@@ -17,11 +18,28 @@ public partial class Player : AnimatedEntity
 		SetupPhysicsFromCapsule( PhysicsMotionType.Keyframed, CollisionCapsule );
 	}
 
-	public  void Respawn()
+	public void Respawn()
 	{
 		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
 
 		Position = spawnPoint.Position.WithY( 0 );
+
+		EnableAllCollisions = true;
+		EnableDrawing = true;
+		IsDead = false;
+	}
+
+	public void Kill()
+	{
+		EnableAllCollisions = false;
+		EnableDrawing = false;
+		IsDead = true;
+
+		GameTask.RunInThreadAsync( async () =>
+		{
+			await GameTask.Delay( 1000 );
+			Respawn();
+		} );
 	}
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
@@ -49,6 +67,8 @@ public partial class Player : AnimatedEntity
 	{
 		base.Simulate( cl );
 
+		if ( IsDead ) return;
+
 		ComputeAnimations();
 		ComputeMotion();
 	}
@@ -61,6 +81,8 @@ public partial class Player : AnimatedEntity
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
+
+		if ( IsDead ) return;
 
 		ComputeAnimations();
 	}

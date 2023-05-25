@@ -19,12 +19,19 @@ public partial class Bomb : ModelEntity
 
 		BombSurvival.Explosion( Position, ExplosionSize );
 
-		var nearbyBombs = Entity.FindInSphere( Position, ExplosionSize )
+		var nearbyEntities = Entity.FindInSphere( Position, ExplosionSize );
+		var nearbyBombs = nearbyEntities
 			.OfType<Bomb>()
 			.Where( x => !x.IsExploding );
 
-		foreach( var otherBomb in nearbyBombs )
-			otherBomb.Explode();
+		foreach ( var bomb in nearbyBombs )
+			bomb.Explode();
+
+		var nearbyPlayers = nearbyEntities
+			.OfType<Player>();
+
+		foreach ( var player in nearbyPlayers )
+			player.Kill();
 
 		Delete();
 	}
