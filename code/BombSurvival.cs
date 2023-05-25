@@ -48,4 +48,19 @@ public partial class BombSurvival : GameManager
 			}
 		}
 	}
+
+	[GameEvent.Tick.Server]
+	public static void SpawnBombs()
+	{
+		var frequency = (int)(Time.Now / 60) + 1;
+
+		if ( Time.Tick % ( 60 / frequency ) == 0 )
+		{
+			var pos = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
+			new Bomb
+			{
+				Position = pos
+			};
+		}
+	}
 }
