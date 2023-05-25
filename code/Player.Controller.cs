@@ -30,7 +30,7 @@ public partial class Player
 		Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
 			.WithZ( Velocity.z ); // Don't smooth vertical movement
 
-		if ( TimeSinceLostFooting > Time.Delta * 2f )
+		if ( TimeSinceLostFooting > Time.Delta * 5f )
 			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
 
 		if ( Input.Down( "jump" ) )
