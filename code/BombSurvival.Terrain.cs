@@ -77,5 +77,7 @@ public partial class BombSurvival
 
 		CarveCircle( pawn.CollisionWorldSpaceCenter, 75f );
 		AddCircle( pawn.CollisionWorldSpaceCenter, 100f, ScorchLayer );
+		Particles.Create( "particles/explosion.vpcf", pawn.CollisionWorldSpaceCenter )
+			.Set( "size", 100f );
 	}
 }
