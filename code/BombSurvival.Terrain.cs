@@ -61,6 +61,19 @@ public partial class BombSurvival
 	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.Subtract( new BoxSdf( min, max, cornerRadius ) );
 	public static void CarveBox( Vector3 min, Vector3 max, float cornerRadius = 0f ) => CarveBox( PointToLocal( min ), PointToLocal( max ), cornerRadius );
 
+	public static void Explosion( Vector3 position, float size = 75f )
+	{
+		var charSize = size + 10f + 15f * (size / 75f);
+
+		CarveCircle( position, size );
+		AddCircle( position, charSize, ScorchLayer );
+
+		Particles.Create( "particles/explosion.vpcf", position )
+			.Set( "size", charSize );
+
+		Sound.FromWorld( "sounds/explosion.sound", position );
+	}
+
 	public override void PostLevelLoaded()
 	{
 		base.PostLevelLoaded();
@@ -74,12 +87,7 @@ public partial class BombSurvival
 	public static void TestExplosion()
 	{
 		var pawn = ConsoleSystem.Caller.Pawn as Player;
-		var position = pawn.CollisionWorldSpaceCenter;
+		Explosion( pawn.CollisionWorldSpaceCenter );
 
-		CarveCircle( position, 75f );
-		AddCircle( position, 100f, ScorchLayer );
-		Particles.Create( "particles/explosion.vpcf", position )
-			.Set( "size", 100f );
-		Sound.FromWorld( "sounds/explosion.sound", position );
 	}
 }
