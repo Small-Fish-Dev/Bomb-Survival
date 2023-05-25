@@ -16,10 +16,10 @@ Layer0
 	g_flZSmoothing "250.000"
 
 	//---- Scorch ----
-	g_flScorchBlendDistance "32.000"
+	g_flScorchBlendDistance "16.159"
 	g_vScorchTint_Colour "[0.000000 0.000000 0.000000 1.000000]"
 	ScorchAO "materials/fabric/fabric_ao.jpg"
-	ScorchBlendMask "[0.554000 0.554000 0.554000 0.000000]"
+	ScorchBlendMask "materials/scorch/scorch_mask.jpg"
 	ScorchColour "materials/fabric/fabric_color.jpg"
 	ScorchNormal "materials/fabric/fabric_normal.jpg"
 	ScorchRough "materials/fabric/fabric_rough.jpg"
@@ -33,5 +33,5 @@ Layer0
 
 	//---- Tint ----
 	g_bTintDirectionToggle "0"
-	g_vTint_Colour "[0.411765 0.219608 0.109804 1.000000]"
+	g_vTint_Colour "[1.000000 1.000000 1.000000 1.000000]"
 }
