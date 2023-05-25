@@ -5,7 +5,7 @@ namespace BombSurvival;
 public partial class BombSurvival
 {
 	public static Sdf2DWorld Terrain { get; set; }
-	public static Sdf2DLayer TerrainLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/sponge.sdflayer" );
+	public static Sdf2DLayer TerrainLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/fabric.sdflayer" );
 	public static Sdf2DLayer ScorchLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch.sdflayer" );
 	public static Texture TerrainTexture => Texture.Load( FileSystem.Mounted, "terrains/hill.png" );
 
@@ -75,6 +75,7 @@ public partial class BombSurvival
 	{
 		var pawn = ConsoleSystem.Caller.Pawn as Player;
 
+		CarveCircle( pawn.CollisionWorldSpaceCenter, 75f );
 		AddCircle( pawn.CollisionWorldSpaceCenter, 100f, ScorchLayer );
 	}
 }
