@@ -15,8 +15,6 @@ public partial class Player : AnimatedEntity
 
 		SetModel( "models/citizen/citizen.vmdl" );
 		SetupPhysicsFromCapsule( PhysicsMotionType.Keyframed, CollisionCapsule );
-
-		EnableDrawing = true;
 	}
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }

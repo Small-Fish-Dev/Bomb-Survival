@@ -22,7 +22,7 @@ public partial class BombSurvival
 		Terrain?.Add( terrainSdf, TerrainLayer );
 		GameTask.RunInThreadAsync( async () =>
 		{
-			await GameTask.NextPhysicsFrame();
+			await GameTask.Delay( 100 );
 			Event.Run( "TerrainLoaded" );
 		} );
 	}
@@ -73,6 +73,7 @@ public partial class BombSurvival
 
 		Sound.FromWorld( "sounds/explosion.sound", position );
 	}
+	public static void Explosion( Vector2 position, float size = 75f ) => Explosion( PointToWorld( position ), size );
 
 	public override void PostLevelLoaded()
 	{

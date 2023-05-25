@@ -36,4 +36,19 @@ public partial class BombSurvival : GameManager
 			player.Position = PointToTop( Vector3.Zero );
 		}
 	}
+
+	[GameEvent.Physics.PreStep]
+	public static void PreStep() // Lock the Y axis
+	{
+		if ( Game.IsClient ) return;
+
+		foreach( var entity in Entity.All.OfType<ModelEntity>() )
+		{
+			if ( entity.PhysicsEnabled )
+			{
+				entity.Velocity = entity.Velocity.WithY( 0 );
+				entity.Position = entity.Position.WithY( 0 );
+			}
+		}
+	}
 }
