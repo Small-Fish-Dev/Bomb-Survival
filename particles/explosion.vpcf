@@ -338,5 +338,11 @@
 		{
 			m_ChildRef = resource:"particles/explosion_smoke.vpcf"
 		},
+		{
+			m_ChildRef = resource:"particles/explosion_shrapnel_falling.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/explosion_shrapnel_floating.vpcf"
+		},
 	]
 }
