@@ -1,0 +1,14 @@
+{
+  "UI": false,
+  "Volume": "1.00,1.00,0",
+  "Pitch": "1.00,1.20,1",
+  "Decibels": 70,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sounds/explosion1.vsnd",
+    "sounds/explosion2.vsnd",
+    "sounds/explosion3.vsnd"
+  ],
+  "MaximumDistance": 1143.9335,
+  "MinimumDistance": 57.196674
+}

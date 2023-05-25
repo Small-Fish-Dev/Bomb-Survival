@@ -74,10 +74,12 @@ public partial class BombSurvival
 	public static void TestExplosion()
 	{
 		var pawn = ConsoleSystem.Caller.Pawn as Player;
+		var position = pawn.CollisionWorldSpaceCenter;
 
-		CarveCircle( pawn.CollisionWorldSpaceCenter, 75f );
-		AddCircle( pawn.CollisionWorldSpaceCenter, 100f, ScorchLayer );
-		Particles.Create( "particles/explosion.vpcf", pawn.CollisionWorldSpaceCenter )
+		CarveCircle( position, 75f );
+		AddCircle( position, 100f, ScorchLayer );
+		Particles.Create( "particles/explosion.vpcf", position )
 			.Set( "size", 100f );
+		Sound.FromWorld( "sounds/explosion.sound", position );
 	}
 }
