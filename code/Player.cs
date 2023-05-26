@@ -77,7 +77,7 @@ public partial class Player : AnimatedEntity
 	{
 		base.FrameSimulate( cl );
 
-		Camera.Position = Position + Vector3.Right * 200f + Vector3.Up * 64f;
+		Camera.Position = Vector3.Lerp( Camera.Position, Position + Vector3.Right * 200f + Vector3.Up * 64f, Time.Delta * 5f );
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
