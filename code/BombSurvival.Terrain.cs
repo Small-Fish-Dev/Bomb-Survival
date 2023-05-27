@@ -61,10 +61,8 @@ public partial class BombSurvival
 	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.Subtract( new BoxSdf( min, max, cornerRadius ) );
 	public static void CarveBox( Vector3 min, Vector3 max, float cornerRadius = 0f ) => CarveBox( PointToLocal( min ), PointToLocal( max ), cornerRadius );
 
-	public static void Explosion( Vector3 position, float size = 75f )
+	public static void Explosion( Vector3 position, float size = 75f, float charSize = 100f )
 	{
-		var charSize = size + 10f + 15f * (size / 75f);
-
 		CarveCircle( position, size );
 		AddCircle( position, charSize, ScorchLayer );
 
