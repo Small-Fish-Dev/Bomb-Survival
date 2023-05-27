@@ -57,7 +57,10 @@ public partial class BombSurvival : GameManager
 		if ( Time.Tick % ( 60 / frequency ) == 0 )
 		{
 			var pos = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
-			
+			new InertBomb
+			{
+				Position = pos
+			};
 		}
 	}
 }
