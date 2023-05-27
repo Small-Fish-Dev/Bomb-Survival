@@ -44,7 +44,7 @@ public partial class BombSurvival : GameManager
 		{
 			if ( entity.PhysicsEnabled )
 			{
-				entity.Velocity = entity.Velocity.WithY( 0 );
+				entity.Position = entity.Position.WithY( 0 );
 			}
 		}
 	}
