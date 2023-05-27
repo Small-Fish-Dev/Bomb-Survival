@@ -42,7 +42,7 @@ public partial class BombSurvival : GameManager
 
 		foreach( var entity in Entity.All.OfType<ModelEntity>() )
 		{
-			if ( entity.PhysicsEnabled )
+			if ( entity.PhysicsBody.IsValid() && entity.PhysicsBody.BodyType == PhysicsBodyType.Dynamic )
 			{
 				entity.Position = entity.Position.WithY( 0 );
 			}

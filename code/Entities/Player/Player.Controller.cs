@@ -13,11 +13,15 @@ public partial class Player
 	public float StepSize => 8f;
 	public float MaxWalkableAngle => 55f;
 
+	internal TimeUntil punchFinish { get; set; } = 0f;
+	public bool IsPunching => !punchFinish;
 
 	public TimeSince TimeSinceLostFooting = 0f;
 
 	public void ComputeMotion()
 	{
+		var animationHelper = Animations;
+
 		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
 		if ( Direction != Vector3.Zero )
@@ -37,12 +41,15 @@ public partial class Player
 			{
 				GroundEntity = null;
 				Velocity = Velocity.WithZ( 300f );
-				Animations.TriggerJump();
+				animationHelper.TriggerJump();
 			}
 
 			if ( Velocity.z > 0f ) // Floaty jump
 				Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
 		}
+
+		if ( Input.Pressed( "attack1" ) && !IsPunching )
+			Punch();
 
 		var helper = new MoveHelper( Position, Velocity );
 		helper.MaxStandableAngle = MaxWalkableAngle;
@@ -76,5 +83,24 @@ public partial class Player
 			TimeSinceLostFooting = 0f;
 			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
 		}
+	}
+
+	public void Punch()
+	{
+		var animationHelper = Animations;
+
+		punchFinish = 0.3f;
+		animationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
+		SetAnimParameter( "b_attack", true );
+
+		if ( Game.IsClient ) return;
+
+		var punchEntities = Entity.FindInSphere( CollisionWorldSpaceCenter + InputRotation.Forward * CollisionHeight / 2f, CollisionHeight / 4f )
+			.Where( x => x != this );
+
+		if ( punchEntities.Count() <= 0 ) return;
+
+		var entityToPunch = punchEntities.First();
+		DebugOverlay.Sphere( entityToPunch.Position, 30f, Color.Red, 1f, false );
 	}
 }

@@ -9,8 +9,7 @@ public partial class Player
 
 	public void ComputeAnimations()
 	{
-
-		var animationHelper = new CitizenAnimationHelper( this );
+		var animationHelper = Animations;
 
 		if ( InputRotation == new Rotation() )
 			if ( !Velocity.IsNearlyZero( 1 ) )
@@ -29,5 +28,7 @@ public partial class Player
 
 		animationHelper.WithVelocity( Velocity );
 		animationHelper.IsGrounded = GroundEntity != null;
+
+		animationHelper.HoldType = IsPunching ? CitizenAnimationHelper.HoldTypes.Punch : CitizenAnimationHelper.HoldTypes.None;
 	}
 }
