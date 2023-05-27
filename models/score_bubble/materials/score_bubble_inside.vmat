@@ -56,5 +56,5 @@ Layer0
 
 	//---- Translucent ----
 	g_flOpacityScale "1.000"
-	TextureTranslucency "models/score_bubble/score_bubble_inside.png"
+	TextureTranslucency "models/score_bubble/materials/score_bubble_inside.png"
 }

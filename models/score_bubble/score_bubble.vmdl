@@ -15,11 +15,11 @@
 						[
 							{
 								from = "score_bubble.vmat"
-								to = "models/score_bubble/score_bubble.vmat"
+								to = "models/score_bubble/materials/score_bubble.vmat"
 							},
 							{
 								from = "score_center.vmat"
-								to = "models/score_bubble/score_bubble_inside.vmat"
+								to = "models/score_bubble/materials/score_bubble_inside.vmat"
 							},
 						]
 						use_global_default = false
@@ -63,6 +63,41 @@
 							[
 								"score_bubble",
 							]
+						}
+					},
+				]
+			},
+			{
+				_class = "GameDataList"
+				children = 
+				[
+					{
+						_class = "GenericGameData"
+						game_class = "prop_data"
+						game_keys = 
+						{
+							bakelighting = true
+							health = 1.0
+							min_impact_damage_speed = 0.0
+							impact_damage = 1.0
+							parent_bodygroup_name = ""
+							parent_bodygroup_value = 0
+						}
+					},
+					{
+						_class = "BreakCommand"
+						game_class = "break_create_particle"
+						game_keys = 
+						{
+							name = resource:"models/score_bubble/particles/score_bubble_break.vpcf"
+							cp0_model = resource:""
+							cp0_snapshot = resource:""
+							damage_position_cp = -1
+							damage_direction_cp = -1
+							velocity_cp = -1
+							angular_velocity_cp = -1
+							local_gravity_cp = -1
+							tint_cp = -1
 						}
 					},
 				]
