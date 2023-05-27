@@ -21,6 +21,7 @@ public partial class Player
 	public void ComputeMotion()
 	{
 		var animationHelper = Animations;
+		var puppetAnimationsHelper = PuppetAnimations;
 
 		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
@@ -42,6 +43,7 @@ public partial class Player
 				GroundEntity = null;
 				Velocity = Velocity.WithZ( 300f );
 				animationHelper.TriggerJump();
+				puppetAnimationsHelper.TriggerJump();
 			}
 
 			if ( Velocity.z > 0f ) // Floaty jump
@@ -90,20 +92,24 @@ public partial class Player
 	public void Punch()
 	{
 		var animationHelper = Animations;
+		var puppetAnimationsHelper = PuppetAnimations;
 
 		punchFinish = 0.3f;
 		animationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
+		puppetAnimationsHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
 		SetAnimParameter( "b_attack", true );
+		Puppet.SetAnimParameter( "b_attack", true );
 
 		if ( Game.IsClient ) return;
 
 		// TODO CHANGE TO A RAY CASTING TOWARDS DIRECTION
-		var punchEntities = Entity.FindInSphere( CollisionWorldSpaceCenter + InputRotation.Forward * CollisionHeight / 2f, CollisionHeight / 4f )
-			.Where( x => x != this );
+		var punchEntities = Entity.FindInSphere( Position + Vector3.Up * CollisionHeight + InputRotation.Forward * CollisionHeight, CollisionHeight )
+			.Where( x => x != this )
+			.Where( x => x.Owner != this );
 
 		if ( punchEntities.Count() <= 0 ) return;
 
-		var entityToPunch = punchEntities.First();
+		var entityToPunch = punchEntities.OrderBy( x => x.Position.Distance( Position + Vector3.Up * CollisionHeight ) ).First();
 		DebugOverlay.Sphere( entityToPunch.Position, 30f, Color.Red, 1f, false );
 	}
 }

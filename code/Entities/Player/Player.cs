@@ -5,27 +5,38 @@ public partial class Player : AnimatedEntity
 	public float CollisionHeight => 30f;
 	public float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
-	public Capsule CollisionCapsule => new Capsule( Vector3.Zero.WithZ( CollisionWidth / 2f ) * Scale, Vector3.Zero.WithZ( CollisionHeight - CollisionWidth / 2f ) * Scale, CollisionWidth / 2f * Scale );
 	[Net] public bool IsDead { get; set; } = false;
 	
 	[Net] internal AnimatedEntity Puppet { get; set; }
+	[Net] internal ModelEntity Collider { get; set; }
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
 		SetModel( "models/citizen/citizen.vmdl" );
-		SetupPhysicsFromCapsule( PhysicsMotionType.Keyframed, CollisionCapsule );
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
 		Tags.Add( "player" );
 
 		Puppet = new AnimatedEntity();
 		Puppet.SetModel( "models/citizen/citizen.vmdl" );
 		Puppet.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
 		Puppet.Tags.Add( "puppet" );
+		Puppet.Owner = this;
 
 		PlacePuppet();
 		Puppet.EnableAllCollisions = true;
 		Puppet.EnableDrawing = true;
+
+		Collider = new ModelEntity();
+		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" );
+		Collider.SetupPhysicsFromSphere( PhysicsMotionType.Dynamic, Vector3.Zero, CollisionHeight / 1.5f );
+		Collider.Tags.Add( "puppet" );
+		Puppet.Owner = this;
+
+		PlaceCollider();
+		Collider.EnableAllCollisions = true;
+		Collider.EnableDrawing = false;
 
 		EnableAllCollisions = true;
 		EnableDrawing = false;
@@ -44,6 +55,9 @@ public partial class Player : AnimatedEntity
 		Puppet.EnableAllCollisions = true;
 		Puppet.EnableDrawing = true;
 
+		PlaceCollider();
+		Collider.EnableAllCollisions = true;
+
 		EnableAllCollisions = true;
 
 		IsDead = false;
@@ -54,6 +68,7 @@ public partial class Player : AnimatedEntity
 		EnableAllCollisions = false;
 		Puppet.EnableAllCollisions = false;
 		Puppet.EnableDrawing = false;
+		Collider.EnableAllCollisions = false;
 
 		IsDead = true;
 
@@ -96,8 +111,8 @@ public partial class Player : AnimatedEntity
 
 		if ( Game.IsClient ) return;
 
-		PlacePuppet();
 		MovePuppet();
+		MoveCollider();
 	}
 
 	public override void FrameSimulate( IClient cl )
@@ -117,8 +132,9 @@ public partial class Player : AnimatedEntity
 	public void PlacePuppet()
 	{
 		if ( Puppet == null ) return;
-
+		Puppet.Position = Position;
 	}
+
 	public void MovePuppet()
 	{
 		if ( Puppet == null ) return;
@@ -136,12 +152,32 @@ public partial class Player : AnimatedEntity
 				else
 				{
 					var moveDirection = playerBoneTransform.Position - puppetBoneBody.Position;
-					puppetBoneBody.ApplyForce( moveDirection * 3000 * puppetBoneBody.Mass );
+					puppetBoneBody.ApplyForce( moveDirection * 500000 * puppetBoneBody.Mass * Time.Delta );
 					puppetBoneBody.LinearDamping = 30;
 				}
 
 				puppetBoneBody.Rotation = playerBoneTransform.Rotation;
 			}
+		}
+	}
+	public void PlaceCollider()
+	{
+		if ( Collider == null ) return;
+		Collider.Position = Position + Vector3.Up * CollisionHeight / 1.5f;
+	}
+
+	public void MoveCollider()
+	{
+		if ( Collider == null ) return;
+
+		var positionGoal = Position + Vector3.Up * CollisionHeight / 1.5f;
+		var moveDirection = positionGoal - Collider.Position;
+		Collider.PhysicsBody.ApplyForce( moveDirection * 300000 * Collider.PhysicsBody.Mass * Time.Delta );
+		Collider.PhysicsBody.LinearDamping = 30;
+
+		if ( Collider.Position.Distance( positionGoal ) >= CollisionHeight )
+		{
+			PlaceCollider();
 		}
 	}
 }
