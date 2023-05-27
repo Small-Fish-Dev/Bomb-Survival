@@ -40,6 +40,8 @@ public partial class BombSurvival : GameManager
 		{
 			if ( entity.PhysicsBody.IsValid() && entity.PhysicsBody.BodyType == PhysicsBodyType.Dynamic && entity.Owner is not Player )
 			{
+				if ( entity.PhysicsBody.Sleeping ) continue;
+
 				entity.Position = entity.Position.WithY( 0 );
 				entity.Rotation = Rotation.LookAt( entity.Rotation.Forward, Vector3.Right );
 				entity.AngularVelocity = entity.AngularVelocity.WithRoll( 0 );
