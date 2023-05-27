@@ -34,9 +34,12 @@ public partial class BombSurvival : GameManager
 
 		foreach( var entity in Entity.All.OfType<ModelEntity>() )
 		{
-			if ( entity.PhysicsBody.IsValid() && entity.PhysicsBody.BodyType == PhysicsBodyType.Dynamic )
+			if ( entity.PhysicsBody.IsValid() && entity.PhysicsBody.BodyType == PhysicsBodyType.Dynamic && entity.Owner is not Player )
 			{
 				entity.Position = entity.Position.WithY( 0 );
+				entity.Rotation = Rotation.LookAt( entity.Rotation.Forward, Vector3.Right );
+				entity.AngularVelocity = entity.AngularVelocity.WithRoll( 0 );
+				entity.PhysicsBody.AngularDrag = 10f;
 			}
 		}
 	}
