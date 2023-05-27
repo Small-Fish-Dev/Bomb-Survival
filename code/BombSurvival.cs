@@ -24,15 +24,7 @@ public partial class BombSurvival : GameManager
 
 		var pawn = new Player();
 		client.Pawn = pawn;
-		pawn.Position = PointToTop( Vector3.Zero );
 
-	}
-
-	[Event("TerrainLoaded")]
-	public static void PlacePlayers()
-	{
-		foreach( var player in Entity.All.OfType<Player>() )
-			player.Respawn();
 	}
 
 	[GameEvent.Physics.PreStep]
@@ -56,10 +48,11 @@ public partial class BombSurvival : GameManager
 
 		if ( Time.Tick % ( 60 / frequency ) == 0 )
 		{
-			var pos = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
+			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
+
 			new InertBomb
 			{
-				Position = pos
+				Position = spawnPosition
 			};
 		}
 	}

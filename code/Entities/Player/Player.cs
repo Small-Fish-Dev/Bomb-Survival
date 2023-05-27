@@ -2,11 +2,13 @@
 
 public partial class Player : AnimatedEntity
 {
-	public float CollisionHeight => 72f;
+	public float CollisionHeight => 30f;
 	public float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
 	public Capsule CollisionCapsule => new Capsule( Vector3.Zero.WithZ( CollisionWidth / 2f ) * Scale, Vector3.Zero.WithZ( CollisionHeight - CollisionWidth / 2f ) * Scale, CollisionWidth / 2f * Scale );
 	[Net] public bool IsDead { get; set; } = false;
+	
+	[Net] internal AnimatedEntity Puppet { get; set; }
 
 	public override void Spawn()
 	{
@@ -14,12 +16,21 @@ public partial class Player : AnimatedEntity
 
 		SetModel( "models/citizen/citizen.vmdl" );
 		SetupPhysicsFromCapsule( PhysicsMotionType.Keyframed, CollisionCapsule );
-	}
+		Tags.Add( "player" );
 
-	public override void ClientSpawn()
-	{
-		base.ClientSpawn();
-		Camera.Position = Position;
+		Puppet = new AnimatedEntity();
+		Puppet.SetModel( "models/citizen/citizen.vmdl" );
+		Puppet.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
+		Puppet.Tags.Add( "puppet" );
+
+		PlacePuppet();
+		Puppet.EnableAllCollisions = true;
+		Puppet.EnableDrawing = true;
+
+		EnableAllCollisions = true;
+		EnableDrawing = false;
+
+		Respawn();
 	}
 
 	public void Respawn()
@@ -29,15 +40,21 @@ public partial class Player : AnimatedEntity
 		Position = spawnPoint.Position.WithY( 0 );
 		Velocity = Vector3.Zero;
 
+		PlacePuppet();
+		Puppet.EnableAllCollisions = true;
+		Puppet.EnableDrawing = true;
+
 		EnableAllCollisions = true;
-		EnableDrawing = true;
+
 		IsDead = false;
 	}
 
 	public void Kill()
 	{
 		EnableAllCollisions = false;
-		EnableDrawing = false;
+		Puppet.EnableAllCollisions = false;
+		Puppet.EnableDrawing = false;
+
 		IsDead = true;
 
 		GameTask.RunInThreadAsync( async () =>
@@ -76,6 +93,11 @@ public partial class Player : AnimatedEntity
 
 		ComputeAnimations();
 		ComputeMotion();
+
+		if ( Game.IsClient ) return;
+
+		PlacePuppet();
+		MovePuppet();
 	}
 
 	public override void FrameSimulate( IClient cl )
@@ -90,5 +112,36 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 
 		ComputeAnimations();
+	}
+
+	public void PlacePuppet()
+	{
+		if ( Puppet == null ) return;
+
+	}
+	public void MovePuppet()
+	{
+		if ( Puppet == null ) return;
+
+		for ( int boneId = 0; boneId < BoneCount; boneId++ )
+		{
+			var puppetBoneBody = Puppet.GetBonePhysicsBody( boneId );
+			var playerBoneTransform = GetBoneTransform( boneId );
+			var boneName = GetBoneName( boneId );
+
+			if ( puppetBoneBody.IsValid() )
+			{
+				if ( boneName.Contains( "ankle" ) )
+					puppetBoneBody.Position = playerBoneTransform.Position;
+				else
+				{
+					var moveDirection = playerBoneTransform.Position - puppetBoneBody.Position;
+					puppetBoneBody.ApplyForce( moveDirection * 3000 * puppetBoneBody.Mass );
+					puppetBoneBody.LinearDamping = 30;
+				}
+
+				puppetBoneBody.Rotation = playerBoneTransform.Rotation;
+			}
+		}
 	}
 }

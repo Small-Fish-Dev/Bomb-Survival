@@ -56,6 +56,7 @@ public partial class Player
 
 		helper.Trace = helper.Trace
 			.Size( CollisionBox.Mins, CollisionBox.Maxs )
+			.WithoutTags( "puppet" )
 			.Ignore( this );
 
 		if ( GroundEntity == null )
@@ -63,9 +64,10 @@ public partial class Player
 		else
 			helper.TryMoveWithStep( Time.Delta, StepSize );
 
+		helper.TryUnstuck2D();
 
-		Position = helper.Position;
-		Velocity = helper.Velocity;
+		Position = helper.Position.WithY( 0 );
+		Velocity = helper.Velocity.WithY( 0 );
 
 		var traceDown = helper.TraceDirection( Vector3.Down * 5f );
 
@@ -95,6 +97,7 @@ public partial class Player
 
 		if ( Game.IsClient ) return;
 
+		// TODO CHANGE TO A RAY CASTING TOWARDS DIRECTION
 		var punchEntities = Entity.FindInSphere( CollisionWorldSpaceCenter + InputRotation.Forward * CollisionHeight / 2f, CollisionHeight / 4f )
 			.Where( x => x != this );
 
