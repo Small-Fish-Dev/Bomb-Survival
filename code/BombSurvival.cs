@@ -55,7 +55,7 @@ public partial class BombSurvival : GameManager
 				new TimedBomb
 				{
 					Position = spawnPosition,
-					Scale = Game.Random.Float( 0.5f, 1f )
+					Scale = Game.Random.Float( 0.8f, 1f )
 				};
 			}
 			else
@@ -63,7 +63,7 @@ public partial class BombSurvival : GameManager
 				new InertBomb
 				{
 					Position = spawnPosition,
-					Scale = Game.Random.Float( 0.5f, 1f )
+					Scale = Game.Random.Float( 0.8f, 1f )
 				};
 			}
 

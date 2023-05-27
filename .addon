@@ -133,7 +133,8 @@
         "ladder": "Ignore",
         "water": "Trigger",
         "puppet": "Collide",
-        "player": "Collide"
+        "player": "Collide",
+        "collider": "Collide"
       },
       "Pairs": [
         {
@@ -164,12 +165,32 @@
         {
           "a": "puppet",
           "b": "player",
-          "r": "Trigger"
+          "r": "Ignore"
         },
         {
           "a": "puppet",
           "b": "puppet",
-          "r": "Trigger"
+          "r": "Collide"
+        },
+        {
+          "a": "puppet",
+          "b": "collider",
+          "r": "Ignore"
+        },
+        {
+          "a": "player",
+          "b": "collider",
+          "r": "Ignore"
+        },
+        {
+          "a": "player",
+          "b": "player",
+          "r": "Collide"
+        },
+        {
+          "a": "collider",
+          "b": "collider",
+          "r": "Ignore"
         }
       ]
     }

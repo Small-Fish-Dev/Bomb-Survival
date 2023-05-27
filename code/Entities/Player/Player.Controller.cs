@@ -58,7 +58,7 @@ public partial class Player
 
 		helper.Trace = helper.Trace
 			.Size( CollisionBox.Mins, CollisionBox.Maxs )
-			.WithoutTags( "puppet" )
+			.WithoutTags( "puppet", "collider" )
 			.Ignore( this );
 
 		if ( GroundEntity == null )
@@ -102,14 +102,25 @@ public partial class Player
 
 		if ( Game.IsClient ) return;
 
-		// TODO CHANGE TO A RAY CASTING TOWARDS DIRECTION
-		var punchEntities = Entity.FindInSphere( Position + Vector3.Up * CollisionHeight + InputRotation.Forward * CollisionHeight, CollisionHeight )
-			.Where( x => x != this )
-			.Where( x => x.Owner != this );
+		var punchStartPos = Position + Vector3.Up * CollisionHeight;
 
-		if ( punchEntities.Count() <= 0 ) return;
+		var punchTrace = Trace.Ray( punchStartPos, punchStartPos + InputRotation.Forward * CollisionHeight * 1.5f )
+			.Size( CollisionHeight * 1.5f )
+			.EntitiesOnly()
+			.WithoutTags( "collider", "player" )
+			.Ignore( Puppet )
+			.Run();
 
-		var entityToPunch = punchEntities.OrderBy( x => x.Position.Distance( Position + Vector3.Up * CollisionHeight ) ).First();
-		DebugOverlay.Sphere( entityToPunch.Position, 30f, Color.Red, 1f, false );
+		if ( punchTrace.Entity is ModelEntity punchTarget )
+		{
+			if ( !punchTarget.PhysicsEnabled ) return;
+
+			var targetBody = punchTarget.PhysicsBody;
+
+			if ( !targetBody.IsValid() ) return;
+			if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
+
+			targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 1000000f );
+		}
 	}
 }

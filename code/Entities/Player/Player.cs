@@ -31,7 +31,7 @@ public partial class Player : AnimatedEntity
 		Collider = new ModelEntity();
 		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" );
 		Collider.SetupPhysicsFromSphere( PhysicsMotionType.Dynamic, Vector3.Zero, CollisionHeight / 1.5f );
-		Collider.Tags.Add( "puppet" );
+		Collider.Tags.Add( "collider" );
 		Puppet.Owner = this;
 
 		PlaceCollider();
