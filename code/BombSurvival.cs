@@ -75,8 +75,16 @@ public partial class BombSurvival : GameManager
 					Scale = Game.Random.Float( 0.8f, 1f )
 				};
 			}
+		}
 
-			
+		if ( Time.Tick % (60 / frequency / 3 ) == 0 )
+		{
+			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
+
+			new ScoreBubble
+			{
+				Position = spawnPosition,
+			};
 		}
 	}
 }

@@ -134,7 +134,8 @@
         "water": "Trigger",
         "puppet": "Collide",
         "player": "Collide",
-        "collider": "Collide"
+        "collider": "Collide",
+        "bubble": "Collide"
       },
       "Pairs": [
         {
@@ -191,6 +192,25 @@
           "a": "collider",
           "b": "collider",
           "r": "Ignore"
+        },
+        {
+          "a": "trigger",
+          "b": "player"
+        },
+        {
+          "a": "player",
+          "b": "bubble",
+          "r": "Trigger"
+        },
+        {
+          "a": "puppet",
+          "b": "bubble",
+          "r": "Trigger"
+        },
+        {
+          "a": "collider",
+          "b": "bubble",
+          "r": "Trigger"
         }
       ]
     }

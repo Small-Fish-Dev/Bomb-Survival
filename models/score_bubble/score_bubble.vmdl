@@ -37,8 +37,8 @@
 						surface_prop = "glass"
 						collision_tags = "solid"
 						radius = 6.0
-						point0 = [ -5.8, 0.0, 0.0 ]
-						point1 = [ 5.5, 0.0, 0.0 ]
+						point0 = [ -60.0, 0.0, 0.0 ]
+						point1 = [ 60.0, 0.0, 0.0 ]
 					},
 				]
 			},
