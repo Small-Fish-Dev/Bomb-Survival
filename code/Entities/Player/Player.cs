@@ -115,11 +115,27 @@ public partial class Player : AnimatedEntity
 		MoveCollider();
 	}
 
+	private float cameraDistance = 200f;
+	private TimeSince lastMoved;
+
 	public override void FrameSimulate( IClient cl )
 	{
 		base.FrameSimulate( cl );
 
-		Camera.Position = Vector3.Lerp( Camera.Position, Position + Vector3.Right * 200f + Vector3.Up * 64f, Time.Delta * 5f );
+		if ( Velocity.Length > 1f )
+			lastMoved = 0f;
+		
+		if ( lastMoved > 2.5f )
+		{
+
+			cameraDistance = cameraDistance.LerpTo( 100f, Time.Delta * lastMoved );
+		}
+		else
+		{
+			cameraDistance = cameraDistance.LerpTo( 200f + Velocity.Length * 0.15f, Time.Delta * .5f );
+		}
+
+		Camera.Position = Vector3.Lerp( Camera.Position, Position + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
