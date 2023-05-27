@@ -25,6 +25,10 @@ public partial class BombSurvival : GameManager
 		var pawn = new Player();
 		client.Pawn = pawn;
 
+		var clothing = new ClothingContainer();
+		clothing.LoadFromClient( client );
+		clothing.DressEntity( pawn.Puppet );
+
 	}
 
 	[GameEvent.Physics.PreStep]
