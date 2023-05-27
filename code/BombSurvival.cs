@@ -50,10 +50,24 @@ public partial class BombSurvival : GameManager
 		{
 			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
 
-			new InertBomb
+			if ( Game.Random.Int( 2 ) == 0 )
 			{
-				Position = spawnPosition
-			};
+				new TimedBomb
+				{
+					Position = spawnPosition,
+					Scale = Game.Random.Float( 0.5f, 1f )
+				};
+			}
+			else
+			{
+				new InertBomb
+				{
+					Position = spawnPosition,
+					Scale = Game.Random.Float( 0.5f, 1f )
+				};
+			}
+
+			
 		}
 	}
 }

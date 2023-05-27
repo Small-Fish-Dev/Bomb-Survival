@@ -2,7 +2,7 @@
 
 public abstract partial class Bomb : ModelEntity
 {
-	public virtual float BaseExplosionSize { get; set; } = 75f;
+	public virtual float BaseExplosionSize { get; set; } = 150f;
 	public virtual string ModelPath { get; } = "models/bomb/placeholder_bomb.vmdl";
 	public float ExplosionSize => BaseExplosionSize * Scale;
 	public float CharSize => ExplosionSize + 10f + 15f * (ExplosionSize / 75f);
