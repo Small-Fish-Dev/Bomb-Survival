@@ -15,10 +15,10 @@
 			_class = "C_OP_InstantaneousEmitter"
 			m_nParticlesToEmit = 
 			{
-				m_nType = "PF_TYPE_NAMED_VALUE"
+				m_nType = "PF_TYPE_LITERAL"
 				m_nMapType = "PF_MAP_TYPE_MULT"
-				m_NamedValue = "size"
-				m_flLiteralValue = 100.0
+				m_NamedValue = "10"
+				m_flLiteralValue = 30.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
 				m_nVectorAttribute = 6
