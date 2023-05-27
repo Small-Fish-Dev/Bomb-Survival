@@ -23,6 +23,7 @@ public partial class Player : AnimatedEntity
 		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
 
 		Position = spawnPoint.Position.WithY( 0 );
+		Velocity = Vector3.Zero;
 
 		EnableAllCollisions = true;
 		EnableDrawing = true;

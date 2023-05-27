@@ -13,7 +13,7 @@ public partial class Player
 	public Vector3 WishVelocity => Direction.Normal * WishSpeed;
 	public Rotation WishRotation => Rotation.LookAt( Direction, Vector3.Up );
 	public float StepSize => 8f;
-	public float MaxWalkableAngle => 70f;
+	public float MaxWalkableAngle => 55f;
 
 
 	public TimeSince TimeSinceLostFooting = 0f;
@@ -74,6 +74,7 @@ public partial class Player
 		}
 		else
 		{
+			GroundEntity = null;
 			TimeSinceLostFooting = 0f;
 			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
 		}
