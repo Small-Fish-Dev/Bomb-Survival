@@ -25,7 +25,12 @@ public partial class Player
 
 		if ( IsKnockedOut )
 		{
-			Position = Puppet.Position;
+			if ( Game.IsServer )
+			{
+				Puppet.Position = Puppet.Position.WithY( 0 );
+				Position = Puppet.Position.WithY( 0 );
+				Velocity = Puppet.Velocity.WithY( 0 );
+			}
 		}
 		else
 		{
@@ -133,7 +138,7 @@ public partial class Player
 				if ( !targetBody.IsValid() ) return;
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
-				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 10000f );
+				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 300f * targetBody.Mass );
 			}
 		}
 	}

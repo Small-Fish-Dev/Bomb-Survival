@@ -59,8 +59,8 @@ public abstract partial class Bomb : ModelEntity
 			.Where( x => x != null )
 			.Distinct();
 
-		/*foreach ( var player in playersToKill )
-			player.Kill();*/
+		foreach ( var player in playersToKill )
+			player.Kill();
 
 		Delete();
 	}

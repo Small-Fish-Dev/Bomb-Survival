@@ -132,14 +132,9 @@ public partial class Player : AnimatedEntity
 			lastMoved = 0f;
 		
 		if ( lastMoved > 2.5f )
-		{
-
 			cameraDistance = cameraDistance.LerpTo( 100f, Time.Delta * lastMoved );
-		}
 		else
-		{
-			cameraDistance = cameraDistance.LerpTo( 200f + Velocity.Length * 0.15f, Time.Delta * .5f );
-		}
+			cameraDistance = cameraDistance.LerpTo( 200f + Velocity.Length * 0.15f, Time.Delta * 0.5f );
 
 		Camera.Position = Vector3.Lerp( Camera.Position, Position + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
 		Camera.Rotation = Rotation.FromYaw( 90f );
@@ -171,21 +166,10 @@ public partial class Player : AnimatedEntity
 
 		knockedOutTimer = amount;
 
-		var direction = ((CollisionCenter - sourcePosition).Normal + Vector3.Up * 0.5f).Normal;
+		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 
 		Puppet.PhysicsGroup.Velocity = 0;
 		Puppet.PhysicsGroup.ApplyImpulse( direction * strength );
-
-		BombSurvival.AxisLockedEntities.Add( this );
-		BombSurvival.AxisLockedEntities.Add( Collider );
-
-		GameTask.RunInThreadAsync( async () =>
-		{
-			await GameTask.DelaySeconds( amount );
-
-			BombSurvival.AxisLockedEntities.Remove( this );
-			BombSurvival.AxisLockedEntities.Remove( Collider );
-		} );
 	}
 
 	public void PlacePuppet()
@@ -209,7 +193,10 @@ public partial class Player : AnimatedEntity
 				if ( !IsKnockedOut )
 				{
 					if ( boneName.Contains( "ankle" ) )
+					{
 						puppetBoneBody.Position = playerBoneTransform.Position;
+						puppetBoneBody.Rotation = playerBoneTransform.Rotation;
+					}
 					else
 					{
 						var moveDirection = playerBoneTransform.Position - puppetBoneBody.Position;
@@ -238,7 +225,7 @@ public partial class Player : AnimatedEntity
 
 		var positionGoal = CollisionTop;
 		var moveDirection = positionGoal - Collider.Position;
-		Collider.PhysicsBody.ApplyForce( moveDirection * 5000 * Collider.PhysicsBody.Mass * Time.Delta );
+		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta );
 		Collider.PhysicsBody.LinearDamping = 30;
 
 		if ( Collider.Position.Distance( positionGoal ) >= CollisionHeight )
