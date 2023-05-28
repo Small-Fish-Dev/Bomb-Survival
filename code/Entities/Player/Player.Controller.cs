@@ -120,7 +120,7 @@ public partial class Player
 			if ( !targetBody.IsValid() ) return;
 			if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
-			targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 1000000f );
+			targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 10000f );
 		}
 	}
 }

@@ -34,7 +34,7 @@
 					{
 						_class = "PhysicsShapeCylinder"
 						parent_bone = ""
-						surface_prop = "glass"
+						surface_prop = "chair_foam"
 						collision_tags = "solid"
 						radius = 6.0
 						point0 = [ 0.0, 0.0, -60.0 ]

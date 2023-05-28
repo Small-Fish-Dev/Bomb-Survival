@@ -10,6 +10,22 @@ public partial class ScoreBubble : ModelEntity
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Scale = 3f;
 		Tags.Add( "bubble" );
+
+		BombSurvival.AxisLockedEntities.Add( this );
+	}
+
+	protected override void OnDestroy()
+	{
+		BombSurvival.AxisLockedEntities.Remove( this );
+		base.OnDestroy();
+	}
+
+	public void Break()
+	{
+		var particle = Particles.Create( "models/score_bubble/particles/score_bubble_break.vpcf", Position );
+		particle.Set( "scale", Scale );
+
+		Delete();
 	}
 
 	public override void StartTouch( Entity other )
@@ -19,10 +35,6 @@ public partial class ScoreBubble : ModelEntity
 		if ( Game.IsClient ) return;
 
 		if ( other is Player || other.Owner is Player )
-		{
-			var particle = Particles.Create( "models/score_bubble/particles/score_bubble_break.vpcf", Position );
-			particle.Set( "scale", Scale );
-			Delete();
-		}
+			Break();
 	}
 }

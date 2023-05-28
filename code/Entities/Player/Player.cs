@@ -188,7 +188,7 @@ public partial class Player : AnimatedEntity
 
 		var positionGoal = Position + Vector3.Up * CollisionHeight / 1.5f;
 		var moveDirection = positionGoal - Collider.Position;
-		Collider.PhysicsBody.ApplyForce( moveDirection * 300000 * Collider.PhysicsBody.Mass * Time.Delta );
+		Collider.PhysicsBody.ApplyForce( moveDirection * 5000 * Collider.PhysicsBody.Mass * Time.Delta );
 		Collider.PhysicsBody.LinearDamping = 30;
 
 		if ( Collider.Position.Distance( positionGoal ) >= CollisionHeight )

@@ -29,7 +29,7 @@
     "CsProjName": "",
     "HttpAllowList": null,
     "Physics": {
-      "SubSteps": 4,
+      "SubSteps": 1,
       "TimeScale": 1,
       "Gravity": "0,0,-800",
       "AirDensity": 1.2,

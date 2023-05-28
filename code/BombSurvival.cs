@@ -16,6 +16,8 @@ public partial class BombSurvival : GameManager
 	public BombSurvival()
 	{
 		Instance = this;
+
+		Game.TickRate = 60;
 	}
 
 	public override void ClientJoined( IClient client )
@@ -31,25 +33,6 @@ public partial class BombSurvival : GameManager
 
 	}
 
-	[GameEvent.Physics.PreStep]
-	public static void PreStep() // Lock the Y axis
-	{
-		if ( Game.IsClient ) return;
-
-		foreach( var entity in Entity.All.OfType<ModelEntity>() )
-		{
-			if ( entity.PhysicsBody.IsValid() && entity.PhysicsBody.BodyType == PhysicsBodyType.Dynamic && entity.Owner is not Player )
-			{
-				if ( entity.PhysicsBody.Sleeping ) continue;
-
-				entity.Position = entity.Position.WithY( 0 );
-				entity.Rotation = Rotation.LookAt( entity.Rotation.Forward, Vector3.Right );
-				entity.AngularVelocity = entity.AngularVelocity.WithRoll( 0 );
-				entity.PhysicsBody.AngularDrag = 10f;
-			}
-		}
-	}
-
 	[GameEvent.Tick.Server]
 	public static void SpawnBombs()
 	{
@@ -59,7 +42,7 @@ public partial class BombSurvival : GameManager
 		{
 			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
 
-			if ( Game.Random.Int( 2 ) == 0 )
+			if ( Game.Random.Int( 10 ) <= 4 )
 			{
 				new TimedBomb
 				{
@@ -77,7 +60,7 @@ public partial class BombSurvival : GameManager
 			}
 		}
 
-		if ( Time.Tick % (60 / frequency / 3 ) == 0 )
+		if ( Time.Tick % (60 / frequency ) == 0 )
 		{
 			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
 

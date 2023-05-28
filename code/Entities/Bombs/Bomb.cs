@@ -14,6 +14,13 @@ public abstract partial class Bomb : ModelEntity
 
 		SetModel( ModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+
+		BombSurvival.AxisLockedEntities.Add( this );
+	}
+	protected override void OnDestroy()
+	{
+		BombSurvival.AxisLockedEntities.Remove( this );
+		base.OnDestroy();
 	}
 
 	public virtual void Explode()
@@ -27,8 +34,14 @@ public abstract partial class Bomb : ModelEntity
 			.OfType<Bomb>()
 			.Where( x => !x.IsExploding );
 
+		var nearbyBubbles = nearbyEntities
+			.OfType<ScoreBubble>();
+
 		foreach ( var bomb in nearbyBombs )
 			bomb.Explode();
+
+		foreach ( var bubble in nearbyBubbles )
+			bubble.Break();
 
 		var nearbyPlayers = nearbyEntities
 			.OfType<Player>();
