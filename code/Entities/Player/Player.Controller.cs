@@ -110,9 +110,7 @@ public partial class Player
 
 		if ( Game.IsClient ) return;
 
-		var punchStartPos = Position + Vector3.Up * CollisionHeight;
-
-		var punchTrace = Trace.Ray( punchStartPos, punchStartPos + InputRotation.Forward * CollisionHeight * 1.5f )
+		var punchTrace = Trace.Ray( CollisionCenter, CollisionCenter + InputRotation.Forward * CollisionHeight * 1.5f )
 			.Size( CollisionHeight * 1.5f )
 			.EntitiesOnly()
 			.WithoutTags( "collider", "player" )
@@ -121,14 +119,22 @@ public partial class Player
 
 		if ( punchTrace.Entity is ModelEntity punchTarget )
 		{
-			if ( !punchTarget.PhysicsEnabled ) return;
+			var player = punchTarget.GetPlayer();
+			if ( player != null )
+			{
+				player.KnockOut( CollisionCenter, 500f, 1f );
+			}
+			else
+			{
+				if ( !punchTarget.PhysicsEnabled ) return;
 
-			var targetBody = punchTarget.PhysicsBody;
+				var targetBody = punchTarget.PhysicsBody;
 
-			if ( !targetBody.IsValid() ) return;
-			if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
+				if ( !targetBody.IsValid() ) return;
+				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
-			targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 10000f );
+				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 10000f );
+			}
 		}
 	}
 }

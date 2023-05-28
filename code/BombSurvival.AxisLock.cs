@@ -13,6 +13,7 @@ public partial class BombSurvival : GameManager
 
 		foreach( var entity in AxisLockedEntities )
 		{
+			if ( !entity.PhysicsBody.IsValid() ) continue;
 			if ( entity.PhysicsBody.Sleeping ) continue;
 
 			entity.Position = entity.Position.WithY( 0 );
