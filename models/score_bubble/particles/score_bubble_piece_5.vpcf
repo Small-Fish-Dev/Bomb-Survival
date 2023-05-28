@@ -66,9 +66,9 @@
 			_class = "C_INIT_InitFloat"
 			m_InputValue = 
 			{
-				m_nType = "PF_TYPE_RANDOM_UNIFORM"
+				m_nType = "PF_TYPE_NAMED_VALUE"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_NamedValue = ""
+				m_NamedValue = "scale"
 				m_flLiteralValue = 0.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
@@ -265,9 +265,9 @@
 			_class = "C_INIT_CreateWithinSphere"
 			m_fRadiusMin = 
 			{
-				m_nType = "PF_TYPE_LITERAL"
-				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_NamedValue = ""
+				m_nType = "PF_TYPE_NAMED_VALUE"
+				m_nMapType = "PF_MAP_TYPE_MULT"
+				m_NamedValue = "scale"
 				m_flLiteralValue = 7.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
@@ -311,9 +311,9 @@
 			}
 			m_fRadiusMax = 
 			{
-				m_nType = "PF_TYPE_LITERAL"
-				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_NamedValue = ""
+				m_nType = "PF_TYPE_NAMED_VALUE"
+				m_nMapType = "PF_MAP_TYPE_MULT"
+				m_NamedValue = "scale"
 				m_flLiteralValue = 7.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
