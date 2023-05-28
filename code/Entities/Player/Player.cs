@@ -60,6 +60,8 @@ public partial class Player : AnimatedEntity
 
 		EnableAllCollisions = true;
 
+		SetCharred( false );
+
 		IsDead = false;
 	}
 
@@ -143,6 +145,19 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 
 		ComputeAnimations();
+	}
+
+	public void SetCharred( bool charred )
+	{
+		if ( !Puppet.IsValid ) return;
+		
+		var colorToApply = charred ? Color.Black : Color.White;
+
+		Puppet.RenderColor = colorToApply;
+
+		foreach ( var child in Puppet.Children )
+			if ( child is ModelEntity clothing )
+				clothing.RenderColor = colorToApply;
 	}
 
 	public void PlacePuppet()

@@ -5,7 +5,7 @@ public abstract partial class Bomb : ModelEntity
 	public virtual float BaseExplosionSize { get; set; } = 150f;
 	public virtual string ModelPath { get; } = "models/bomb/placeholder_bomb.vmdl";
 	public float ExplosionSize => BaseExplosionSize * Scale;
-	public float CharSize => ExplosionSize + 10f + 15f * (ExplosionSize / 75f);
+	public float CharSize => ExplosionSize + 20f + 20f * (ExplosionSize / 75f);
 	public bool IsExploding { get; internal set; } = false;
 
 	public override void Spawn()
@@ -29,24 +29,28 @@ public abstract partial class Bomb : ModelEntity
 
 		BombSurvival.Explosion( Position, ExplosionSize, CharSize );
 
-		var nearbyEntities = Entity.FindInSphere( Position, ExplosionSize );
-		var nearbyBombs = nearbyEntities
+		var entitiesInExplosion = Entity.FindInSphere( Position, ExplosionSize );
+		var entitiesInChar = Entity.FindInSphere( Position, CharSize );
+
+		var bombsToExplode = entitiesInExplosion
 			.OfType<Bomb>()
 			.Where( x => !x.IsExploding );
-
-		var nearbyBubbles = nearbyEntities
-			.OfType<ScoreBubble>();
-
-		foreach ( var bomb in nearbyBombs )
+		foreach ( var bomb in bombsToExplode )
 			bomb.Explode();
 
-		foreach ( var bubble in nearbyBubbles )
+		var bubblesToBreak = entitiesInExplosion
+			.OfType<ScoreBubble>();
+		foreach ( var bubble in bubblesToBreak )
 			bubble.Break();
 
-		var nearbyPlayers = nearbyEntities
+		var playersToChar = entitiesInChar
 			.OfType<Player>();
+		foreach ( var player in playersToChar )
+			player.SetCharred( true );
 
-		foreach ( var player in nearbyPlayers )
+		var playersToKill = entitiesInExplosion
+			.OfType<Player>();
+		foreach ( var player in playersToKill )
 			player.Kill();
 
 		Delete();
