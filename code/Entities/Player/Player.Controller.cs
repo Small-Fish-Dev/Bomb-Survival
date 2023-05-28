@@ -23,69 +23,77 @@ public partial class Player
 		var animationHelper = Animations;
 		var puppetAnimationsHelper = PuppetAnimations;
 
-		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
-
-		if ( Direction != Vector3.Zero )
-			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "run" ) ? RunSpeed : WalkSpeed );
-		else
-			WishSpeed = 0f;
-
-		Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
-			.WithZ( Velocity.z ); // Don't smooth vertical movement
-
-		if ( TimeSinceLostFooting > Time.Delta * 5f )
-			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
-
-		if ( Input.Down( "jump" ) )
+		if ( IsKnockedOut )
 		{
-			if ( GroundEntity != null )
+			Position = Puppet.Position;
+		}
+		else
+		{
+
+			Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+
+			if ( Direction != Vector3.Zero )
+				WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "run" ) ? RunSpeed : WalkSpeed );
+			else
+				WishSpeed = 0f;
+
+			Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
+				.WithZ( Velocity.z ); // Don't smooth vertical movement
+
+			if ( TimeSinceLostFooting > Time.Delta * 5f )
+				Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
+
+			if ( Input.Down( "jump" ) )
 			{
-				GroundEntity = null;
-				Velocity = Velocity.WithZ( 300f );
-				animationHelper.TriggerJump();
-				puppetAnimationsHelper.TriggerJump();
+				if ( GroundEntity != null )
+				{
+					GroundEntity = null;
+					Velocity = Velocity.WithZ( 300f );
+					animationHelper.TriggerJump();
+					puppetAnimationsHelper.TriggerJump();
+				}
+
+				if ( Velocity.z > 0f ) // Floaty jump
+					Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
 			}
 
-			if ( Velocity.z > 0f ) // Floaty jump
-				Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
-		}
+			if ( Input.Pressed( "attack1" ) && !IsPunching )
+				Punch();
 
-		if ( Input.Pressed( "attack1" ) && !IsPunching )
-			Punch();
+			var helper = new MoveHelper( Position, Velocity );
+			helper.MaxStandableAngle = MaxWalkableAngle;
 
-		var helper = new MoveHelper( Position, Velocity );
-		helper.MaxStandableAngle = MaxWalkableAngle;
+			helper.Trace = helper.Trace
+				.Size( CollisionBox.Mins, CollisionBox.Maxs )
+				.WithoutTags( "puppet", "collider" )
+				.Ignore( this );
 
-		helper.Trace = helper.Trace
-			.Size( CollisionBox.Mins, CollisionBox.Maxs )
-			.WithoutTags( "puppet", "collider" )
-			.Ignore( this );
+			if ( GroundEntity == null )
+				helper.TryMove( Time.Delta );
+			else
+				helper.TryMoveWithStep( Time.Delta, StepSize );
 
-		if ( GroundEntity == null )
-			helper.TryMove( Time.Delta );
-		else
-			helper.TryMoveWithStep( Time.Delta, StepSize );
+			helper.TryUnstuck2D();
 
-		helper.TryUnstuck2D();
+			Position = helper.Position.WithY( 0 );
+			Velocity = helper.Velocity.WithY( 0 );
 
-		Position = helper.Position.WithY( 0 );
-		Velocity = helper.Velocity.WithY( 0 );
+			var traceDown = helper.TraceDirection( Vector3.Down * 5f );
 
-		var traceDown = helper.TraceDirection( Vector3.Down * 5f );
+			if ( traceDown.Entity != null )
+			{
+				GroundEntity = traceDown.Entity;
+				Position = traceDown.EndPosition;
 
-		if ( traceDown.Entity != null )
-		{
-			GroundEntity = traceDown.Entity;
-			Position = traceDown.EndPosition;
-
-			if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+					TimeSinceLostFooting = 0f;
+			}
+			else
+			{
+				GroundEntity = null;
 				TimeSinceLostFooting = 0f;
-		}
-		else
-		{
-			GroundEntity = null;
-			TimeSinceLostFooting = 0f;
-			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
+				Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
+			}
 		}
 	}
 

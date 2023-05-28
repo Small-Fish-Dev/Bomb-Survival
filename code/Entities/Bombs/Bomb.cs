@@ -44,14 +44,23 @@ public abstract partial class Bomb : ModelEntity
 			bubble.Break();
 
 		var playersToChar = entitiesInChar
-			.OfType<Player>();
+			.Select( x => x.GetPlayer() )
+			.Where( x => x != null )
+			.Distinct();
+
 		foreach ( var player in playersToChar )
+		{
 			player.SetCharred( true );
+			player.KnockOut( Position, 1000, 2f );
+		}
 
 		var playersToKill = entitiesInExplosion
-			.OfType<Player>();
-		foreach ( var player in playersToKill )
-			player.Kill();
+			.Select( x => x.GetPlayer() )
+			.Where( x => x != null )
+			.Distinct();
+
+		/*foreach ( var player in playersToKill )
+			player.Kill();*/
 
 		Delete();
 	}

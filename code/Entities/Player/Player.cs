@@ -5,7 +5,11 @@ public partial class Player : AnimatedEntity
 	public float CollisionHeight => 30f;
 	public float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
+	public Vector3 CollisionCenter => Position + Vector3.Up * CollisionHeight * Scale;
+	public Vector3 CollisionTop => Position + Vector3.Up * CollisionHeight * Scale / 1.5f;
 	[Net] public bool IsDead { get; set; } = false;
+	[Net] internal TimeUntil knockedOutTimer { get; set; } = 0f;
+	public bool IsKnockedOut => !knockedOutTimer;
 	
 	[Net] internal AnimatedEntity Puppet { get; set; }
 	[Net] internal ModelEntity Collider { get; set; }
@@ -160,6 +164,30 @@ public partial class Player : AnimatedEntity
 				clothing.RenderColor = colorToApply;
 	}
 
+	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
+	{
+		if ( !Puppet.IsValid ) return;
+		if ( IsDead ) return;
+
+		knockedOutTimer = amount;
+
+		var direction = ((CollisionCenter - sourcePosition).Normal + Vector3.Up * 0.5f).Normal;
+
+		Puppet.PhysicsGroup.Velocity = 0;
+		Puppet.PhysicsGroup.ApplyImpulse( direction * strength );
+
+		BombSurvival.AxisLockedEntities.Add( this );
+		BombSurvival.AxisLockedEntities.Add( Collider );
+
+		GameTask.RunInThreadAsync( async () =>
+		{
+			await GameTask.DelaySeconds( amount );
+
+			BombSurvival.AxisLockedEntities.Remove( this );
+			BombSurvival.AxisLockedEntities.Remove( Collider );
+		} );
+	}
+
 	public void PlacePuppet()
 	{
 		if ( Puppet == null ) return;
@@ -178,30 +206,37 @@ public partial class Player : AnimatedEntity
 
 			if ( puppetBoneBody.IsValid() )
 			{
-				if ( boneName.Contains( "ankle" ) )
-					puppetBoneBody.Position = playerBoneTransform.Position;
+				if ( !IsKnockedOut )
+				{
+					if ( boneName.Contains( "ankle" ) )
+						puppetBoneBody.Position = playerBoneTransform.Position;
+					else
+					{
+						var moveDirection = playerBoneTransform.Position - puppetBoneBody.Position;
+						puppetBoneBody.ApplyForce( moveDirection * 500000 * puppetBoneBody.Mass * Time.Delta );
+						puppetBoneBody.LinearDamping = 30f;
+					}
+
+					puppetBoneBody.Rotation = playerBoneTransform.Rotation;
+				}
 				else
 				{
-					var moveDirection = playerBoneTransform.Position - puppetBoneBody.Position;
-					puppetBoneBody.ApplyForce( moveDirection * 500000 * puppetBoneBody.Mass * Time.Delta );
-					puppetBoneBody.LinearDamping = 30;
+					puppetBoneBody.LinearDamping = 0f;
 				}
-
-				puppetBoneBody.Rotation = playerBoneTransform.Rotation;
 			}
 		}
 	}
 	public void PlaceCollider()
 	{
 		if ( Collider == null ) return;
-		Collider.Position = Position + Vector3.Up * CollisionHeight / 1.5f;
+		Collider.Position = CollisionTop;
 	}
 
 	public void MoveCollider()
 	{
 		if ( Collider == null ) return;
 
-		var positionGoal = Position + Vector3.Up * CollisionHeight / 1.5f;
+		var positionGoal = CollisionTop;
 		var moveDirection = positionGoal - Collider.Position;
 		Collider.PhysicsBody.ApplyForce( moveDirection * 5000 * Collider.PhysicsBody.Mass * Time.Delta );
 		Collider.PhysicsBody.LinearDamping = 30;
