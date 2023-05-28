@@ -101,45 +101,4 @@ public partial class Player
 			}
 		}
 	}
-
-	public void Punch()
-	{
-		var animationHelper = Animations;
-		var puppetAnimationsHelper = PuppetAnimations;
-
-		punchFinish = 0.3f;
-		animationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
-		puppetAnimationsHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
-		SetAnimParameter( "b_attack", true );
-		Puppet.SetAnimParameter( "b_attack", true );
-
-		if ( Game.IsClient ) return;
-
-		var punchTrace = Trace.Ray( CollisionCenter, CollisionCenter + InputRotation.Forward * CollisionHeight * 1.5f )
-			.Size( CollisionHeight * 1.5f )
-			.EntitiesOnly()
-			.WithoutTags( "collider", "player" )
-			.Ignore( Puppet )
-			.Run();
-
-		if ( punchTrace.Entity is ModelEntity punchTarget )
-		{
-			var player = punchTarget.GetPlayer();
-			if ( player != null )
-			{
-				player.KnockOut( CollisionCenter, 500f, 1f );
-			}
-			else
-			{
-				if ( !punchTarget.PhysicsEnabled ) return;
-
-				var targetBody = punchTarget.PhysicsBody;
-
-				if ( !targetBody.IsValid() ) return;
-				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
-
-				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 300f * targetBody.Mass );
-			}
-		}
-	}
 }
