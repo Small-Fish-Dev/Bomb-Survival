@@ -20,6 +20,8 @@ public partial class ScoreBubble : ModelEntity
 
 		if ( other is Player || other.Owner is Player )
 		{
+			var particle = Particles.Create( "models/score_bubble/particles/score_bubble_break.vpcf", Position );
+			particle.Set( "scale", Scale );
 			Delete();
 		}
 	}
