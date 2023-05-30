@@ -4,7 +4,7 @@ namespace BombSurvival;
 
 public partial class TimedBomb : Bomb
 {
-	public override string ModelPath { get; } = "models/bomb/placeholder_inert.vmdl";
+	public override string ModelPath { get; } = "models/explosive/explosive.vmdl";
 	internal TimeUntil ExplosionTime { get; set; } = 0f;
 
 	public override void Spawn()

@@ -2,5 +2,5 @@
 
 public partial class InertBomb : Bomb
 {
-	public override string ModelPath { get; } = "models/bomb/placeholder_inert.vmdl";
+	public override string ModelPath { get; } = "models/explosive/explosive.vmdl";
 }
