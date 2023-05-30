@@ -66,6 +66,8 @@ public partial class Player : AnimatedEntity
 
 		SetCharred( false );
 
+		knockedOutTimer = 0f;
+
 		IsDead = false;
 	}
 
