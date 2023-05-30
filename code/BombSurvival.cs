@@ -47,6 +47,7 @@ public partial class BombSurvival : GameManager
 				new TimedBomb
 				{
 					Position = spawnPosition,
+					Rotation = Rotation.FromYaw( -90 ),
 					Scale = Game.Random.Float( 0.8f, 1f )
 				};
 			}
@@ -55,6 +56,7 @@ public partial class BombSurvival : GameManager
 				new InertBomb
 				{
 					Position = spawnPosition,
+					Rotation = Rotation.FromYaw( -90 ),
 					Scale = Game.Random.Float( 0.8f, 1f )
 				};
 			}
@@ -67,6 +69,7 @@ public partial class BombSurvival : GameManager
 			new ScoreBubble
 			{
 				Position = spawnPosition,
+				Rotation = Rotation.FromYaw( -90 )
 			};
 		}
 	}
