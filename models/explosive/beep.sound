@@ -1,0 +1,12 @@
+{
+  "UI": false,
+  "Volume": "1.00,1.00,0",
+  "Pitch": "0.98,1.03,1",
+  "Decibels": 85,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "models/explosive/beep.vsnd"
+  ],
+  "MaximumDistance": 1671.5345,
+  "MinimumDistance": 83.57673
+}
