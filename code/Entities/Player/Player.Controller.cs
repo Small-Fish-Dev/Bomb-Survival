@@ -3,7 +3,7 @@
 public partial class Player
 {
 	public float WalkSpeed => 120f;
-	public float RunSpeed => 200f;
+	public float RunSpeed => 120f; // Eh let's not do running
 	public float AccelerationSpeed => 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
@@ -48,20 +48,6 @@ public partial class Player
 			if ( TimeSinceLostFooting > Time.Delta * 5f )
 				Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
 
-			if ( Input.Down( "jump" ) )
-			{
-				if ( GroundEntity != null )
-				{
-					GroundEntity = null;
-					Velocity = Velocity.WithZ( 300f );
-					animationHelper.TriggerJump();
-					puppetAnimationsHelper.TriggerJump();
-				}
-
-				if ( Velocity.z > 0f ) // Floaty jump
-					Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
-			}
-
 			if ( Input.Pressed( "attack1" ) && !IsPunching )
 				Punch();
 
@@ -83,7 +69,7 @@ public partial class Player
 			Position = helper.Position.WithY( 0 );
 			Velocity = helper.Velocity.WithY( 0 );
 
-			var traceDown = helper.TraceDirection( Vector3.Down * 5f );
+			var traceDown = helper.TraceDirection( Vector3.Down );
 
 			if ( traceDown.Entity != null )
 			{
@@ -98,6 +84,22 @@ public partial class Player
 				GroundEntity = null;
 				TimeSinceLostFooting = 0f;
 				Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
+			}
+
+			if ( Input.Down( "jump" ) )
+			{
+				if ( GroundEntity != null )
+				{
+					if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+					{
+						Velocity = Velocity.WithZ( 250f );
+						animationHelper.TriggerJump();
+						puppetAnimationsHelper.TriggerJump();
+					}
+				}
+
+				if ( Velocity.z > 0f ) // Floaty jump
+					Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
 			}
 		}
 	}
