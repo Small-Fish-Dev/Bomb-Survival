@@ -56,9 +56,9 @@ public partial class BombSurvival
 	public static void CarveCircle( Vector2 position, float radius ) => Terrain?.Subtract( new CircleSdf( position, radius ) );
 	public static void CarveCircle( Vector3 position, float radius ) => CarveCircle( PointToLocal( position ), radius );
 
-	public static void AddBox( Vector2 min, Vector2 max, Sdf2DLayer layer, float cornerRadius = 0f ) => Terrain?.Add( new BoxSdf( min, max, cornerRadius ), layer );
+	public static void AddBox( Vector2 min, Vector2 max, Sdf2DLayer layer, float cornerRadius = 0f ) => Terrain?.Add( new RectSdf( min, max, cornerRadius ), layer );
 	public static void AddBox( Vector3 min, Vector3 max, Sdf2DLayer layer, float cornerRadius = 0f ) => AddBox( PointToLocal( min ), PointToLocal( max ), layer, cornerRadius );
-	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.Subtract( new BoxSdf( min, max, cornerRadius ) );
+	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.Subtract( new RectSdf( min, max, cornerRadius ) );
 	public static void CarveBox( Vector3 min, Vector3 max, float cornerRadius = 0f ) => CarveBox( PointToLocal( min ), PointToLocal( max ), cornerRadius );
 
 	public static void Explosion( Vector3 position, float size = 75f, float charSize = 100f )
