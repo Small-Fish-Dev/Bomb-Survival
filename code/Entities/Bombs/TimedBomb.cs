@@ -14,7 +14,7 @@ public partial class TimedBomb : Bomb
 		PlaybackRate = 1;
 	}
 
-	[GameEvent.Tick.Server]
+	[GameEvent.Tick]
 	internal virtual void Explosion()
 	{
 		if ( CurrentSequence.Time >= 6.6f )

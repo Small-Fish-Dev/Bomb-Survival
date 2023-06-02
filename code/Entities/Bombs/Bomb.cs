@@ -34,29 +34,32 @@ public abstract partial class Bomb : AnimatedEntity
 	{
 		IsExploding = true;
 
-		BombSurvival.Explosion( Position, ExplosionSize, CharSize );
-
 		var entitiesInExplosion = Entity.FindInSphere( Position, ExplosionSize );
 		var entitiesInChar = Entity.FindInSphere( Position, CharSize );
 
-		var bombsToExplode = entitiesInExplosion
-			.OfType<Bomb>()
-			.Where( x => !x.IsExploding );
-		foreach ( var bomb in bombsToExplode )
+		if ( Game.IsServer )
 		{
-			bomb.TriggerExplosion( Game.Random.Float( 0.05f, 0.15f ) );
-			bomb.RenderColor = Color.Black;
+			BombSurvival.Explosion( Position, ExplosionSize, CharSize );
 
-			var direction = ((bomb.CollisionWorldSpaceCenter - CollisionWorldSpaceCenter).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
+			var bombsToExplode = entitiesInExplosion
+				.OfType<Bomb>()
+				.Where( x => !x.IsExploding );
+			foreach ( var bomb in bombsToExplode )
+			{
+				bomb.TriggerExplosion( Game.Random.Float( 0.05f, 0.15f ) );
+				bomb.RenderColor = Color.Black;
 
-			bomb.PhysicsGroup.Velocity = 0;
-			bomb.PhysicsGroup.ApplyImpulse( direction * 2000f * bomb.PhysicsBody.Mass);
+				var direction = ((bomb.CollisionWorldSpaceCenter - CollisionWorldSpaceCenter).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
+
+				bomb.PhysicsGroup.Velocity = 0;
+				bomb.PhysicsGroup.ApplyImpulse( direction * 2000f * bomb.PhysicsBody.Mass );
+			}
+
+			var bubblesToBreak = entitiesInExplosion
+				.OfType<ScoreBubble>();
+			foreach ( var bubble in bubblesToBreak )
+				bubble.Break();
 		}
-
-		var bubblesToBreak = entitiesInExplosion
-			.OfType<ScoreBubble>();
-		foreach ( var bubble in bubblesToBreak )
-			bubble.Break();
 
 		var playersToChar = entitiesInChar
 			.Select( x => x.GetPlayer() )
@@ -80,7 +83,7 @@ public abstract partial class Bomb : AnimatedEntity
 		Delete();
 	}
 
-	[GameEvent.Tick.Server]
+	[GameEvent.Tick]
 	internal virtual void computeExplosion()
 	{
 		if ( IsExploding )
