@@ -7,6 +7,7 @@ public abstract partial class Bomb : AnimatedEntity
 	public float ExplosionSize => BaseExplosionSize * Scale;
 	public float CharSize => ExplosionSize + 20f + 20f * (ExplosionSize / 75f);
 	public bool IsExploding { get; internal set; } = false;
+	internal TimeUntil ExplosionTimer { get; set; } = 0f;
 
 	public override void Spawn()
 	{
@@ -23,6 +24,12 @@ public abstract partial class Bomb : AnimatedEntity
 		base.OnDestroy();
 	}
 
+	public virtual void TriggerExplosion( float timer = 0.2f )
+	{
+		IsExploding = true;
+		ExplosionTimer = timer;
+	}
+
 	public virtual void Explode()
 	{
 		IsExploding = true;
@@ -36,7 +43,15 @@ public abstract partial class Bomb : AnimatedEntity
 			.OfType<Bomb>()
 			.Where( x => !x.IsExploding );
 		foreach ( var bomb in bombsToExplode )
-			bomb.Explode();
+		{
+			bomb.TriggerExplosion( Game.Random.Float( 0.05f, 0.15f ) );
+			bomb.RenderColor = Color.Black;
+
+			var direction = ((bomb.CollisionWorldSpaceCenter - CollisionWorldSpaceCenter).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
+
+			bomb.PhysicsGroup.Velocity = 0;
+			bomb.PhysicsGroup.ApplyImpulse( direction * 2000f * bomb.PhysicsBody.Mass);
+		}
 
 		var bubblesToBreak = entitiesInExplosion
 			.OfType<ScoreBubble>();
@@ -63,5 +78,13 @@ public abstract partial class Bomb : AnimatedEntity
 			player.Kill();
 
 		Delete();
+	}
+
+	[GameEvent.Tick.Server]
+	internal virtual void computeExplosion()
+	{
+		if ( IsExploding )
+			if ( ExplosionTimer )
+				Explode();
 	}
 }
