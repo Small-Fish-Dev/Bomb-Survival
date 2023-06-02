@@ -96,7 +96,7 @@
 								event_frame = 20
 								event_keys = 
 								{
-									TypeName = ""
+									TypeName = "Explode"
 									Int = 0
 									Float = 0.0
 									Vector = [ 0.0, 0.0, 0.0 ]
@@ -124,6 +124,21 @@
 					},
 				]
 				default_root_bone_name = ""
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsShapeBox"
+						parent_bone = ""
+						surface_prop = "wood.sheet"
+						collision_tags = "solid"
+						origin = [ 0.001475, 0.007567, -0.006345 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						dimensions = [ 64.723663, 64.74398, 39.401829 ]
+					},
+				]
 			},
 		]
 		model_archetype = ""

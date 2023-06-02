@@ -1,6 +1,6 @@
 ﻿namespace BombSurvival;
 
-public abstract partial class Bomb : ModelEntity
+public abstract partial class Bomb : AnimatedEntity
 {
 	public virtual float BaseExplosionSize { get; set; } = 150f;
 	public virtual string ModelPath { get; } = "models/bomb/placeholder_bomb.vmdl";

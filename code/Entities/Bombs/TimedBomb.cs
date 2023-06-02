@@ -4,26 +4,20 @@ namespace BombSurvival;
 
 public partial class TimedBomb : Bomb
 {
-	public override string ModelPath { get; } = "models/explosive/explosive.vmdl";
-	internal TimeUntil ExplosionTime { get; set; } = 0f;
+	public override string ModelPath { get; } = "models/explosive/timed_explosive.vmdl";
 
 	public override void Spawn()
 	{
 		base.Spawn();
-
-		ExplosionTime = 8f;
+		UseAnimGraph = false;
+		AnimateOnServer = true;
+		PlaybackRate = 1;
 	}
 
 	[GameEvent.Tick.Server]
-	public virtual void Timer()
+	internal virtual void Explosion()
 	{
-		if ( ExplosionTime )
-		{
+		if ( CurrentSequence.Time >= 6.6f )
 			Explode();
-		}
-
-		var glow = Components.GetOrCreate<Glow>();
-		glow.Color = Color.Red;
-		glow.Enabled = ExplosionTime.Fraction % ( 1.1f - ExplosionTime.Fraction ) < ( (1.1f - ExplosionTime.Fraction) / 2 );
 	}
 }
