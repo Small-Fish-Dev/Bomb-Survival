@@ -91,12 +91,19 @@ public partial class Player : AnimatedEntity
 		{
 			ServerPuppet.EnableAllCollisions = false;
 			Collider.EnableAllCollisions = false;
+			KillToClients();
 		}
 		else
 		{
 			ClientPuppet.EnableAllCollisions = false;
 			ClientPuppet.EnableDrawing = false;
 		}
+	}
+
+	[ClientRpc]
+	internal void KillToClients()
+	{
+		Kill();
 	}
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
