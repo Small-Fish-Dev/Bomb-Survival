@@ -138,8 +138,9 @@ public partial class Player : AnimatedEntity
 
 		if ( IsDead )
 		{
-			if ( respawnTimer )
-				Respawn();
+			if ( LivesLeft > 0 )
+				if ( respawnTimer )
+					Respawn();
 
 			return;
 		}
