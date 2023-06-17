@@ -10,7 +10,7 @@ public partial class Player
 
 	public Vector3 WishVelocity => Direction.Normal * WishSpeed;
 	public Rotation WishRotation => Rotation.LookAt( Direction, Vector3.Up );
-	public float StepSize => 8f;
+	public float StepSize => 12f;
 	public float MaxWalkableAngle => 55f;
 
 	internal TimeUntil punchFinish { get; set; } = 0f;
@@ -32,16 +32,16 @@ public partial class Player
 				Velocity = ServerPuppet.Velocity.WithY( 0 );
 			}
 		}
+
+		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+
+		if ( Direction != Vector3.Zero )
+			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "run" ) ? RunSpeed : WalkSpeed );
 		else
+			WishSpeed = 0f;
+
+		if ( !IsKnockedOut )
 		{
-
-			Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
-
-			if ( Direction != Vector3.Zero )
-				WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "run" ) ? RunSpeed : WalkSpeed );
-			else
-				WishSpeed = 0f;
-
 			Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
 				.WithZ( Velocity.z ); // Don't smooth vertical movement
 
@@ -50,57 +50,62 @@ public partial class Player
 
 			if ( Input.Pressed( "attack1" ) && !IsPunching )
 				Punch();
-
-			var helper = new MoveHelper( Position, Velocity );
-			helper.MaxStandableAngle = MaxWalkableAngle;
-
-			helper.Trace = helper.Trace
-				.Size( CollisionBox.Mins, CollisionBox.Maxs )
-				.WithoutTags( "puppet", "collider" )
-				.Ignore( this );
-
-			if ( GroundEntity == null )
-				helper.TryMove( Time.Delta );
-			else
-				helper.TryMoveWithStep( Time.Delta, StepSize );
-
-			helper.TryUnstuck2D();
-
-			Position = helper.Position.WithY( 0 );
-			Velocity = helper.Velocity.WithY( 0 );
-
-			var traceDown = helper.TraceDirection( Vector3.Down );
-
-			if ( traceDown.Entity != null )
-			{
-				GroundEntity = traceDown.Entity;
-				Position = traceDown.EndPosition;
-
-				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
-					TimeSinceLostFooting = 0f;
-			}
-			else
-			{
-				GroundEntity = null;
-				TimeSinceLostFooting = 0f;
-				Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
-			}
-
-			if ( Input.Down( "jump" ) )
-			{
-				if ( GroundEntity != null )
-				{
-					if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
-					{
-						Velocity = Velocity.WithZ( 250f );
-						animationHelper.TriggerJump();
-						puppetAnimationsHelper.TriggerJump();
-					}
-				}
-
-				if ( Velocity.z > 0f ) // Floaty jump
-					Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
-			}
 		}
+
+		var helper = new MoveHelper( Position, Velocity );
+		helper.MaxStandableAngle = MaxWalkableAngle;
+
+		helper.Trace = helper.Trace
+			.Size( CollisionBox.Mins, CollisionBox.Maxs )
+			.WithoutTags( "puppet", "collider" )
+			.Ignore( this );
+
+		if ( GroundEntity == null )
+			helper.TryMove( Time.Delta );
+		else
+			helper.TryMoveWithStep( Time.Delta, StepSize );
+
+		helper.TryUnstuck2D();
+		
+		Position = helper.Position.WithY( 0 );
+		Velocity = helper.Velocity.WithY( 0 );
+
+		var traceDown = helper.TraceDirection( Vector3.Down * 3f * ( IsKnockedOut ? 3f : 1f ) );
+
+		if ( traceDown.Entity != null )
+		{
+			GroundEntity = traceDown.Entity;
+			Position = traceDown.EndPosition;
+
+			if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+				TimeSinceLostFooting = 0f;
+		}
+		else
+		{
+			GroundEntity = null;
+			TimeSinceLostFooting = 0f;
+			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
+		}
+
+		if ( Input.Down( "jump" ) )
+		{
+			if ( GroundEntity != null && !IsKnockedOut )
+			{
+				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+				{
+					Velocity = Velocity.WithZ( 250f );
+					GroundEntity = null;
+					animationHelper.TriggerJump();
+					puppetAnimationsHelper.TriggerJump();
+				}
+			}
+
+			if ( Velocity.z > 0f ) // Floaty jump
+				Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
+		}
+
+		if ( Input.Down( "run" ) )
+			if ( !IsKnockedOut )
+				KnockOut( CollisionCenter + InputRotation.Backward * 50f, 400f, 1f );
 	}
 }

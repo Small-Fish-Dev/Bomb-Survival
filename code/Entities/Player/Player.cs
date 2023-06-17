@@ -12,7 +12,7 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsDead { get; set; } = false;
 	[Net] internal TimeUntil respawnTimer { get; set; } = 0f;
 	[Net] internal TimeUntil knockedOutTimer { get; set; } = 0f;
-	public bool IsKnockedOut => !knockedOutTimer;
+	public bool IsKnockedOut { get; set; } = false;
 	[Net] public int LivesLeft { get; set; } = 4;
 	
 	[Net] internal AnimatedEntity ServerPuppet { get; set; }
@@ -53,6 +53,7 @@ public partial class Player : AnimatedEntity
 
 		EnableAllCollisions = true;
 		knockedOutTimer = 0f;
+		IsKnockedOut = false;
 		IsDead = false;
 
 		SetCharred( false );
@@ -129,7 +130,7 @@ public partial class Player : AnimatedEntity
 		}
 		else
 			if ( lastRotation >= 0.5f )
-				InputRotation = new Rotation();
+			InputRotation = Rotation.LookAt( Velocity, Vector3.Left );
 	}
 
 	public override void Simulate( IClient cl )
@@ -144,6 +145,10 @@ public partial class Player : AnimatedEntity
 
 			return;
 		}
+
+		if ( IsKnockedOut )
+			if ( knockedOutTimer && GroundEntity != null )
+				IsKnockedOut = false;
 
 		ComputeAnimations();
 		ComputeMotion();
@@ -224,6 +229,7 @@ public partial class Player : AnimatedEntity
 		if ( !ServerPuppet.IsValid ) return;
 		if ( IsDead ) return;
 
+		IsKnockedOut = true;
 		knockedOutTimer = amount;
 
 		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
@@ -290,7 +296,7 @@ public partial class Player : AnimatedEntity
 		ClientPuppet.Position = Position;
 		ClientPuppet.PhysicsGroup.Velocity = 0f;
 
-		var positionDifference = ServerPuppet.Position - CollisionCenter;
+		var positionDifference = ServerPuppet.Position - ( IsKnockedOut ? Position : CollisionCenter );
 
 		for ( int boneId = 0; boneId < ServerPuppet.BoneCount; boneId++ )
 		{
