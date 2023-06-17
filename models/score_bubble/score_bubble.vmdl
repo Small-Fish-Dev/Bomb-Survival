@@ -37,8 +37,8 @@
 						surface_prop = "chair_foam"
 						collision_tags = "solid"
 						radius = 6.0
-						point0 = [ -60.0, 0.0, 0.0 ]
-						point1 = [ 60.0, 0.0, 0.0 ]
+						point0 = [ 6.0, 0.0, 0.0 ]
+						point1 = [ -6.0, 0.0, 0.0 ]
 					},
 				]
 			},
