@@ -13,6 +13,7 @@ public partial class Player : AnimatedEntity
 	[Net] internal TimeUntil respawnTimer { get; set; } = 0f;
 	[Net] internal TimeUntil knockedOutTimer { get; set; } = 0f;
 	public bool IsKnockedOut => !knockedOutTimer;
+	[Net] public int LivesLeft { get; set; } = 4;
 	
 	[Net] internal AnimatedEntity ServerPuppet { get; set; }
 	internal AnimatedEntity ClientPuppet { get; set; }
@@ -78,6 +79,9 @@ public partial class Player : AnimatedEntity
 				ClientPuppet.EnableAllCollisions = true;
 				ClientPuppet.EnableDrawing = true;
 			}
+
+			spawnPoint.ClientModel.CurrentSequence.Time = 0;
+			spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
 		}
 	}
 
@@ -91,6 +95,7 @@ public partial class Player : AnimatedEntity
 		{
 			ServerPuppet.EnableAllCollisions = false;
 			Collider.EnableAllCollisions = false;
+			LivesLeft--;
 			KillToClients();
 		}
 		else
