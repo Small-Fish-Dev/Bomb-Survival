@@ -48,7 +48,7 @@ public partial class Player
 			if ( TimeSinceLostFooting > Time.Delta * 5f )
 				Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
 
-			if ( Input.Pressed( "attack1" ) && !IsPunching )
+			if ( Input.Pressed( "punch" ) && !IsPunching )
 				Punch();
 		}
 
@@ -104,7 +104,7 @@ public partial class Player
 				Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
 		}
 
-		if ( Input.Down( "run" ) )
+		if ( Input.Down( "launch" ) )
 			if ( !IsKnockedOut )
 				KnockOut( CollisionCenter + InputRotation.Backward * 50f, 400f, 1f );
 	}

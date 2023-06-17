@@ -48,16 +48,6 @@
     "InputSettings": {
       "Actions": [
         {
-          "Name": "Forward",
-          "KeyboardCode": "W",
-          "GroupName": "Movement"
-        },
-        {
-          "Name": "Backward",
-          "KeyboardCode": "S",
-          "GroupName": "Movement"
-        },
-        {
           "Name": "Left",
           "KeyboardCode": "A",
           "GroupName": "Movement"
@@ -74,38 +64,21 @@
           "GroupName": "Movement"
         },
         {
-          "Name": "Run",
+          "Name": "Launch",
           "KeyboardCode": "shift",
           "GamepadCode": "LeftJoystickButton",
           "GroupName": "Movement"
         },
         {
-          "Name": "Walk",
-          "KeyboardCode": "alt",
-          "GroupName": "Movement"
-        },
-        {
-          "Name": "Duck",
-          "KeyboardCode": "ctrl",
-          "GamepadCode": "B",
-          "GroupName": "Movement"
-        },
-        {
-          "Name": "attack1",
+          "Name": "Punch",
           "KeyboardCode": "mouse1",
           "GamepadCode": "RightTrigger",
           "GroupName": "Actions"
         },
         {
-          "Name": "attack2",
+          "Name": "Grab",
           "KeyboardCode": "mouse2",
           "GamepadCode": "LeftTrigger",
-          "GroupName": "Actions"
-        },
-        {
-          "Name": "reload",
-          "KeyboardCode": "r",
-          "GamepadCode": "X",
           "GroupName": "Actions"
         },
         {
