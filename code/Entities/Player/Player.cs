@@ -18,6 +18,7 @@ public partial class Player : AnimatedEntity
 	[Net] internal AnimatedEntity ServerPuppet { get; set; }
 	internal AnimatedEntity ClientPuppet { get; set; }
 	internal ModelEntity Collider { get; set; }
+	public ModelEntity Grabbing { get; set; } = null;
 
 	public override void Spawn()
 	{
@@ -157,6 +158,7 @@ public partial class Player : AnimatedEntity
 		{
 			MoveServerPuppet();
 			MoveCollider();
+			SimulateGrab();
 		}
 		else
 			PlaceClientPuppet();
@@ -423,5 +425,51 @@ public partial class Player : AnimatedEntity
 				PlaySound( "sounds/punch.sound" );
 			}
 		}
+	}
+
+	public void Grab()
+	{
+		if ( Game.IsClient ) return;
+
+		var grabTrace = Trace.Ray( CollisionCenter, CollisionCenter + InputRotation.Forward * CollisionHeight * 1.5f )
+			.Size( CollisionHeight * 1.5f )
+			.EntitiesOnly()
+			.WithoutTags( "collider", "player" )
+			.Ignore( ServerPuppet )
+			.Run();
+
+		if ( grabTrace.Entity is ModelEntity grabTarget )
+		{
+			var player = grabTarget.GetPlayer();
+			if ( player != null )
+			{
+				Grabbing = player;
+			}
+			else
+			{
+				if ( !grabTarget.PhysicsEnabled ) return;
+
+				var targetBody = grabTarget.PhysicsBody;
+
+				if ( !targetBody.IsValid() ) return;
+				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
+
+				Grabbing = grabTarget;
+			}
+		}
+	}
+
+	internal void SimulateGrab()
+	{
+		if ( IsKnockedOut ) return;
+		if ( IsDead ) return;
+		if ( Grabbing == null ) return;
+
+		Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
+	}
+
+	public void Release()
+	{
+		Grabbing = null;
 	}
 }

@@ -50,6 +50,15 @@ public partial class Player
 
 			if ( Input.Pressed( "punch" ) && !IsPunching )
 				Punch();
+
+			if ( Input.Pressed( "grab" ) )
+			{
+				Grab();
+			}
+			else if ( Input.Released( "grab" ) )
+			{
+				Release();
+			}
 		}
 
 		var helper = new MoveHelper( Position, Velocity );
