@@ -29,7 +29,7 @@ public partial class BombSurvival : GameManager
 
 		var clothing = new ClothingContainer();
 		clothing.LoadFromClient( client );
-		clothing.DressEntity( pawn.Puppet );
+		clothing.DressEntity( pawn.ServerPuppet );
 
 	}
 

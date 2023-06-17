@@ -21,15 +21,15 @@ public partial class Player
 	public void ComputeMotion()
 	{
 		var animationHelper = Animations;
-		var puppetAnimationsHelper = PuppetAnimations;
+		var puppetAnimationsHelper = ServerPuppetAnimations;
 
 		if ( IsKnockedOut )
 		{
 			if ( Game.IsServer )
 			{
-				Puppet.Position = Puppet.Position.WithY( 0 );
-				Position = Puppet.Position.WithY( 0 );
-				Velocity = Puppet.Velocity.WithY( 0 );
+				ServerPuppet.Position = ServerPuppet.Position.WithY( 0 );
+				Position = ServerPuppet.Position.WithY( 0 );
+				Velocity = ServerPuppet.Velocity.WithY( 0 );
 			}
 		}
 		else

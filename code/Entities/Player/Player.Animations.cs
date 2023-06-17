@@ -3,7 +3,7 @@
 public partial class Player
 {
 	public CitizenAnimationHelper Animations => new CitizenAnimationHelper( this );
-	public CitizenAnimationHelper PuppetAnimations => new CitizenAnimationHelper( Puppet );
+	public CitizenAnimationHelper ServerPuppetAnimations => new CitizenAnimationHelper( ServerPuppet );
 
 	Vector3 currentLookAt = Vector3.Zero;
 	Vector3 nextLookAt = Vector3.Zero;
@@ -11,7 +11,7 @@ public partial class Player
 	public void ComputeAnimations()
 	{
 		var animationHelper = Animations;
-		var puppetAnimationsHelper = PuppetAnimations;
+		var puppetAnimationsHelper = ServerPuppetAnimations;
 
 		if ( InputRotation == new Rotation() )
 			if ( !Velocity.IsNearlyZero( 1 ) )
