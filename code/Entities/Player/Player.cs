@@ -10,6 +10,7 @@ public partial class Player : AnimatedEntity
 	public Vector3 CollisionCenter => Position + Vector3.Up * CollisionHeight * Scale;
 	public Vector3 CollisionTop => Position + Vector3.Up * CollisionHeight * Scale / 1.5f;
 	[Net] public bool IsDead { get; set; } = false;
+	[Net] internal TimeUntil respawnTimer { get; set; } = 0f;
 	[Net] internal TimeUntil knockedOutTimer { get; set; } = 0f;
 	public bool IsKnockedOut => !knockedOutTimer;
 	
@@ -39,27 +40,24 @@ public partial class Player : AnimatedEntity
 		base.ClientSpawn();
 
 		SpawnClientPuppet();
-		Respawn();
 	}
 
 
 	public void Respawn()
 	{
+		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+
+		Position = spawnPoint.Position.WithY( 0 );
+		Velocity = Vector3.Zero;
+
+		EnableAllCollisions = true;
+		knockedOutTimer = 0f;
+		IsDead = false;
+
+		SetCharred( false );
+
 		if ( Game.IsServer )
 		{
-			var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
-
-			Position = spawnPoint.Position.WithY( 0 );
-			Velocity = Vector3.Zero;
-
-			EnableAllCollisions = true;
-
-			SetCharred( false );
-
-			knockedOutTimer = 0f;
-
-			IsDead = false;
-
 			if ( ServerPuppet.IsValid() )
 			{
 				PlaceServerPuppet();
@@ -86,6 +84,7 @@ public partial class Player : AnimatedEntity
 	public void Kill()
 	{
 		IsDead = true;
+		respawnTimer = 1f;
 		EnableAllCollisions = false;
 
 		if ( Game.IsServer )
@@ -98,12 +97,6 @@ public partial class Player : AnimatedEntity
 			ClientPuppet.EnableAllCollisions = false;
 			ClientPuppet.EnableDrawing = false;
 		}
-
-		GameTask.RunInThreadAsync( async () =>
-		{
-			await GameTask.Delay( 1000 );
-			Respawn();
-		} );
 	}
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
@@ -131,7 +124,13 @@ public partial class Player : AnimatedEntity
 	{
 		base.Simulate( cl );
 
-		if ( IsDead ) return;
+		if ( IsDead )
+		{
+			if ( respawnTimer )
+				Respawn();
+
+			return;
+		}
 
 		ComputeAnimations();
 		ComputeMotion();
@@ -165,16 +164,28 @@ public partial class Player : AnimatedEntity
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
-		if ( IsDead ) return;
-
 		ComputeAnimations();
 		PlaceClientPuppet();
+	}
+
+	public void Clothe( IClient client )
+	{
+		var data = client.GetClientData( "avatar" );
+		Clothe( data );
+	}
+
+	[ClientRpc]
+	public void Clothe( string data )
+	{
+		var clothing = new ClothingContainer();
+		clothing.Deserialize( data );
+		clothing.DressEntity( ClientPuppet );
 	}
 
 	public void SetCharred( bool charred )
 	{
 		if ( Game.IsServer )
-			SetCharredToClients( charred );
+			SetCharredToClients( To.Everyone, charred );
 		else
 		{
 			if ( !ClientPuppet.IsValid ) return;
@@ -189,7 +200,11 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	[ClientRpc] internal void SetCharredToClients( bool charred ) => SetCharred( charred );
+	[ClientRpc]
+	internal void SetCharredToClients( bool charred )
+	{
+		SetCharred( charred );
+	}
 
 	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
 	{

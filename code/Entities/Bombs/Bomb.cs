@@ -80,7 +80,8 @@ public abstract partial class Bomb : AnimatedEntity
 		foreach ( var player in playersToKill )
 			player.Kill();
 
-		Delete();
+		if ( Game.IsServer )
+			Delete();
 	}
 
 	[GameEvent.Tick]
