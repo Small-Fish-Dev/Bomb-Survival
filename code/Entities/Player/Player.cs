@@ -19,6 +19,7 @@ public partial class Player : AnimatedEntity
 	internal AnimatedEntity ClientPuppet { get; set; }
 	internal ModelEntity Collider { get; set; }
 	[Net] public ModelEntity Grabbing { get; set; } = null;
+	[Net] public Vector3 GrabbingPosition { get; set; } = Vector3.Zero;
 	public bool IsGrabbing => Grabbing != null;
 	public SpringJoint GrabSpring { get; set; }
 
@@ -324,6 +325,19 @@ public partial class Player : AnimatedEntity
 				clientBoneBody.Transform = newTransform;
 			}
 		}
+
+		if ( IsGrabbing )
+		{
+			for ( int boneId = 0; boneId < ServerPuppet.BoneCount; boneId++ )
+			{
+				var clientBoneName = ClientPuppet.GetBoneName( boneId );
+
+				if ( clientBoneName.Contains( "hand" ) )
+				{
+					ClientPuppet.SetBoneTransform( boneId, ClientPuppet.GetBoneTransform(boneId).WithPosition( GrabbingPosition ) );
+				}
+			}
+		}
 	}
 
 	internal void MoveServerPuppet()
@@ -474,6 +488,8 @@ public partial class Player : AnimatedEntity
 				GrabSpring = PhysicsJoint.CreateSpring(
 					PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
 					PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
+
+				GrabbingPosition = grabPosition;
 			}
 		}
 	}
@@ -487,6 +503,7 @@ public partial class Player : AnimatedEntity
 		DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
 		DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
 		DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
+		GrabbingPosition = GrabSpring.Point2.Transform.Position;
 		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
 
