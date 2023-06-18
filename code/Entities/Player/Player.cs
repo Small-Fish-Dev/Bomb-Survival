@@ -1,4 +1,4 @@
-﻿using Sandbox;
+﻿using Sandbox.Physics;
 
 namespace BombSurvival;
 
@@ -18,7 +18,7 @@ public partial class Player : AnimatedEntity
 	[Net] internal AnimatedEntity ServerPuppet { get; set; }
 	internal AnimatedEntity ClientPuppet { get; set; }
 	internal ModelEntity Collider { get; set; }
-	public ModelEntity Grabbing { get; set; } = null;
+	[Net] public ModelEntity Grabbing { get; set; } = null;
 
 	public override void Spawn()
 	{
@@ -124,14 +124,22 @@ public partial class Player : AnimatedEntity
 		var lookInput = Input.AnalogLook;
 		var direction = new Vector3( -lookInput.yaw, 0f, -lookInput.pitch ).Normal;
 
-		if ( lookInput != Angles.Zero )
+		if ( Grabbing != null )
 		{
+			direction = (Grabbing.Position - CollisionCenter).Normal;
 			InputRotation = Rotation.LookAt( direction, Vector3.Left );
-			lastRotation = 0f;
 		}
 		else
-			if ( lastRotation >= 0.5f )
-			InputRotation = Rotation.LookAt( Velocity, Vector3.Left );
+		{
+			if ( lookInput != Angles.Zero )
+			{
+				InputRotation = Rotation.LookAt( direction, Vector3.Left );
+				lastRotation = 0f;
+			}
+			else
+				if ( lastRotation >= 0.5f )
+				InputRotation = Rotation.LookAt( Velocity, Vector3.Left );
+		}
 	}
 
 	public override void Simulate( IClient cl )
@@ -376,11 +384,10 @@ public partial class Player : AnimatedEntity
 		var moveDirection = positionGoal - Collider.Position;
 		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta );
 		Collider.PhysicsBody.LinearDamping = 30;
+		Collider.Rotation = InputRotation;
 
 		if ( Collider.Position.Distance( positionGoal ) >= CollisionHeight )
-		{
 			PlaceCollider();
-		}
 	}
 
 	public void Punch()
@@ -427,6 +434,8 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
+	private SpringJoint grabSpring;
+
 	public void Grab()
 	{
 		if ( Game.IsClient ) return;
@@ -455,6 +464,15 @@ public partial class Player : AnimatedEntity
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
 				Grabbing = grabTarget;
+				
+				var rotation = targetBody.Rotation.Inverse * Collider.Rotation;
+				var armPosition = Collider.Position + (InputRotation.Forward * CollisionHeight / 1.5f);
+				var grabPosition = targetBody.FindClosestPoint( armPosition );
+				var distance = armPosition.Distance( grabPosition );
+				grabSpring = PhysicsJoint.CreateSpring(
+					PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
+					PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
+				//spring.SpringLinear = new PhysicsSpring();
 			}
 		}
 	}
@@ -465,11 +483,15 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 		if ( Grabbing == null ) return;
 
-		Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
+		DebugOverlay.Line( grabSpring.Point1.Transform.Position, grabSpring.Point2.Transform.Position );
+		DebugOverlay.Sphere( grabSpring.Point1.Transform.Position, 5f, Color.Red );
+		DebugOverlay.Sphere( grabSpring.Point2.Transform.Position, 5f, Color.Blue );
+		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
 
 	public void Release()
 	{
 		Grabbing = null;
+		grabSpring.Remove();
 	}
 }
