@@ -20,6 +20,7 @@ public partial class Player : AnimatedEntity
 	internal ModelEntity Collider { get; set; }
 	[Net] public ModelEntity Grabbing { get; set; } = null;
 	public bool IsGrabbing => Grabbing != null;
+	public SpringJoint GrabSpring { get; set; }
 
 	public override void Spawn()
 	{
@@ -440,14 +441,12 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	private SpringJoint grabSpring;
-
 	public void Grab()
 	{
 		if ( Game.IsClient ) return;
 
-		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
-			.Size( CollisionHeight * 1.5f )
+		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.3f )
+			.Size( CollisionHeight )
 			.EntitiesOnly()
 			.WithoutTags( "collider", "player" )
 			.Ignore( ServerPuppet )
@@ -472,7 +471,7 @@ public partial class Player : AnimatedEntity
 				var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
 				var grabPosition = targetBody.FindClosestPoint( armPosition );
 				var distance = armPosition.Distance( grabPosition );
-				grabSpring = PhysicsJoint.CreateSpring(
+				GrabSpring = PhysicsJoint.CreateSpring(
 					PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
 					PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
 			}
@@ -485,15 +484,15 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 		if ( !IsGrabbing ) return;
 
-		DebugOverlay.Line( grabSpring.Point1.Transform.Position, grabSpring.Point2.Transform.Position );
-		DebugOverlay.Sphere( grabSpring.Point1.Transform.Position, 5f, Color.Red );
-		DebugOverlay.Sphere( grabSpring.Point2.Transform.Position, 5f, Color.Blue );
+		DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
+		DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
+		DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
 		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
 
 	public void Release()
 	{
 		Grabbing = null;
-		grabSpring?.Remove();
+		GrabSpring?.Remove();
 	}
 }
