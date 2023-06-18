@@ -19,6 +19,7 @@ public partial class Player : AnimatedEntity
 	internal AnimatedEntity ClientPuppet { get; set; }
 	internal ModelEntity Collider { get; set; }
 	[Net] public ModelEntity Grabbing { get; set; } = null;
+	public bool IsGrabbing => Grabbing != null;
 
 	public override void Spawn()
 	{
@@ -92,6 +93,7 @@ public partial class Player : AnimatedEntity
 		IsDead = true;
 		respawnTimer = 1f;
 		EnableAllCollisions = false;
+		Release();
 
 		if ( Game.IsServer )
 		{
@@ -124,9 +126,9 @@ public partial class Player : AnimatedEntity
 		var lookInput = Input.AnalogLook;
 		var direction = new Vector3( -lookInput.yaw, 0f, -lookInput.pitch ).Normal;
 
-		if ( Grabbing != null )
+		if ( IsGrabbing )
 		{
-			direction = (Grabbing.Position - CollisionCenter).Normal;
+			direction = (Grabbing.PhysicsBody.FindClosestPoint( CollisionTop ) - CollisionTop).Normal;
 			InputRotation = Rotation.LookAt( direction, Vector3.Left );
 		}
 		else
@@ -246,6 +248,8 @@ public partial class Player : AnimatedEntity
 
 		ServerPuppet.PhysicsGroup.Velocity = 0;
 		ServerPuppet.PhysicsGroup.ApplyImpulse( direction * strength );
+
+		Release();
 	}
 
 	internal void SpawnServerPuppet()
@@ -402,9 +406,11 @@ public partial class Player : AnimatedEntity
 		ServerPuppet?.SetAnimParameter( "b_attack", true );
 		ClientPuppet?.SetAnimParameter( "b_attack", true );
 
+		Release();
+
 		if ( Game.IsClient ) return;
 
-		var punchTrace = Trace.Ray( CollisionCenter, CollisionCenter + InputRotation.Forward * CollisionHeight * 1.5f )
+		var punchTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
 			.Size( CollisionHeight * 1.5f )
 			.EntitiesOnly()
 			.WithoutTags( "collider", "player" )
@@ -440,7 +446,7 @@ public partial class Player : AnimatedEntity
 	{
 		if ( Game.IsClient ) return;
 
-		var grabTrace = Trace.Ray( CollisionCenter, CollisionCenter + InputRotation.Forward * CollisionHeight * 1.5f )
+		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
 			.Size( CollisionHeight * 1.5f )
 			.EntitiesOnly()
 			.WithoutTags( "collider", "player" )
@@ -451,9 +457,7 @@ public partial class Player : AnimatedEntity
 		{
 			var player = grabTarget.GetPlayer();
 			if ( player != null )
-			{
 				Grabbing = player;
-			}
 			else
 			{
 				if ( !grabTarget.PhysicsEnabled ) return;
@@ -465,14 +469,12 @@ public partial class Player : AnimatedEntity
 
 				Grabbing = grabTarget;
 				
-				var rotation = targetBody.Rotation.Inverse * Collider.Rotation;
-				var armPosition = Collider.Position + (InputRotation.Forward * CollisionHeight / 1.5f);
+				var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
 				var grabPosition = targetBody.FindClosestPoint( armPosition );
 				var distance = armPosition.Distance( grabPosition );
 				grabSpring = PhysicsJoint.CreateSpring(
 					PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
 					PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
-				//spring.SpringLinear = new PhysicsSpring();
 			}
 		}
 	}
@@ -481,7 +483,7 @@ public partial class Player : AnimatedEntity
 	{
 		if ( IsKnockedOut ) return;
 		if ( IsDead ) return;
-		if ( Grabbing == null ) return;
+		if ( !IsGrabbing ) return;
 
 		DebugOverlay.Line( grabSpring.Point1.Transform.Position, grabSpring.Point2.Transform.Position );
 		DebugOverlay.Sphere( grabSpring.Point1.Transform.Position, 5f, Color.Red );
@@ -492,6 +494,6 @@ public partial class Player : AnimatedEntity
 	public void Release()
 	{
 		Grabbing = null;
-		grabSpring.Remove();
+		grabSpring?.Remove();
 	}
 }

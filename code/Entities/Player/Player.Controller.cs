@@ -2,8 +2,7 @@
 
 public partial class Player
 {
-	public float WalkSpeed => 120f;
-	public float RunSpeed => 120f; // Eh let's not do running
+	public float WalkSpeed => IsGrabbing ? 60f : 140f;
 	public float AccelerationSpeed => 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
@@ -36,7 +35,7 @@ public partial class Player
 		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
 		if ( Direction != Vector3.Zero )
-			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, Input.Down( "run" ) ? RunSpeed : WalkSpeed );
+			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, WalkSpeed );
 		else
 			WishSpeed = 0f;
 
@@ -79,7 +78,7 @@ public partial class Player
 		Position = helper.Position.WithY( 0 );
 		Velocity = helper.Velocity.WithY( 0 );
 
-		var traceDown = helper.TraceDirection( Vector3.Down * 3f * ( IsKnockedOut ? 3f : 1f ) );
+		var traceDown = helper.TraceDirection( Vector3.Down * 3f * ( IsKnockedOut ? 3f : 1f ) * ( Velocity.z > 50f ? 0.3f : 1f ) );
 
 		if ( traceDown.Entity != null )
 		{
@@ -102,7 +101,7 @@ public partial class Player
 			{
 				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
 				{
-					Velocity = Velocity.WithZ( 250f );
+					Velocity = Velocity.WithZ( IsGrabbing ? 150f : 250f );
 					GroundEntity = null;
 					animationHelper.TriggerJump();
 					puppetAnimationsHelper.TriggerJump();
