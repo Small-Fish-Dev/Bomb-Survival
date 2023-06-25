@@ -49,7 +49,7 @@ public partial class Player
 				SetAnimParameter( "left_hand_ik.position", localPosition + Vector3.Left * 50f );
 				SetAnimParameter( "right_hand_ik.position", localPosition + Vector3.Right * 50f );
 
-				var localRotation = Transform.RotationToLocal( Rotation.From( new Angles( 0f, 0f, 90f ) ) );
+				var localRotation = Transform.RotationToLocal( Rotation.From( new Angles( 0f, -90f, 90f ) ) );
 				SetAnimParameter( "left_hand_ik.rotation", localRotation );
 				SetAnimParameter( "right_hand_ik.rotation", localRotation );
 			}
