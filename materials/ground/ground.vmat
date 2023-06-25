@@ -1,0 +1,37 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/foreground_scorch.shader_c"
+
+	BlendMask "materials/default/default_mask.tga"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Position ----
+	g_flYPosition "64.000"
+	g_flYSmoothing "75.000"
+	g_flZPosition "0.000"
+	g_flZSmoothing "250.000"
+
+	//---- Scorch ----
+	g_flScorchBlendDistance "16.159"
+	g_vScorchTint_Colour "[0.000000 0.000000 0.000000 1.000000]"
+	ScorchAO "materials/ground/ground_ao.jpg"
+	ScorchBlendMask "materials/scorch/scorch_mask.jpg"
+	ScorchColour "materials/ground/ground_color.jpg"
+	ScorchNormal "materials/ground/ground_normal.jpg"
+	ScorchRough "materials/ground/ground_rough.jpg"
+
+	//---- Textures ----
+	AO "materials/ground/ground_ao.jpg"
+	Colour "materials/ground/ground_color.jpg"
+	g_flTiling "1.000"
+	Normal "materials/ground/ground_normal.jpg"
+	Rough "materials/ground/ground_rough.jpg"
+
+	//---- Tint ----
+	g_bTintDirectionToggle "0"
+	g_vTint_Colour "[1.000000 1.000000 1.000000 1.000000]"
+}
