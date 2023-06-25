@@ -11,10 +11,11 @@ public partial class Checkpoint : AnimatedEntity
 	{
 		base.Spawn();
 
-		SetModel( "models/checkpoint/checkpoint.vmdl" );
-		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
-		EnableDrawing = false;
+		SetModel( "models/piston/piston.vmdl" );
 		Rotation = Rotation.FromYaw( -90f );
+		UseAnimGraph = false;
+		AnimateOnServer = true;
+		PlaybackRate = 0.3f;
 	}
 
 	public override void ClientSpawn()
@@ -24,5 +25,6 @@ public partial class Checkpoint : AnimatedEntity
 		ClientModel.Position = Position;
 		ClientModel.Rotation = Rotation.FromYaw( -90f );
 		ClientModel.EnableDrawing = true;
+		ClientModel.SetParent( this, true );
 	}
 }
