@@ -2,8 +2,9 @@
 
 public partial class Player
 {
-	public float WalkSpeed => IsGrabbing ? 60f : 140f;
-	public float AccelerationSpeed => 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
+	public float WalkSpeed => IsGrabbing ? 50f : 140f;
+	public float AccelerationSpeed => IsGrabbing ? 200f : 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
+	public float JumpHeight => IsGrabbing ? 100f : 250f;
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
 
@@ -50,14 +51,12 @@ public partial class Player
 			if ( Input.Pressed( "punch" ) && !IsPunching )
 				Punch();
 
-			if ( Input.Pressed( "grab" ) )
-			{
+			WantsToGrab = Input.Down( "grab" );
+
+			if ( WantsToGrab && !IsGrabbing )
 				Grab();
-			}
 			else if ( Input.Released( "grab" ) )
-			{
 				Release();
-			}
 		}
 
 		var helper = new MoveHelper( Position, Velocity );
@@ -101,7 +100,7 @@ public partial class Player
 			{
 				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
 				{
-					Velocity = Velocity.WithZ( IsGrabbing ? 150f : 250f );
+					Velocity = Velocity.WithZ( JumpHeight );
 					GroundEntity = null;
 					animationHelper.TriggerJump();
 					puppetAnimationsHelper.TriggerJump();

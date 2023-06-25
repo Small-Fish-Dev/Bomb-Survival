@@ -467,8 +467,8 @@ public partial class Player : AnimatedEntity
 		if ( IsPunching ) return;
 		if ( IsGrabbing ) return;
 
-		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.3f )
-			.Size( CollisionHeight )
+		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 0.8f )
+			.Size( CollisionHeight * 0.8f )
 			.EntitiesOnly()
 			.WithoutTags( "collider", "player" )
 			.Ignore( ServerPuppet )
@@ -514,9 +514,9 @@ public partial class Player : AnimatedEntity
 			return;
 		}
 
-		DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
-		DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
-		DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
+		//DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
+		//DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
+		//DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
 		GrabbingPosition = GrabSpring.Point2.Transform.Position;
 		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
