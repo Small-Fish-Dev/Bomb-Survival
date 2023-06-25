@@ -86,6 +86,8 @@ public partial class Player
 
 			if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
 				TimeSinceLostFooting = 0f;
+
+			Velocity = Velocity.WithZ( Velocity.z / 2 );
 		}
 		else
 		{
