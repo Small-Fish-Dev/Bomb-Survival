@@ -53,7 +53,7 @@ public partial class Player : AnimatedEntity
 	{
 		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
 
-		Position = spawnPoint.Position.WithY( 0 );
+		Position = spawnPoint.GetBoneTransform( 1 ).Position;
 		Velocity = Vector3.Zero;
 
 		EnableAllCollisions = true;

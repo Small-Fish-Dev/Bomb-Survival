@@ -1,0 +1,20 @@
+{
+  "Depth": 64,
+  "Offset": 0,
+  "TexCoordSize": 256,
+  "FrontFaceMaterial": "materials/wood/wood.vmat",
+  "BackFaceMaterial": "materials/wood/wood.vmat",
+  "CutFaceMaterial": "materials/wood/wood.vmat",
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "solid terrain",
+  "QualityLevel": "Custom",
+  "ChunkResolution": 64,
+  "ChunkSize": 256,
+  "MaxDistance": 16,
+  "ReferencedTextures": [
+    {
+      "TargetAttribute": "ScorchLayer",
+      "Source": "sdflayers/scorch.sdflayer"
+    }
+  ]
+}

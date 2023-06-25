@@ -6,8 +6,10 @@ public partial class BombSurvival
 {
 	public static Sdf2DWorld Terrain { get; set; }
 	public static Sdf2DLayer TerrainLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/fabric.sdflayer" );
+	public static Sdf2DLayer HouseLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood.sdflayer" );
 	public static Sdf2DLayer ScorchLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch.sdflayer" );
 	public static Texture TerrainTexture => Texture.Load( FileSystem.Mounted, "terrains/hill.png" );
+	public static Texture HouseTexture => Texture.Load( FileSystem.Mounted, "terrains/house.png" );
 
 	[ConCmd.Admin("regenerate_terrain")]
 	public static void GenerateLevel()
@@ -17,9 +19,11 @@ public partial class BombSurvival
 		{
 			LocalRotation = Rotation.FromRoll( 90f )
 		};
-		var terrainSdf = new TextureSdf( TerrainTexture, 4, TerrainTexture.Width * 2 );
+		var terrainSdf = new TextureSdf( TerrainTexture, 4, TerrainTexture.Width );
+		var houseSdf = new TextureSdf( HouseTexture, 4, HouseTexture.Width );
 
 		Terrain?.Add( terrainSdf, TerrainLayer );
+		Terrain?.Add( houseSdf, HouseLayer );
 		GameTask.RunInThreadAsync( async () =>
 		{
 			await GameTask.Delay( 100 );
