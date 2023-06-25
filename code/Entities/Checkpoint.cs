@@ -15,7 +15,7 @@ public partial class Checkpoint : AnimatedEntity
 		Rotation = Rotation.FromYaw( -90f );
 		UseAnimGraph = false;
 		AnimateOnServer = true;
-		PlaybackRate = 0.3f;
+		PlaybackRate = 0.2f;
 	}
 
 	public override void ClientSpawn()

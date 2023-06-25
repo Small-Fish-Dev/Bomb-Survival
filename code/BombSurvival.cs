@@ -30,44 +30,43 @@ public partial class BombSurvival : GameManager
 		pawn.Clothe( client );
 	}
 
+	TimeUntil nextWave = 5f;
+	TimeUntil nextBomb = 0f;
+	int bombsSpawned = 0;
+
+	int[] bombWave = new int[6] { 0, 0, 2, 1, 2, 0 };
+
 	[GameEvent.Tick.Server]
-	public static void SpawnBombs()
+	public void SpawnBombs()
 	{
-		var frequency = (int)(Time.Now / 60) + 1;
+		var bombSpawner = Entity.All.OfType<BombSpawner>().FirstOrDefault();
+		var bombPosition = bombSpawner.GetBoneTransform( 1 ).Position.WithY( 0 );
 
-		if ( Time.Tick % ( 60 / frequency ) == 0 )
+		if ( nextWave )
 		{
-			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
-
-			if ( Game.Random.Int( 10 ) <= 4 )
+			if ( nextBomb )
 			{
-				new TimedBomb
+				var currentSpawn = bombWave[bombsSpawned];
+
+				Entity toSpawn = currentSpawn switch
 				{
-					Position = spawnPosition,
-					Rotation = Rotation.FromYaw( -90 ),
-					Scale = Game.Random.Float( 0.8f, 1f )
+					1 => new TimedBomb(),
+					2 => new ScoreBubble(),
+					_ => new InertBomb()
 				};
-			}
-			else
-			{
-				new InertBomb
-				{
-					Position = spawnPosition,
-					Rotation = Rotation.FromYaw( -90 ),
-					Scale = Game.Random.Float( 0.8f, 1f )
-				};
-			}
-		}
 
-		if ( Time.Tick % (60 / frequency ) == 0 )
-		{
-			var spawnPosition = new Vector3( Game.Random.Float( -950f, 950f ), 0f, 1200f );
+				toSpawn.Position = bombPosition;
+				toSpawn.Rotation = Rotation.FromYaw( -90f );
 
-			new ScoreBubble
+				nextBomb = 0.1f;
+				bombsSpawned++;
+			}
+
+			if ( bombsSpawned >= bombWave.Length )
 			{
-				Position = spawnPosition,
-				Rotation = Rotation.FromYaw( -90 )
-			};
+				nextWave = Game.Random.Float( 3.5f, 6.5f );
+				bombsSpawned = 0;
+			}
 		}
 	}
 }

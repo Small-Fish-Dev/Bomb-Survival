@@ -3,7 +3,7 @@
 namespace BombSurvival;
 
 [HammerEntity]
-[EditorModel( "models/checkpoint/checkpoint.vmdl" )]
+[EditorModel( "models/emitter/emitter.vmdl" )]
 public partial class BombSpawner : AnimatedEntity
 {
 	public AnimatedEntity ClientModel { get; set; }
@@ -12,7 +12,7 @@ public partial class BombSpawner : AnimatedEntity
 		base.Spawn();
 
 		SetModel( "models/piston/piston.vmdl" );
-		Rotation = Rotation.FromYaw( -90f );
+		Rotation = Rotation.FromYaw( -90f ) * Rotation.FromPitch( 90f );
 		UseAnimGraph = false;
 		AnimateOnServer = true;
 		PlaybackRate = 0.3f;
@@ -21,9 +21,8 @@ public partial class BombSpawner : AnimatedEntity
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
-		ClientModel = new AnimatedEntity( "models/checkpoint/checkpoint.vmdl" );
+		ClientModel = new AnimatedEntity( "models/emitter/emitter.vmdl" );
 		ClientModel.Position = Position;
-		ClientModel.Rotation = Rotation.FromYaw( -90f );
 		ClientModel.EnableDrawing = true;
 		ClientModel.SetParent( this, true );
 	}
