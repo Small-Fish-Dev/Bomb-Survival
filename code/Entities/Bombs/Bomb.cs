@@ -61,17 +61,6 @@ public abstract partial class Bomb : AnimatedEntity
 				bubble.Break();
 		}
 
-		var playersToChar = entitiesInChar
-			.Select( x => x.GetPlayer() )
-			.Where( x => x != null )
-			.Distinct();
-
-		foreach ( var player in playersToChar )
-		{
-			player.SetCharred( true );
-			player.KnockOut( Position, 1000, 2f );
-		}
-
 		var playersToKill = entitiesInExplosion
 			.Select( x => x.GetPlayer() )
 			.Where( x => x != null )
@@ -79,6 +68,18 @@ public abstract partial class Bomb : AnimatedEntity
 
 		foreach ( var player in playersToKill )
 			player.Kill();
+
+		var playersToChar = entitiesInChar
+			.Select( x => x.GetPlayer() )
+			.Where( x => x != null )
+			.Where( x => !x.IsDead )
+			.Distinct();
+
+		foreach ( var player in playersToChar )
+		{
+			player.SetCharred( true );
+			player.KnockOut( Position, 1000, 2f );
+		}
 
 		if ( Game.IsServer )
 			Delete();

@@ -20,6 +20,7 @@ public partial class Player : AnimatedEntity
 	internal ModelEntity Collider { get; set; }
 	[Net] public ModelEntity Grabbing { get; set; } = null;
 	[Net] public Vector3 GrabbingPosition { get; set; } = Vector3.Zero;
+	[Net] public bool WantsToGrab { get; set; } = false;
 	public bool IsGrabbing => Grabbing != null;
 	public SpringJoint GrabSpring { get; set; }
 
@@ -406,7 +407,7 @@ public partial class Player : AnimatedEntity
 
 		var positionGoal = CollisionTop;
 		var moveDirection = positionGoal - Collider.Position;
-		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta );
+		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta * ( IsGrabbing ? 3f : 1f ) );
 		Collider.PhysicsBody.LinearDamping = 30;
 		Collider.Rotation = InputRotation;
 
@@ -463,6 +464,8 @@ public partial class Player : AnimatedEntity
 	public void Grab()
 	{
 		if ( Game.IsClient ) return;
+		if ( IsPunching ) return;
+		if ( IsGrabbing ) return;
 
 		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.3f )
 			.Size( CollisionHeight )
@@ -484,6 +487,7 @@ public partial class Player : AnimatedEntity
 
 				if ( !targetBody.IsValid() ) return;
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
+				if ( grabTarget is Bomb bombTarget && bombTarget.IsExploding ) return;
 
 				Grabbing = grabTarget;
 				
@@ -504,6 +508,11 @@ public partial class Player : AnimatedEntity
 		if ( IsKnockedOut ) return;
 		if ( IsDead ) return;
 		if ( !IsGrabbing ) return;
+		if ( Grabbing is Bomb bombTarget && bombTarget.IsExploding )
+		{
+			Release();
+			return;
+		}
 
 		DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
 		DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
@@ -514,7 +523,7 @@ public partial class Player : AnimatedEntity
 
 	public void Release()
 	{
-		Grabbing = null;
 		GrabSpring?.Remove();
+		Grabbing = null;
 	}
 }
