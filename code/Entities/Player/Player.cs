@@ -119,6 +119,7 @@ public partial class Player : AnimatedEntity
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
+	private Rotation wishRotation;
 	TimeSince lastRotation = 0f;
 
 	public override void BuildInput()
@@ -131,19 +132,23 @@ public partial class Player : AnimatedEntity
 		if ( IsGrabbing )
 		{
 			direction = (Grabbing.PhysicsBody.FindClosestPoint( CollisionTop ) - CollisionTop).Normal;
-			InputRotation = Rotation.LookAt( direction, Vector3.Left );
+			wishRotation = Rotation.LookAt( direction, Vector3.Left );
 		}
 		else
 		{
 			if ( lookInput != Angles.Zero )
 			{
-				InputRotation = Rotation.LookAt( direction, Vector3.Left );
+				wishRotation = Rotation.LookAt( direction, Vector3.Left );
 				lastRotation = 0f;
 			}
-			else
-				if ( lastRotation >= 0.5f )
-				InputRotation = Rotation.LookAt( Velocity, Vector3.Left );
+			else if ( lastRotation >= 1f )
+				if ( !Velocity.IsNearlyZero( 2 ) )
+					wishRotation = Rotation.LookAt( Velocity, Vector3.Left );
+				else
+					wishRotation = Rotation.LookAt( Vector3.Right, Vector3.Left );
 		}
+
+		InputRotation = Rotation.Slerp( InputRotation, wishRotation, Time.Delta * 5f );
 	}
 
 	public override void Simulate( IClient cl )

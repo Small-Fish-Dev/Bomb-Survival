@@ -37,12 +37,12 @@ public partial class Player
 		animationHelper.HoldType = IsPunching ? CitizenAnimationHelper.HoldTypes.Punch : CitizenAnimationHelper.HoldTypes.None;
 		puppetAnimationsHelper.HoldType = IsPunching ? CitizenAnimationHelper.HoldTypes.Punch : CitizenAnimationHelper.HoldTypes.None;
 
-		SetAnimParameter( "b_vr", IsGrabbing );
+		SetAnimParameter( "b_vr", true );
 
-		if ( IsGrabbing && Game.IsServer )
+		if ( Game.IsServer )
 		{
 			var startingOffset = Vector3.Up * CollisionHeight * Scale / 2f;
-			var grabPosition = GrabSpring.Point2.Transform.Position;
+			var grabPosition = Position + InputRotation.Forward * 500f;
 			var localPosition = Transform.PointToLocal( grabPosition + startingOffset );
 			SetAnimParameter( "left_hand_ik.position", localPosition );
 			SetAnimParameter( "right_hand_ik.position", localPosition );
