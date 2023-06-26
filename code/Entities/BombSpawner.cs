@@ -26,4 +26,19 @@ public partial class BombSpawner : AnimatedEntity
 		ClientModel.EnableDrawing = true;
 		ClientModel.SetParent( this, true );
 	}
+
+	Vector3 lastPosition = Vector3.Zero;
+	[GameEvent.Tick]
+	void calculateVelocity()
+	{
+		var currentBonePosition = GetBoneTransform( 1 ).Position;
+		if ( lastPosition == Vector3.Zero && Position != Vector3.Zero )
+			lastPosition = currentBonePosition;
+
+		if ( lastPosition != Vector3.Zero )
+		{
+			Velocity = currentBonePosition - lastPosition;
+			lastPosition = currentBonePosition;
+		}	
+	}
 }

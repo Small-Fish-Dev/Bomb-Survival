@@ -71,6 +71,7 @@ public partial class BombSurvival
 
 				currentWaveEntity.Item1.Position = spawnPosition;
 				currentWaveEntity.Item1.Rotation = Rotation.FromYaw( -90f );
+				currentWaveEntity.Item1.Velocity = spawner.Velocity * 50f;
 
 				nextWaveEntity = currentWaveEntity.Item2;
 				waveEntititesSpawned++;
@@ -78,7 +79,7 @@ public partial class BombSurvival
 
 			if ( waveEntititesSpawned >= currentWave.Count )
 			{
-				NextWave = Game.Random.Float( 3.5f, 6.5f );
+				NextWave = Game.Random.Float( 1.5f, 6.5f );
 				waveEntititesSpawned = 0;
 			}
 		}
