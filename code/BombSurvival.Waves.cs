@@ -8,7 +8,8 @@ public enum WaveEntity
 	TimedBomb,
 	ScoreBubble,
 	SmallInertBomb,
-	BigTimedBomb
+	BigTimedBomb,
+	SmallTimedBomb
 }
 
 public partial class BombSurvival
@@ -29,6 +30,12 @@ public partial class BombSurvival
 			var bomb = new TimedBomb();
 			bomb.Scale = 1.5f;
 			return ( bomb, 0.15f );
+		} },
+		{ WaveEntity.SmallTimedBomb, () =>
+		{
+			var bomb = new TimedBomb();
+			bomb.Scale = 0.5f;
+			return ( bomb, 0.3f );
 		} }
 	};
 
@@ -43,6 +50,7 @@ public partial class BombSurvival
 		new() { WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.TimedBomb },
 		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
 		new() { WaveEntity.InertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb },
+		new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb },
 		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
 	};
 
