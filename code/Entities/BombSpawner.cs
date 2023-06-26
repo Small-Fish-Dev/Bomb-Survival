@@ -28,7 +28,7 @@ public partial class BombSpawner : AnimatedEntity
 	}
 
 	Vector3 lastPosition = Vector3.Zero;
-	[GameEvent.Tick]
+	[GameEvent.Tick.Server]
 	void calculateVelocity()
 	{
 		var currentBonePosition = GetBoneTransform( 1 ).Position;

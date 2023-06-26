@@ -1,0 +1,34 @@
+{
+  "BaseSurface": "surfaces/wood.surface",
+  "AudioMaterial": "surfaces/wood.audiomat",
+  "Description": "",
+  "Friction": 1,
+  "Elasticity": 0,
+  "Density": 540,
+  "Thickness": 0.5,
+  "Dampening": 0,
+  "BounceThreshold": 100,
+  "RoughnessFactor": 0.8,
+  "RoughThreshold": 0.5,
+  "ImpactEffects": {
+    "Regular": [],
+    "Bullet": [
+      "particles/impact.wood.vpcf"
+    ],
+    "BulletDecal": [
+      "decals/bullet-wood.decal"
+    ]
+  },
+  "Sounds": {
+    "FootLeft": "sounds/footsteps/footstep-wood.sound",
+    "FootRight": "sounds/footsteps/footstep-wood.sound",
+    "FootLaunch": "sounds/footsteps/footstep-wood-jump.sound",
+    "FootLand": "sounds/footsteps/footstep-wood-land.sound",
+    "Bullet": "sounds/impacts/impact-bullet-wood.sound",
+    "ImpactHard": "sounds/physics/physics.wood.impact.sound",
+    "ImpactSoft": "sounds/physics/physics.wood.impact.sound"
+  },
+  "Breakables": {
+    "BreakSound": ""
+  }
+}

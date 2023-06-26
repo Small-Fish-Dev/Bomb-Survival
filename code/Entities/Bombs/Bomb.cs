@@ -16,6 +16,10 @@ public abstract partial class Bomb : AnimatedEntity
 		SetModel( ModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 
+		PhysicsBody.AngularDrag = 99999999f;
+		PhysicsBody.AngularDamping = 99999999f;
+		PhysicsBody.SurfaceMaterial = "sticky_wave_entity";
+
 		BombSurvival.AxisLockedEntities.Add( this );
 	}
 	protected override void OnDestroy()
@@ -91,5 +95,20 @@ public abstract partial class Bomb : AnimatedEntity
 		if ( IsExploding )
 			if ( ExplosionTimer )
 				Explode();
+	}
+
+	TimeUntil stopSticky = 2;
+	bool sticky = true;
+
+	[GameEvent.Tick]
+	void changeStick()
+	{
+		if ( stopSticky && sticky || PhysicsBody.IsValid() && PhysicsBody.Sleeping && sticky )
+		{
+			PhysicsBody.AngularDrag = 50f;
+			PhysicsBody.AngularDamping = 50f;
+			PhysicsBody.SurfaceMaterial = "normal_wave_entity";
+			sticky = false;
+		}
 	}
 }
