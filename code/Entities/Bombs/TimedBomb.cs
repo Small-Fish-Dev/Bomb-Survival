@@ -1,6 +1,4 @@
-﻿using Sandbox.Component;
-
-namespace BombSurvival;
+﻿namespace BombSurvival;
 
 public partial class TimedBomb : Bomb
 {

@@ -1,6 +1,4 @@
-﻿using Sandbox.Sdf;
-
-namespace BombSurvival;
+﻿namespace BombSurvival;
 
 public partial class BombSurvival
 {
@@ -13,7 +11,7 @@ public partial class BombSurvival
 	public static Texture HouseTexture => Texture.Load( FileSystem.Mounted, "terrains/house.png" );
 	public static Texture GroundTexture => Texture.Load( FileSystem.Mounted, "terrains/ground.png" );
 
-	[ConCmd.Admin("regenerate_terrain")]
+	[ConCmd.Admin( "regenerate_terrain" )]
 	public static void GenerateLevel()
 	{
 		Terrain?.Clear();
@@ -91,7 +89,7 @@ public partial class BombSurvival
 		GenerateLevel();
 	}
 
-	[ConCmd.Admin( "testexplosion")]
+	[ConCmd.Admin( "testexplosion" )]
 	public static void TestExplosion()
 	{
 		var pawn = ConsoleSystem.Caller.Pawn as Player;

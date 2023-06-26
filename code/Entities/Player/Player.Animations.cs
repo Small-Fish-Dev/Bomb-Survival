@@ -17,7 +17,7 @@ public partial class Player
 			if ( !Velocity.IsNearlyZero( 1 ) )
 				nextLookAt = Velocity.Normal;
 			else
-			 nextLookAt = Vector3.Zero;
+				nextLookAt = Vector3.Zero;
 		else
 			nextLookAt = InputRotation.Forward;
 

@@ -4,14 +4,14 @@ namespace BombSurvival;
 
 public partial class BombSurvival : GameManager
 {
-	public static List<ModelEntity> AxisLockedEntities= new List<ModelEntity>();
+	public static List<ModelEntity> AxisLockedEntities = new List<ModelEntity>();
 
 	[GameEvent.Physics.PreStep]
 	public static void PreStep() // Lock the Y axis
 	{
 		if ( Game.IsClient ) return;
 
-		foreach( var entity in AxisLockedEntities )
+		foreach ( var entity in AxisLockedEntities )
 		{
 			if ( !entity.PhysicsBody.IsValid() ) continue;
 			if ( entity.PhysicsBody.Sleeping ) continue;

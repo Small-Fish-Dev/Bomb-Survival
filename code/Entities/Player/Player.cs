@@ -14,7 +14,7 @@ public partial class Player : AnimatedEntity
 	[Net] internal TimeUntil knockedOutTimer { get; set; } = 0f;
 	public bool IsKnockedOut { get; set; } = false;
 	[Net] public int LivesLeft { get; set; } = 4;
-	
+
 	[Net] internal AnimatedEntity ServerPuppet { get; set; }
 	internal AnimatedEntity ClientPuppet { get; set; }
 	internal ModelEntity Collider { get; set; }
@@ -191,7 +191,7 @@ public partial class Player : AnimatedEntity
 
 		if ( Velocity.Length > 1f )
 			lastMoved = 0f;
-		
+
 		if ( lastMoved > 2.5f )
 			cameraDistance = cameraDistance.LerpTo( 100f, Time.Delta * lastMoved );
 		else
@@ -318,7 +318,7 @@ public partial class Player : AnimatedEntity
 		ClientPuppet.Position = Position;
 		ClientPuppet.PhysicsGroup.Velocity = 0f;
 
-		var positionDifference = ServerPuppet.Position - ( IsKnockedOut ? Position : CollisionCenter );
+		var positionDifference = ServerPuppet.Position - (IsKnockedOut ? Position : CollisionCenter);
 
 		for ( int boneId = 0; boneId < ServerPuppet.BoneCount; boneId++ )
 		{
@@ -340,7 +340,7 @@ public partial class Player : AnimatedEntity
 
 				if ( clientBoneName.Contains( "hand" ) )
 				{
-					ClientPuppet.SetBoneTransform( boneId, ClientPuppet.GetBoneTransform(boneId).WithPosition( GrabbingPosition ) );
+					ClientPuppet.SetBoneTransform( boneId, ClientPuppet.GetBoneTransform( boneId ).WithPosition( GrabbingPosition ) );
 				}
 			}
 		}
@@ -407,7 +407,7 @@ public partial class Player : AnimatedEntity
 
 		var positionGoal = CollisionTop;
 		var moveDirection = positionGoal - Collider.Position;
-		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta * ( IsGrabbing ? 3f : 1f ) );
+		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta * (IsGrabbing ? 3f : 1f) );
 		Collider.PhysicsBody.LinearDamping = 30;
 		Collider.Rotation = InputRotation;
 
@@ -490,7 +490,7 @@ public partial class Player : AnimatedEntity
 				if ( grabTarget is Bomb bombTarget && bombTarget.IsExploding ) return;
 
 				Grabbing = grabTarget;
-				
+
 				var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
 				var grabPosition = targetBody.FindClosestPoint( armPosition );
 				var distance = armPosition.Distance( grabPosition );

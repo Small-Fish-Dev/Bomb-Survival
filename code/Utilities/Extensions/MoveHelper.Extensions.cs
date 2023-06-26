@@ -23,7 +23,7 @@ public static class MoveHelperExtensions
 
 			if ( !tr.StartedSolid )
 			{
-				helper.Position = tryPos + tr.Direction.Normal * ( tr.Distance - 0.5f );
+				helper.Position = tryPos + tr.Direction.Normal * (tr.Distance - 0.5f);
 				return true;
 			}
 		}
@@ -33,7 +33,7 @@ public static class MoveHelperExtensions
 		//
 		for ( int i = 1; i < 100; i++ )
 		{
-			var tryPos = helper.Position + Vector3.Random.WithY(0) * i;
+			var tryPos = helper.Position + Vector3.Random.WithY( 0 ) * i;
 
 			var tr = helper.TraceFromTo( tryPos, helper.Position );
 			if ( !tr.StartedSolid )

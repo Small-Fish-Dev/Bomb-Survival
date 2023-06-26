@@ -73,11 +73,11 @@ public partial class Player
 			helper.TryMoveWithStep( Time.Delta, StepSize );
 
 		helper.TryUnstuck2D();
-		
+
 		Position = helper.Position.WithY( 0 );
 		Velocity = helper.Velocity.WithY( 0 );
 
-		var traceDown = helper.TraceDirection( Vector3.Down * 3f * ( IsKnockedOut ? 3f : 1f ) * ( Velocity.z > 50f ? 0.3f : 1f ) );
+		var traceDown = helper.TraceDirection( Vector3.Down * 3f * (IsKnockedOut ? 3f : 1f) * (Velocity.z > 50f ? 0.3f : 1f) );
 
 		if ( traceDown.Entity != null )
 		{
