@@ -490,6 +490,7 @@ public partial class Player : AnimatedEntity
 				if ( grabTarget is Bomb bombTarget && bombTarget.IsExploding ) return;
 
 				Grabbing = grabTarget;
+				Grabbing.PhysicsBody.SurfaceMaterial = "slippery_wave_entity";
 
 				var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
 				var grabPosition = targetBody.FindClosestPoint( armPosition );
@@ -524,6 +525,8 @@ public partial class Player : AnimatedEntity
 	public void Release()
 	{
 		GrabSpring?.Remove();
+		if ( Grabbing != null )
+			Grabbing.PhysicsBody.SurfaceMaterial = "normal_wave_entity";
 		Grabbing = null;
 	}
 }
