@@ -1,6 +1,6 @@
 {
   "Depth": 8,
-  "Offset": 68,
+  "Offset": -36,
   "TexCoordSize": 256,
   "FrontFaceMaterial": "materials/wood/wood.vmat",
   "BackFaceMaterial": "materials/wood/wood.vmat",

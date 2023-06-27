@@ -3,7 +3,8 @@
 public partial class BombSurvival
 {
 	public static string CurrentLevel { get; set; } = "house";
-	public static Sdf2DWorld Terrain { get; set; }
+	public static Sdf2DWorld Foreground { get; set; }
+	public static Sdf2DWorld Background { get; set; }
 	public static Sdf2DLayer GrassForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/grass_foreground.sdflayer" );
 	public static Sdf2DLayer WoodForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood_foreground.sdflayer" );
 	public static Sdf2DLayer DirtForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/dirt_foreground.sdflayer" );
@@ -22,18 +23,33 @@ public partial class BombSurvival
 	[ConCmd.Admin( "regenerate_terrain" )]
 	public static void GenerateLevel()
 	{
-		Terrain?.ClearAsync();
-		Terrain ??= new Sdf2DWorld
+		Foreground?.ClearAsync();
+		Foreground ??= new Sdf2DWorld
 		{
 			LocalRotation = Rotation.FromRoll( 90f )
 		};
-		var terrainSdf = new TextureSdf( GrassForegroundTexture, 4, GrassForegroundTexture.Width );
-		var houseSdf = new TextureSdf( WoodForegroundTexture, 4, WoodForegroundTexture.Width );
-		var groundSdf = new TextureSdf( DirtForegroundTexture, 4, DirtForegroundTexture.Width );
 
-		Terrain?.AddAsync( terrainSdf, GrassForeground );
-		Terrain?.AddAsync( houseSdf, WoodForeground );
-		Terrain?.AddAsync( groundSdf, DirtForeground );
+		var grassForeground = new TextureSdf( GrassForegroundTexture, 4, GrassForegroundTexture.Width );
+		var woodForeground = new TextureSdf( WoodForegroundTexture, 4, WoodForegroundTexture.Width );
+		var dirtForeground = new TextureSdf( DirtForegroundTexture, 4, DirtForegroundTexture.Width );
+
+		Foreground?.AddAsync( grassForeground, GrassForeground );
+		Foreground?.AddAsync( woodForeground, WoodForeground );
+		Foreground?.AddAsync( dirtForeground, DirtForeground );
+
+		Background?.ClearAsync();
+		Background ??= new Sdf2DWorld
+		{
+			LocalRotation = Rotation.FromRoll( 90f )
+		};
+
+		var grassBackground = new TextureSdf( GrassBackgroundTexture, 4, GrassBackgroundTexture.Width );
+		var woodBackground = new TextureSdf( WoodBackgroundTexture, 4, WoodBackgroundTexture.Width );
+		var dirtBackground = new TextureSdf( DirtBackgroundTexture, 4, DirtBackgroundTexture.Width );
+
+		Background?.AddAsync( grassBackground, GrassBackground );
+		Background?.AddAsync( woodBackground, WoodBackground );
+		Background?.AddAsync( dirtBackground, DirtBackground );
 
 		GameTask.RunInThreadAsync( async () =>
 		{
@@ -44,30 +60,33 @@ public partial class BombSurvival
 
 	public static Vector2 PointToLocal( Vector3 point )
 	{
-		var localPosition = Terrain.Transform.PointToLocal( point );
+		var localPosition = Foreground.Transform.PointToLocal( point );
 		return new Vector2( localPosition.x, localPosition.y );
 	}
 
 	public static Vector3 PointToWorld( Vector2 point )
 	{
-		var worldPosition = Terrain.Transform.PointToWorld( point );
-		return new Vector3( worldPosition.x, Terrain.Position.y, worldPosition.z );
+		var worldPosition = Foreground.Transform.PointToWorld( point );
+		return new Vector3( worldPosition.x, Foreground.Position.y, worldPosition.z );
 	}
 
-	public static void AddCircle( Vector2 position, float radius, Sdf2DLayer layer ) => Terrain?.AddAsync( new CircleSdf( position, radius ), layer );
-	public static void AddCircle( Vector3 position, float radius, Sdf2DLayer layer ) => AddCircle( PointToLocal( position ), radius, layer );
-	public static void CarveCircle( Vector2 position, float radius ) => Terrain?.SubtractAsync( new CircleSdf( position, radius ) );
-	public static void CarveCircle( Vector3 position, float radius ) => CarveCircle( PointToLocal( position ), radius );
+	public static void AddCircle( Sdf2DWorld world, Vector2 position, float radius, Sdf2DLayer layer ) => world?.AddAsync( new CircleSdf( position, radius ), layer );
+	public static void AddCircle( Sdf2DWorld world, Vector3 position, float radius, Sdf2DLayer layer ) => AddCircle( world, PointToLocal( position ), radius, layer );
+	public static void CarveCircle( Sdf2DWorld world, Vector2 position, float radius ) => world?.SubtractAsync( new CircleSdf( position, radius ) );
+	public static void CarveCircle( Sdf2DWorld world, Vector3 position, float radius ) => CarveCircle( world, PointToLocal( position ), radius );
 
-	public static void AddBox( Vector2 min, Vector2 max, Sdf2DLayer layer, float cornerRadius = 0f ) => Terrain?.AddAsync( new RectSdf( min, max, cornerRadius ), layer );
-	public static void AddBox( Vector3 min, Vector3 max, Sdf2DLayer layer, float cornerRadius = 0f ) => AddBox( PointToLocal( min ), PointToLocal( max ), layer, cornerRadius );
-	public static void CarveBox( Vector2 min, Vector2 max, float cornerRadius = 0f ) => Terrain?.SubtractAsync( new RectSdf( min, max, cornerRadius ) );
-	public static void CarveBox( Vector3 min, Vector3 max, float cornerRadius = 0f ) => CarveBox( PointToLocal( min ), PointToLocal( max ), cornerRadius );
+	public static void AddBox( Sdf2DWorld world, Vector2 min, Vector2 max, Sdf2DLayer layer, float cornerRadius = 0f ) => world?.AddAsync( new RectSdf( min, max, cornerRadius ), layer );
+	public static void AddBox( Sdf2DWorld world, Vector3 min, Vector3 max, Sdf2DLayer layer, float cornerRadius = 0f ) => AddBox( world, PointToLocal( min ), PointToLocal( max ), layer, cornerRadius );
+	public static void CarveBox( Sdf2DWorld world, Vector2 min, Vector2 max, float cornerRadius = 0f ) => world?.SubtractAsync( new RectSdf( min, max, cornerRadius ) );
+	public static void CarveBox( Sdf2DWorld world, Vector3 min, Vector3 max, float cornerRadius = 0f ) => CarveBox( world, PointToLocal( min ), PointToLocal( max ), cornerRadius );
 
 	public static void Explosion( Vector3 position, float size = 75f, float charSize = 100f )
 	{
-		CarveCircle( position, size );
-		AddCircle( position, charSize, ScorchForeground );
+		CarveCircle( Foreground, position, size );
+		AddCircle( Foreground, position, charSize, ScorchForeground );
+
+		CarveCircle( Background, position, size * 0.6f );
+		AddCircle( Background, position, charSize * 0.8f, ScorchBackground );
 
 		Particles.Create( "particles/explosion.vpcf", position )
 			.Set( "size", charSize );
