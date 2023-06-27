@@ -35,7 +35,7 @@ public partial class BombSurvival
 		{
 			var bomb = new TimedBomb();
 			bomb.Scale = 0.5f;
-			return ( bomb, 0.3f );
+			return ( bomb, 0.4f );
 		} }
 	};
 
