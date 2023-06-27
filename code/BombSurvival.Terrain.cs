@@ -2,29 +2,37 @@
 
 public partial class BombSurvival
 {
+	public static string CurrentLevel { get; set; } = "house";
 	public static Sdf2DWorld Terrain { get; set; }
-	public static Sdf2DLayer GrassForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/fabric.sdflayer" );
-	public static Sdf2DLayer WoodGoreground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood.sdflayer" );
-	public static Sdf2DLayer DirtForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/ground.sdflayer" );
-	public static Sdf2DLayer ScorchLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch.sdflayer" );
-	public static Texture TerrainTexture => Texture.Load( FileSystem.Mounted, "terrains/hill.png" );
-	public static Texture HouseTexture => Texture.Load( FileSystem.Mounted, "terrains/house.png" );
-	public static Texture GroundTexture => Texture.Load( FileSystem.Mounted, "terrains/ground.png" );
+	public static Sdf2DLayer GrassForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/grass_foreground.sdflayer" );
+	public static Sdf2DLayer WoodForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood_foreground.sdflayer" );
+	public static Sdf2DLayer DirtForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/dirt_foreground.sdflayer" );
+	public static Sdf2DLayer ScorchForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch_foreground.sdflayer" );
+	public static Sdf2DLayer GrassBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/grass_background.sdflayer" );
+	public static Sdf2DLayer WoodBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood_background.sdflayer" );
+	public static Sdf2DLayer DirtBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/dirt_background.sdflayer" );
+	public static Sdf2DLayer ScorchBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch_background.sdflayer" );
+	public static Texture GrassForegroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_foreground.png" );
+	public static Texture WoodForegroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_foreground.png" );
+	public static Texture DirtForegroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_foreground.png" );
+	public static Texture GrassBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_background.png" );
+	public static Texture WoodBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_background.png" );
+	public static Texture DirtBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_background.png" );
 
 	[ConCmd.Admin( "regenerate_terrain" )]
 	public static void GenerateLevel()
 	{
-		Terrain?.Clear();
+		Terrain?.ClearAsync();
 		Terrain ??= new Sdf2DWorld
 		{
 			LocalRotation = Rotation.FromRoll( 90f )
 		};
-		var terrainSdf = new TextureSdf( TerrainTexture, 4, TerrainTexture.Width );
-		var houseSdf = new TextureSdf( HouseTexture, 4, HouseTexture.Width );
-		var groundSdf = new TextureSdf( GroundTexture, 4, GroundTexture.Width );
+		var terrainSdf = new TextureSdf( GrassForegroundTexture, 4, GrassForegroundTexture.Width );
+		var houseSdf = new TextureSdf( WoodForegroundTexture, 4, WoodForegroundTexture.Width );
+		var groundSdf = new TextureSdf( DirtForegroundTexture, 4, DirtForegroundTexture.Width );
 
 		Terrain?.AddAsync( terrainSdf, GrassForeground );
-		Terrain?.AddAsync( houseSdf, WoodGoreground );
+		Terrain?.AddAsync( houseSdf, WoodForeground );
 		Terrain?.AddAsync( groundSdf, DirtForeground );
 
 		GameTask.RunInThreadAsync( async () =>
@@ -59,7 +67,7 @@ public partial class BombSurvival
 	public static void Explosion( Vector3 position, float size = 75f, float charSize = 100f )
 	{
 		CarveCircle( position, size );
-		AddCircle( position, charSize, ScorchLayer );
+		AddCircle( position, charSize, ScorchForeground );
 
 		Particles.Create( "particles/explosion.vpcf", position )
 			.Set( "size", charSize );

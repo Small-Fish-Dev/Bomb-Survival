@@ -14,7 +14,7 @@
   "ReferencedTextures": [
     {
       "TargetAttribute": "ScorchLayer",
-      "Source": "sdflayers/scorch.sdflayer"
+      "Source": "sdflayers/scorch_foreground.sdflayer"
     }
   ]
 }

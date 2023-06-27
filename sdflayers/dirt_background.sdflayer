@@ -1,10 +1,10 @@
 {
-  "Depth": 64,
-  "Offset": 0,
+  "Depth": 8,
+  "Offset": 68,
   "TexCoordSize": 256,
-  "FrontFaceMaterial": "materials/fabric/fabric.vmat",
-  "BackFaceMaterial": "materials/fabric/fabric.vmat",
-  "CutFaceMaterial": "materials/fabric/fabric.vmat",
+  "FrontFaceMaterial": "materials/ground/ground.vmat",
+  "BackFaceMaterial": "materials/ground/ground.vmat",
+  "CutFaceMaterial": "materials/ground/ground.vmat",
   "IsTextureSourceOnly": false,
   "CollisionTags": "solid terrain",
   "QualityLevel": "Custom",
@@ -14,7 +14,7 @@
   "ReferencedTextures": [
     {
       "TargetAttribute": "ScorchLayer",
-      "Source": "sdflayers/scorch.sdflayer"
+      "Source": "sdflayers/scorch_background.sdflayer"
     }
   ]
 }

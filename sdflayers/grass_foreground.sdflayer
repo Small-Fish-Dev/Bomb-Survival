@@ -1,0 +1,20 @@
+{
+  "Depth": 64,
+  "Offset": 0,
+  "TexCoordSize": 256,
+  "FrontFaceMaterial": "materials/fabric/fabric.vmat",
+  "BackFaceMaterial": "materials/fabric/fabric.vmat",
+  "CutFaceMaterial": "materials/fabric/fabric.vmat",
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "solid terrain",
+  "QualityLevel": "Custom",
+  "ChunkResolution": 64,
+  "ChunkSize": 256,
+  "MaxDistance": 16,
+  "ReferencedTextures": [
+    {
+      "TargetAttribute": "ScorchLayer",
+      "Source": "sdflayers/scorch_foreground.sdflayer"
+    }
+  ]
+}
