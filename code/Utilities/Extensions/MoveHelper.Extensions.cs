@@ -2,15 +2,15 @@
 
 public static class MoveHelperExtensions
 {
-	public static bool TryUnstuck2D( this ref MoveHelper helper )
+	public static bool TryUnstuck2D( this ref MoveHelper helper, float maxDistance )
 	{
 		var tr = helper.TraceFromTo( helper.Position, helper.Position );
 		if ( !tr.StartedSolid ) return true;
 
-		return helper.Unstuck2D();
+		return helper.Unstuck2D( maxDistance );
 	}
 
-	public static bool Unstuck2D( this ref MoveHelper helper )
+	public static bool Unstuck2D( this ref MoveHelper helper, float maxDistance )
 	{
 		//
 		// Try going straight up first, people are most of the time stuck in the floor
@@ -31,7 +31,7 @@ public static class MoveHelperExtensions
 		//
 		// Then fuck it, we got to get unstuck some how, try random shit
 		//
-		for ( int i = 1; i < 100; i++ )
+		for ( int i = 1; i < maxDistance; i++ )
 		{
 			var tryPos = helper.Position + Vector3.Random.WithY( 0 ) * i;
 

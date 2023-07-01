@@ -72,7 +72,7 @@ public partial class Player
 		else
 			helper.TryMoveWithStep( Time.Delta, StepSize );
 
-		helper.TryUnstuck2D();
+		helper.TryUnstuck2D( CollisionHeight - 1f );
 
 		Position = helper.Position.WithY( 0 );
 		Velocity = helper.Velocity.WithY( 0 );
