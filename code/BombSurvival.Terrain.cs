@@ -8,11 +8,10 @@ public partial class BombSurvival
 	public static Sdf2DLayer GrassForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/grass_foreground.sdflayer" );
 	public static Sdf2DLayer WoodForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood_foreground.sdflayer" );
 	public static Sdf2DLayer DirtForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/dirt_foreground.sdflayer" );
-	public static Sdf2DLayer ScorchForeground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch_foreground.sdflayer" );
 	public static Sdf2DLayer GrassBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/grass_background.sdflayer" );
 	public static Sdf2DLayer WoodBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/wood_background.sdflayer" );
 	public static Sdf2DLayer DirtBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/dirt_background.sdflayer" );
-	public static Sdf2DLayer ScorchBackground => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch_background.sdflayer" );
+	public static Sdf2DLayer ScorchLayer => ResourceLibrary.Get<Sdf2DLayer>( "sdflayers/scorch.sdflayer" );
 	public static Texture GrassForegroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_foreground.png" );
 	public static Texture WoodForegroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_foreground.png" );
 	public static Texture DirtForegroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_foreground.png" );
@@ -83,10 +82,10 @@ public partial class BombSurvival
 	public static void Explosion( Vector3 position, float size = 75f, float charSize = 100f )
 	{
 		CarveCircle( Foreground, position, size );
-		AddCircle( Foreground, position, charSize, ScorchForeground );
+		AddCircle( Foreground, position, charSize, ScorchLayer );
 
 		CarveCircle( Background, position, size * 0.6f );
-		AddCircle( Background, position, charSize * 0.8f, ScorchBackground );
+		AddCircle( Background, position, charSize * 0.8f, ScorchLayer );
 
 		Particles.Create( "particles/explosion.vpcf", position )
 			.Set( "size", charSize );
