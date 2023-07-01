@@ -76,6 +76,8 @@ public partial class Player : AnimatedEntity
 				PlaceCollider();
 				Collider.EnableAllCollisions = true;
 			}
+
+			AssignPoints( (int)(Score * 0.05f) ); // Remove 5% of their score
 		}
 		else
 		{
@@ -201,6 +203,8 @@ public partial class Player : AnimatedEntity
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
+
+		Log.Error( Score );
 
 		ComputeAnimations();
 		PlaceClientPuppet();
@@ -433,7 +437,7 @@ public partial class Player : AnimatedEntity
 
 		var punchTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
 			.Size( CollisionHeight * 1.5f )
-			.EntitiesOnly()
+			.DynamicOnly()
 			.WithoutTags( "collider", "player" )
 			.Ignore( ServerPuppet )
 			.Run();
@@ -469,7 +473,7 @@ public partial class Player : AnimatedEntity
 
 		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 0.8f )
 			.Size( CollisionHeight * 0.8f )
-			.EntitiesOnly()
+			.DynamicOnly()
 			.WithoutTags( "collider", "player" )
 			.Ignore( ServerPuppet )
 			.Run();

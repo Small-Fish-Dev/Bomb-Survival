@@ -28,13 +28,19 @@ public partial class ScoreBubble : ModelEntity
 		Delete();
 	}
 
+	public void Award( Player player )
+	{
+		player.AssignPoints( 10 );
+		Break();
+	}
+
 	public override void StartTouch( Entity other )
 	{
 		base.StartTouch( other );
 
 		if ( Game.IsClient ) return;
 
-		if ( other is Player || other.Owner is Player )
-			Break();
+		if ( other.GetPlayer() is Player player )
+			Award( player );
 	}
 }

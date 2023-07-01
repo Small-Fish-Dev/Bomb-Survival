@@ -43,15 +43,16 @@ public partial class BombSurvival
 
 	public List<List<WaveEntity>> Waves = new()
 	{
-		new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
-		new() {  WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb },
-		new() { WaveEntity.TimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.TimedBomb },
-		new() { WaveEntity.TimedBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.InertBomb },
-		new() { WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.TimedBomb },
-		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
-		new() { WaveEntity.InertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb },
-		new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb },
-		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
+		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
+		//new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
+		//new() {  WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb },
+		//new() { WaveEntity.TimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.TimedBomb },
+		//new() { WaveEntity.TimedBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.InertBomb },
+		//new() { WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.TimedBomb },
+		//new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
+		//new() { WaveEntity.InertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb },
+		//new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb },
+		//new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
 	};
 
 	[Net] public TimeUntil NextWave { get; set; } = 5f;
