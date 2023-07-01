@@ -2,11 +2,11 @@
   "Depth": 8,
   "Offset": -36,
   "TexCoordSize": 256,
-  "FrontFaceMaterial": "materials/wood/wood.vmat",
-  "BackFaceMaterial": "materials/wood/wood.vmat",
-  "CutFaceMaterial": "materials/wood/wood.vmat",
+  "FrontFaceMaterial": "materials/wood/wood_background.vmat",
+  "BackFaceMaterial": "materials/wood/wood_background.vmat",
+  "CutFaceMaterial": "materials/wood/wood_background.vmat",
   "IsTextureSourceOnly": false,
-  "CollisionTags": "solid terrain",
+  "CollisionTags": "",
   "QualityLevel": "Custom",
   "ChunkResolution": 64,
   "ChunkSize": 256,
@@ -14,7 +14,7 @@
   "ReferencedTextures": [
     {
       "TargetAttribute": "ScorchLayer",
-      "Source": "sdflayers/scorch_background.sdflayer"
+      "Source": "sdflayers/scorch.sdflayer"
     }
   ]
 }
