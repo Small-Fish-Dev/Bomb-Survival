@@ -16,7 +16,7 @@
   ],
   "EditorReferences": null,
   "Metadata": {
-    "MaxPlayers": 64,
+    "MaxPlayers": 16,
     "MinPlayers": 1,
     "GameNetworkType": "Multiplayer",
     "MapSelect": "Official",
@@ -30,7 +30,7 @@
     "CsProjName": "",
     "HttpAllowList": null,
     "Physics": {
-      "SubSteps": 1,
+      "SubSteps": 4,
       "TimeScale": 1,
       "Gravity": "0,0,-800",
       "AirDensity": 1.2,

@@ -12,8 +12,6 @@ public partial class BombSurvival : GameManager
 	public BombSurvival()
 	{
 		Instance = this;
-
-		Game.TickRate = 60;
 	}
 
 	public override void ClientJoined( IClient client )
