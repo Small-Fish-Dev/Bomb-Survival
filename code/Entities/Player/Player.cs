@@ -77,7 +77,7 @@ public partial class Player : AnimatedEntity
 				Collider.EnableAllCollisions = true;
 			}
 
-			AssignPoints( (int)(Score * 0.05f) ); // Remove 5% of their score
+			AssignPoints( (int)(Score * -0.05f) ); // Remove 5% of their score
 		}
 		else
 		{

@@ -29,11 +29,8 @@ public partial class BombSurvival
 		Instance.CurrentState = newState;
 	}
 
-	[GameEvent.Tick]
-	public static void ComputeGame()
-	{
-		StateActions[Instance.CurrentState].Invoke();
-	}
+	[GameEvent.Tick.Server]
+	public static void GameTick() => StateActions[Instance.CurrentState].Invoke();
 
 	public static void StartingTick()
 	{
@@ -54,6 +51,8 @@ public partial class BombSurvival
 			}
 
 		}
+
+		ComputeWaves();
 	}
 
 	public static void EndingTick()
