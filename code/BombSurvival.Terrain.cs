@@ -1,4 +1,6 @@
-﻿namespace BombSurvival;
+﻿using System.Threading.Tasks;
+
+namespace BombSurvival;
 
 public partial class BombSurvival
 {
@@ -18,9 +20,12 @@ public partial class BombSurvival
 	public static Texture GrassBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_background.png" );
 	public static Texture WoodBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_background.png" );
 	public static Texture DirtBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_background.png" );
+	public static Texture BombsTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/bombs.png" );
+
+	public static float LevelSize = 2048f;
 
 	[ConCmd.Admin( "regenerate_terrain" )]
-	public static void GenerateLevel()
+	public async static Task GenerateLevel()
 	{
 		Foreground?.ClearAsync();
 		Foreground ??= new Sdf2DWorld
@@ -28,13 +33,13 @@ public partial class BombSurvival
 			LocalRotation = Rotation.FromRoll( 90f )
 		};
 
-		var grassForeground = new TextureSdf( GrassForegroundTexture, 4, GrassForegroundTexture.Width );
-		var woodForeground = new TextureSdf( WoodForegroundTexture, 4, WoodForegroundTexture.Width );
-		var dirtForeground = new TextureSdf( DirtForegroundTexture, 4, DirtForegroundTexture.Width );
+		var grassForeground = new TextureSdf( GrassForegroundTexture, 4, LevelSize );
+		var woodForeground = new TextureSdf( WoodForegroundTexture, 4, LevelSize );
+		var dirtForeground = new TextureSdf( DirtForegroundTexture, 4, LevelSize );
 
-		Foreground?.AddAsync( grassForeground, GrassForeground );
-		Foreground?.AddAsync( woodForeground, WoodForeground );
-		Foreground?.AddAsync( dirtForeground, DirtForeground );
+		await Foreground?.AddAsync( grassForeground, GrassForeground );
+		await Foreground?.AddAsync( woodForeground, WoodForeground );
+		await Foreground?.AddAsync( dirtForeground, DirtForeground );
 
 		Background?.ClearAsync();
 		Background ??= new Sdf2DWorld
@@ -42,19 +47,48 @@ public partial class BombSurvival
 			LocalRotation = Rotation.FromRoll( 90f )
 		};
 
-		var grassBackground = new TextureSdf( GrassBackgroundTexture, 4, GrassBackgroundTexture.Width );
-		var woodBackground = new TextureSdf( WoodBackgroundTexture, 4, WoodBackgroundTexture.Width );
-		var dirtBackground = new TextureSdf( DirtBackgroundTexture, 4, DirtBackgroundTexture.Width );
+		var grassBackground = new TextureSdf( GrassBackgroundTexture, 4, LevelSize );
+		var woodBackground = new TextureSdf( WoodBackgroundTexture, 4, LevelSize );
+		var dirtBackground = new TextureSdf( DirtBackgroundTexture, 4, LevelSize );
 
 		Background?.AddAsync( grassBackground, GrassBackground );
 		Background?.AddAsync( woodBackground, WoodBackground );
 		Background?.AddAsync( dirtBackground, DirtBackground );
 
-		GameTask.RunInThreadAsync( async () =>
+		await GameTask.Delay( 100 );
+		Event.Run( "TerrainLoaded" );
+
+		PlaceBombs();
+	}
+
+	public static void PlaceBombs()
+	{
+		var bombsTexture = BombsTexture;
+		var bombSize = new Vector2( 64f, 40f ) * 0.75f;
+		var bombBBox = new BBox( new Vector3( bombSize.x, 64f, bombSize.y ) * -0.5f, new Vector3( bombSize.x, 64f, bombSize.y ) * 0.5f );
+
+		for ( int x = 0; x < LevelSize; x += (int)bombSize.x )
 		{
-			await GameTask.Delay( 100 );
-			Event.Run( "TerrainLoaded" );
-		} );
+			for ( int y = 0; y < LevelSize; y += (int)bombSize.y )
+			{
+				var color = bombsTexture.GetPixel( x, y );
+
+				if ( color == Color32.Black )
+				{
+					var spawnPos = PointToWorld( new Vector2( x - LevelSize / 2, LevelSize - (y + LevelSize / 2) ) );
+					var clearanceTrace = Trace.Box( bombBBox, spawnPos, spawnPos )
+						.WithTag( "terrain" )
+						.Run();
+
+					if ( !clearanceTrace.StartedSolid && !clearanceTrace.Hit )
+					{
+						var bomb = new InertBomb();
+						bomb.Scale = 0.75f;
+						bomb.Position = spawnPos;
+					}
+				}
+			}
+		}
 	}
 
 	public static Vector2 PointToLocal( Vector3 point )

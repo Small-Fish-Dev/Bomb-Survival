@@ -204,8 +204,6 @@ public partial class Player : AnimatedEntity
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
-		Log.Error( Score );
-
 		ComputeAnimations();
 		PlaceClientPuppet();
 	}
