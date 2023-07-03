@@ -22,6 +22,7 @@ public partial class Player : AnimatedEntity
 	[Net] public Vector3 GrabbingPosition { get; set; } = Vector3.Zero;
 	[Net] public bool WantsToGrab { get; set; } = false;
 	public bool IsGrabbing => Grabbing != null;
+	public bool IsBeingGrabbed = false;
 	public SpringJoint GrabSpring { get; set; }
 
 	public override void Spawn()
@@ -83,7 +84,7 @@ public partial class Player : AnimatedEntity
 		{
 			if ( ServerPuppet.IsValid() )
 			{
-				PlaceClientPuppet();
+				PlaceClientPuppets();
 				ClientPuppet.EnableAllCollisions = true;
 				ClientPuppet.EnableDrawing = true;
 			}
@@ -154,9 +155,24 @@ public partial class Player : AnimatedEntity
 		InputRotation = Rotation.Slerp( InputRotation, wishRotation, Time.Delta * 5f );
 	}
 
+
 	public override void Simulate( IClient cl )
 	{
 		base.Simulate( cl );
+
+		ComputeAnimations();
+		ComputeMotion();
+
+		if ( Game.IsServer )
+		{
+			MoveServerPuppet();
+			MoveCollider();
+			SimulateGrab();
+		}
+		else
+		{
+			PlaceClientPuppets();
+		}
 
 		if ( IsDead )
 		{
@@ -170,18 +186,6 @@ public partial class Player : AnimatedEntity
 		if ( IsKnockedOut )
 			if ( knockedOutTimer && GroundEntity != null )
 				IsKnockedOut = false;
-
-		ComputeAnimations();
-		ComputeMotion();
-
-		if ( Game.IsServer )
-		{
-			MoveServerPuppet();
-			MoveCollider();
-			SimulateGrab();
-		}
-		else
-			PlaceClientPuppet();
 	}
 
 	private float cameraDistance = 200f;
@@ -205,7 +209,7 @@ public partial class Player : AnimatedEntity
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
 		ComputeAnimations();
-		PlaceClientPuppet();
+		PlaceClientPuppets();
 	}
 
 	public void Clothe( IClient client )
@@ -273,6 +277,7 @@ public partial class Player : AnimatedEntity
 		PlaceServerPuppet();
 		ServerPuppet.EnableAllCollisions = true;
 		ServerPuppet.EnableDrawing = false;
+		Log.Info( ServerPuppet.EnableDrawing );
 
 		ServerPuppet.Owner = this;
 	}
@@ -284,7 +289,7 @@ public partial class Player : AnimatedEntity
 		ClientPuppet.Tags.Add( "puppet" );
 		ClientPuppet.Owner = this;
 
-		PlaceClientPuppet();
+		PlaceClientPuppets();
 		ClientPuppet.EnableAllCollisions = true;
 		ClientPuppet.EnableDrawing = true;
 
@@ -311,38 +316,43 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	internal void PlaceClientPuppet()
+	internal void PlaceClientPuppets()
 	{
-		if ( !ClientPuppet.IsValid() ) return;
-
-		ClientPuppet.ResetInterpolation();
-
-		ClientPuppet.Position = Position;
-		ClientPuppet.PhysicsGroup.Velocity = 0f;
-
-		var positionDifference = ServerPuppet.Position - (IsKnockedOut ? Position : CollisionCenter);
-
-		for ( int boneId = 0; boneId < ServerPuppet.BoneCount; boneId++ )
+		foreach ( var player in Entity.All.OfType<Player>() )
 		{
-			var serverBoneBody = ServerPuppet.GetBonePhysicsBody( boneId );
-			var clientBoneBody = ClientPuppet.GetBonePhysicsBody( boneId );
+			var puppet = player.ClientPuppet;
 
-			if ( serverBoneBody.IsValid() && clientBoneBody.IsValid() )
+			if ( !puppet.IsValid() ) return;
+
+			puppet.ResetInterpolation();
+
+			puppet.Position = Position;
+			puppet.PhysicsGroup.Velocity = 0f;
+
+			var positionDifference = player.ServerPuppet.Position - (player.IsKnockedOut ? player.Position : player.CollisionCenter);
+
+			for ( int boneId = 0; boneId < player.ServerPuppet.BoneCount; boneId++ )
 			{
-				var newTransform = serverBoneBody.Transform.WithPosition( serverBoneBody.Transform.Position - positionDifference );
-				clientBoneBody.Transform = newTransform;
-			}
-		}
+				var serverBoneBody = player.ServerPuppet.GetBonePhysicsBody( boneId );
+				var clientBoneBody = puppet.GetBonePhysicsBody( boneId );
 
-		if ( IsGrabbing )
-		{
-			for ( int boneId = 0; boneId < ServerPuppet.BoneCount; boneId++ )
-			{
-				var clientBoneName = ClientPuppet.GetBoneName( boneId );
-
-				if ( clientBoneName.Contains( "hand" ) )
+				if ( serverBoneBody.IsValid() && clientBoneBody.IsValid() )
 				{
-					ClientPuppet.SetBoneTransform( boneId, ClientPuppet.GetBoneTransform( boneId ).WithPosition( GrabbingPosition ) );
+					var newTransform = serverBoneBody.Transform.WithPosition( serverBoneBody.Transform.Position - positionDifference );
+					clientBoneBody.Transform = newTransform;
+				}
+			}
+
+			if ( player.IsGrabbing )
+			{
+				for ( int boneId = 0; boneId < player.ServerPuppet.BoneCount; boneId++ )
+				{
+					var clientBoneName = puppet.GetBoneName( boneId );
+
+					if ( clientBoneName.Contains( "hand" ) )
+					{
+						puppet.SetBoneTransform( boneId, puppet.GetBoneTransform( boneId ).WithPosition( player.GrabbingPosition ) );
+					}
 				}
 			}
 		}
@@ -409,7 +419,7 @@ public partial class Player : AnimatedEntity
 
 		var positionGoal = CollisionTop;
 		var moveDirection = positionGoal - Collider.Position;
-		Collider.PhysicsBody.ApplyForce( moveDirection * 10000 * Collider.PhysicsBody.Mass * Time.Delta * (IsGrabbing ? 3f : 1f) );
+		Collider.PhysicsBody.ApplyForce( moveDirection * 100000 * Collider.PhysicsBody.Mass * Time.Delta * (IsGrabbing ? 3f : 1f) );
 		Collider.PhysicsBody.LinearDamping = 30;
 		Collider.Rotation = InputRotation;
 
@@ -480,7 +490,10 @@ public partial class Player : AnimatedEntity
 		{
 			var player = grabTarget.GetPlayer();
 			if ( player != null )
+			{
 				Grabbing = player;
+				player.IsBeingGrabbed = true;
+			}
 			else
 			{
 				if ( !grabTarget.PhysicsEnabled ) return;
@@ -517,10 +530,20 @@ public partial class Player : AnimatedEntity
 			return;
 		}
 
+		if ( Grabbing is Player player )
+		{
+			if ( player.IsDead ) return;
+			player.Velocity += Velocity.WithZ( 0 );
+			GrabbingPosition = player.Position + Vector3.Up * player.CollisionHeight;
+		}
+		else
+		{
+			GrabbingPosition = GrabSpring.Point2.Transform.Position;
+		}
+
 		//DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
 		//DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
 		//DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
-		GrabbingPosition = GrabSpring.Point2.Transform.Position;
 		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
 
@@ -528,7 +551,12 @@ public partial class Player : AnimatedEntity
 	{
 		GrabSpring?.Remove();
 		if ( Grabbing != null )
+		{
 			Grabbing.PhysicsBody.SurfaceMaterial = "normal_wave_entity";
+
+			if ( Grabbing is Player player )
+				player.IsBeingGrabbed = false;
+		}
 		Grabbing = null;
 	}
 }

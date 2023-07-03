@@ -2,9 +2,9 @@
 
 public partial class Player
 {
-	public float WalkSpeed => IsGrabbing ? 50f : 140f;
-	public float AccelerationSpeed => IsGrabbing ? 200f : 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
-	public float JumpHeight => IsGrabbing ? 100f : 250f;
+	public float WalkSpeed => (IsGrabbing || IsBeingGrabbed) ? 50f : 140f;
+	public float AccelerationSpeed => (IsGrabbing || IsBeingGrabbed) ? 200f : 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
+	public float JumpHeight => (IsGrabbing || IsBeingGrabbed) ? 100f : 250f;
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
 
