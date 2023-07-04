@@ -2,6 +2,7 @@
 global using Sandbox.Sdf;
 global using System;
 global using System.Linq;
+global using System.Collections.Generic;
 
 namespace BombSurvival;
 
@@ -12,6 +13,9 @@ public partial class BombSurvival : GameManager
 	public BombSurvival()
 	{
 		Instance = this;
+
+		if ( Game.IsClient )
+			_ = new HUD();
 	}
 
 	public override void ClientJoined( IClient client )

@@ -1,0 +1,172 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+
+@namespace BombSurvival
+@inherits Panel
+
+<root>
+	<wrappedtext class="text" Value=@(Game.LocalClient.Name) SteamID=@(Game.LocalClient.SteamId) />
+
+	<div class="image stamp shadow" />
+	<div class="image stamp">
+	
+	</div>
+
+	<div class="image bubble" />
+</root>
+	
+@code {
+	class WrappedText : Panel
+	{
+		public string Value { get; set; }
+		public string SteamID { get; set; }
+
+		public void DrawAvatar( float radius, Vector2 center, float rad, Color? col = null )
+		{
+			// Generate circle vertices.
+			const int POINTS = 16;
+			var vertices = new Vertex[POINTS + 1];
+			var indices = new ushort[vertices.Length * 3];
+
+			vertices[0] = new Vertex()
+			{
+				Position = center,
+				TexCoord0 = new Vector4( 0.5f ),
+				Color = Color.White
+			};
+
+			for ( int i = 1; i <= POINTS; i++ )
+			{
+				var input = 2f * MathF.PI * i / POINTS;
+				var circle = new Vector2( MathF.Cos( input ), MathF.Sin( input ) );
+				var position = (center - radius * circle);
+				var uv = new Vector2( 
+					0.5f + (position.x - center.x) / (2f * radius),
+					0.5f + (position.y - center.y) / (2f * radius));
+
+				var rotated = new Vector2(
+					MathF.Cos( rad ) * (position.x - center.x) - MathF.Sin( rad ) * (position.y - center.y) + center.x,
+					MathF.Sin( rad ) * (position.x - center.x) + MathF.Cos( rad ) * (position.y - center.y) + center.y );
+
+				vertices[i] = new Vertex()
+				{
+					Position = rotated,
+					TexCoord0 = new Vector4( uv ),
+					Color = col ?? Color.White
+				};
+
+				var j = (i - 1) * 3;
+				indices[j] = 0;
+				indices[j + 1] = (ushort)(i - 1);
+				indices[j + 2] = (ushort)i;
+			}
+
+			indices[indices.Length - 3] = 0;
+			indices[indices.Length - 2] = (ushort)(vertices.Length - 1);
+			indices[indices.Length - 1] = 1;
+
+			// Render circle.
+			var attributes = new RenderAttributes();
+			attributes.Set( "Texture", col == null ? Texture.LoadAvatar( SteamID ) : Texture.White );
+			Graphics.Draw( vertices, vertices.Length, indices, indices.Length, Material.UI.Basic, attributes );
+		}
+
+		public override void DrawBackground( ref RenderState state )
+		{
+			var parent = Parent.Box.Rect;
+			var parentRadius = (parent.Width / 2f + 25f * ScaleToScreen);
+
+			var radius = 25f * ScaleToScreen;
+			var offset = 0f;
+
+			var func = -Time.Now / 4f - offset;
+			var x = MathF.Cos( func );
+			var y = MathF.Sin( func );
+
+			var pos = parent.Position + parent.Size / 2f
+				+ new Vector2( (parentRadius - radius / 2f) * x, (parentRadius - radius / 2f) * y );
+			var shadow = Color.Black.WithAlpha( 0.65f );
+
+			DrawAvatar( radius, pos + 3f * ScaleToScreen, MathF.Atan2( MathF.Sin( func ), MathF.Cos( func ) ) - 90, shadow );
+			DrawAvatar( radius, pos, MathF.Atan2( MathF.Sin( func ), MathF.Cos( func ) ) - 90 );
+
+			offset += (radius + 10f * ScaleToScreen) / parentRadius;
+
+			foreach ( var character in Value )
+			{
+				func = -Time.Now / 4f - offset;
+				x = MathF.Cos( func );
+				y = MathF.Sin( func );
+
+				var ang = MathF.Atan2( y, x ).RadianToDegree() - 90;
+				var center = parent.Position + parent.Size / 2f
+					+ new Vector2( parentRadius * x, parentRadius * y );
+
+				var advance = SDFText.Poppins.Character( character, center + 3f * ScaleToScreen, 1f, shadow, ang );
+				SDFText.Poppins.Character( character, center, 1f, Color.White, ang );
+
+				offset += (advance + 4 * ScaleToScreen) / parentRadius;
+			}
+		}
+	}
+}
+
+<style>
+	Score {
+		position: absolute;
+		left: 50px;
+		top: 50px;
+		width: 250px;
+		height: 250px;
+
+		.image {
+			position: absolute;
+			background-position: center;
+			background-size: 100%;
+			background-repeat: no-repeat;
+			width: 100%;
+			aspect-ratio: 1;
+		}
+
+		.stamp {
+			background-image: url(ui/score/score_stamp.png);
+			width: 76%;
+			left: 12%;
+			top: 12%;
+			animation-name: rotate;
+			animation-duration: 6s;
+			animation-timing-function: linear;
+		}
+
+		.shadow {
+			margin-top: 4px;
+			background-image-tint: darken(white, 50%);
+		}
+
+		.bubble {
+			background-image: url(ui/score/score_bubble.png);
+			background-image-tint: rgba(white, 0.5);
+		}
+
+		.text {
+			font-family: 'Poppins-Medium';
+			font-style: bold;
+			font-size: 32px;
+			text-shadow: 0px 3px 0px black;
+		}
+	}
+
+	@@keyframes rotate {
+		0% {
+			transform: rotate(10deg);
+		}
+
+		50% {
+			transform: rotate(-10deg);
+		}
+
+		100% {
+			transform: rotate(10deg);
+		}
+	}
+</style>
