@@ -404,6 +404,7 @@ public partial class Player : AnimatedEntity
 		PlaceCollider();
 		Collider.EnableAllCollisions = true;
 		Collider.EnableDrawing = false;
+		PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, Vector3.Up * CollisionHeight * Scale / 1.5f ), 0f, 0f );
 	}
 	internal void PlaceCollider()
 	{
@@ -417,13 +418,9 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Collider.IsValid() ) return;
 
-		var positionGoal = CollisionTop;
-		var moveDirection = positionGoal - Collider.Position;
-		Collider.PhysicsBody.ApplyForce( moveDirection * 100000 * Collider.PhysicsBody.Mass * Time.Delta * (IsGrabbing ? 3f : 1f) );
-		Collider.PhysicsBody.LinearDamping = 30;
 		Collider.Rotation = InputRotation;
 
-		if ( Collider.Position.Distance( positionGoal ) >= CollisionHeight )
+		if ( Collider.Position.Distance( CollisionTop ) >= CollisionHeight )
 			PlaceCollider();
 	}
 
