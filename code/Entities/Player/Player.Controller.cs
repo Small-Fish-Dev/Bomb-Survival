@@ -2,7 +2,7 @@
 
 public partial class Player
 {
-	public float WalkSpeed => (IsGrabbing || IsBeingGrabbed) ? 50f : 140f;
+	public float WalkSpeed => (IsGrabbing || IsBeingGrabbed) ? 50f : ( 140f * Math.Max( 0.5f, CrouchLevel ) );
 	public float AccelerationSpeed => (IsGrabbing || IsBeingGrabbed) ? 200f : 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
 	public float JumpHeight => (IsGrabbing || IsBeingGrabbed) ? 100f : 250f;
 	public float WishSpeed { get; private set; } = 0f;
@@ -20,16 +20,15 @@ public partial class Player
 
 	public void ComputeMotion()
 	{
-		var animationHelper = Animations;
-		var puppetAnimationsHelper = ServerPuppetAnimations;
+		var animationHelper = new CitizenAnimationHelper( this );
 
 		if ( IsKnockedOut )
 		{
 			if ( Game.IsServer )
 			{
-				ServerPuppet.Position = ServerPuppet.Position.WithY( 0 );
-				Position = ServerPuppet.Position.WithY( 0 );
-				Velocity = ServerPuppet.Velocity.WithY( 0 );
+				//ServerPuppet.Position = ServerPuppet.Position.WithY( 0 );
+				//Position = ServerPuppet.Position.WithY( 0 );
+				//Velocity = ServerPuppet.Velocity.WithY( 0 );
 			}
 		}
 
@@ -59,32 +58,32 @@ public partial class Player
 				Release();
 		}
 
-		var helper = new MoveHelper( Position, Velocity );
-		helper.MaxStandableAngle = MaxWalkableAngle;
+		var moveHelper = new MoveHelper( Position, Velocity );
+		moveHelper.MaxStandableAngle = MaxWalkableAngle;
 
-		helper.Trace = helper.Trace
+		moveHelper.Trace = moveHelper.Trace
 			.Size( CollisionBox.Mins, CollisionBox.Maxs )
 			.WithoutTags( "puppet", "collider" )
 			.Ignore( this );
 
 		if ( GroundEntity == null )
-			helper.TryMove( Time.Delta );
+			moveHelper.TryMove( Time.Delta );
 		else
-			helper.TryMoveWithStep( Time.Delta, StepSize );
+			moveHelper.TryMoveWithStep( Time.Delta, StepSize );
 
-		helper.TryUnstuck2D( CollisionHeight - 1f );
+		moveHelper.TryUnstuck2D( CollisionHeight - 1f );
 
-		Position = helper.Position.WithY( 0 );
-		Velocity = helper.Velocity.WithY( 0 );
+		Position = moveHelper.Position.WithY( 0 );
+		Velocity = moveHelper.Velocity.WithY( 0 );
 
-		var traceDown = helper.TraceDirection( Vector3.Down * 3f * (IsKnockedOut ? 3f : 1f) * (Velocity.z > 50f ? 0.3f : 1f) );
+		var traceDown = moveHelper.TraceDirection( Vector3.Down * 3f * (IsKnockedOut ? 3f : 1f) * (Velocity.z > 50f ? 0.3f : 1f) );
 
 		if ( traceDown.Entity != null )
 		{
 			GroundEntity = traceDown.Entity;
 			Position = traceDown.EndPosition;
 
-			if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+			if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= moveHelper.MaxStandableAngle )
 				TimeSinceLostFooting = 0f;
 
 			Velocity = Velocity.WithZ( Velocity.z / 2 );
@@ -100,12 +99,11 @@ public partial class Player
 		{
 			if ( GroundEntity != null && !IsKnockedOut )
 			{
-				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= helper.MaxStandableAngle )
+				if ( Vector3.GetAngle( Vector3.Up, traceDown.Normal ) <= moveHelper.MaxStandableAngle )
 				{
 					Velocity = Velocity.WithZ( JumpHeight );
 					GroundEntity = null;
 					animationHelper.TriggerJump();
-					puppetAnimationsHelper.TriggerJump();
 				}
 			}
 

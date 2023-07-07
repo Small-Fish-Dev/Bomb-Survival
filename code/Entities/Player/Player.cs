@@ -9,21 +9,20 @@ public partial class Player : AnimatedEntity
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
 	public Vector3 CollisionCenter => Position + Vector3.Up * CollisionHeight * Scale;
 	public Vector3 CollisionTop => Position + Vector3.Up * CollisionHeight * Scale / 1.5f;
-	[Net] public bool IsDead { get; set; } = false;
-	[Net] internal TimeUntil respawnTimer { get; set; } = 0f;
-	[Net] internal TimeUntil knockedOutTimer { get; set; } = 0f;
-	public bool IsKnockedOut { get; set; } = false;
-	[Net] public int LivesLeft { get; set; } = 4;
+	[Net] public bool IsDead { get; private set; } = false;
+	[Net] internal TimeUntil respawnTimer { get; private set; } = 0f;
+	[Net] internal TimeUntil knockedOutTimer { get; private set; } = 0f;
+	[Net] public bool IsKnockedOut { get; private set; } = false;
+	[Net] public int LivesLeft { get; private set; } = 4;
 
-	[Net] internal AnimatedEntity ServerPuppet { get; set; }
-	internal AnimatedEntity ClientPuppet { get; set; }
-	internal ModelEntity Collider { get; set; }
-	[Net] public ModelEntity Grabbing { get; set; } = null;
-	[Net] public Vector3 GrabbingPosition { get; set; } = Vector3.Zero;
-	[Net] public bool WantsToGrab { get; set; } = false;
+	[Net] public ModelEntity Collider { get; private set; }
+	[Net] public ModelEntity Grabbing { get; private set; } = null;
+	[Net] public Vector3 GrabbingPosition { get; private set; } = Vector3.Zero;
+	[Net] public bool WantsToGrab { get; private set; } = false;
 	public bool IsGrabbing => Grabbing != null;
-	public bool IsBeingGrabbed = false;
-	public SpringJoint GrabSpring { get; set; }
+	[Net] public bool IsBeingGrabbed { get; private set; } = false;
+	public SpringJoint GrabSpring { get; private set; }
+	public float CrouchLevel => Math.Clamp( Collider?.Position.Distance( Position ) / CollisionWidth ?? 0f, 0f, 1f );
 
 	public override void Spawn()
 	{
@@ -33,22 +32,9 @@ public partial class Player : AnimatedEntity
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
 		Tags.Add( "player" );
 
-		SpawnServerPuppet();
 		SpawnCollider();
-
-		EnableAllCollisions = true;
-		EnableDrawing = false;
-
 		Respawn();
 	}
-
-	public override void ClientSpawn()
-	{
-		base.ClientSpawn();
-
-		SpawnClientPuppet();
-	}
-
 
 	public void Respawn()
 	{
@@ -66,12 +52,6 @@ public partial class Player : AnimatedEntity
 
 		if ( Game.IsServer )
 		{
-			if ( ServerPuppet.IsValid() )
-			{
-				PlaceServerPuppet();
-				ServerPuppet.EnableAllCollisions = true;
-			}
-
 			if ( Collider.IsValid() )
 			{
 				PlaceCollider();
@@ -82,13 +62,6 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
-			if ( ServerPuppet.IsValid() )
-			{
-				PlaceClientPuppets();
-				ClientPuppet.EnableAllCollisions = true;
-				ClientPuppet.EnableDrawing = true;
-			}
-
 			spawnPoint.ClientModel.CurrentSequence.Time = 0;
 			spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
 		}
@@ -99,26 +72,10 @@ public partial class Player : AnimatedEntity
 		IsDead = true;
 		respawnTimer = 1f;
 		EnableAllCollisions = false;
+		Collider.EnableAllCollisions = false;
+		LivesLeft--;
+
 		Release();
-
-		if ( Game.IsServer )
-		{
-			ServerPuppet.EnableAllCollisions = false;
-			Collider.EnableAllCollisions = false;
-			LivesLeft--;
-			KillToClients();
-		}
-		else
-		{
-			ClientPuppet.EnableAllCollisions = false;
-			ClientPuppet.EnableDrawing = false;
-		}
-	}
-
-	[ClientRpc]
-	internal void KillToClients()
-	{
-		Kill();
 	}
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
@@ -165,13 +122,8 @@ public partial class Player : AnimatedEntity
 
 		if ( Game.IsServer )
 		{
-			MoveServerPuppet();
 			MoveCollider();
 			SimulateGrab();
-		}
-		else
-		{
-			PlaceClientPuppets();
 		}
 
 		if ( IsDead )
@@ -209,50 +161,21 @@ public partial class Player : AnimatedEntity
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
 		ComputeAnimations();
-		PlaceClientPuppets();
-	}
-
-	public void Clothe( IClient client )
-	{
-		var data = client.GetClientData( "avatar" );
-		Clothe( data );
-	}
-
-	[ClientRpc]
-	public void Clothe( string data )
-	{
-		var clothing = new ClothingContainer();
-		clothing.Deserialize( data );
-		clothing.DressEntity( ClientPuppet );
 	}
 
 	public void SetCharred( bool charred )
 	{
-		if ( Game.IsServer )
-			SetCharredToClients( To.Everyone, charred );
-		else
-		{
-			if ( !ClientPuppet.IsValid ) return;
+		var colorToApply = charred ? Color.Black : Color.White;
 
-			var colorToApply = charred ? Color.Black : Color.White;
+		RenderColor = colorToApply;
 
-			ClientPuppet.RenderColor = colorToApply;
-
-			foreach ( var child in ClientPuppet.Children )
-				if ( child is ModelEntity clothing )
-					clothing.RenderColor = colorToApply;
-		}
-	}
-
-	[ClientRpc]
-	internal void SetCharredToClients( bool charred )
-	{
-		SetCharred( charred );
+		foreach ( var child in Children )
+			if ( child is ModelEntity clothing )
+				clothing.RenderColor = colorToApply;
 	}
 
 	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
 	{
-		if ( !ServerPuppet.IsValid ) return;
 		if ( IsDead ) return;
 
 		IsKnockedOut = true;
@@ -260,151 +183,26 @@ public partial class Player : AnimatedEntity
 
 		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 
-		ServerPuppet.PhysicsGroup.Velocity = 0;
-		ServerPuppet.PhysicsGroup.ApplyImpulse( direction * strength );
 
 		Release();
-	}
-
-	internal void SpawnServerPuppet()
-	{
-		ServerPuppet = new AnimatedEntity();
-		ServerPuppet.SetModel( "models/citizen/citizen.vmdl" );
-		ServerPuppet.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
-		ServerPuppet.Tags.Add( "puppet" );
-		ServerPuppet.Owner = this;
-
-		PlaceServerPuppet();
-		ServerPuppet.EnableAllCollisions = true;
-		ServerPuppet.EnableDrawing = false;
-		Log.Info( ServerPuppet.EnableDrawing );
-
-		ServerPuppet.Owner = this;
-	}
-	internal void SpawnClientPuppet()
-	{
-		ClientPuppet = new AnimatedEntity();
-		ClientPuppet.SetModel( "models/citizen/citizen.vmdl" );
-		ClientPuppet.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
-		ClientPuppet.Tags.Add( "puppet" );
-		ClientPuppet.Owner = this;
-
-		PlaceClientPuppets();
-		ClientPuppet.EnableAllCollisions = true;
-		ClientPuppet.EnableDrawing = true;
-
-		ClientPuppet.Owner = this;
-	}
-
-	internal void PlaceServerPuppet()
-	{
-		if ( !ServerPuppet.IsValid() ) return;
-
-		ServerPuppet.Position = Position;
-		ServerPuppet.PhysicsGroup.Velocity = 0f;
-
-		for ( int boneId = 0; boneId < BoneCount; boneId++ )
-		{
-			var puppetBoneBody = ServerPuppet.GetBonePhysicsBody( boneId );
-			var playerBoneTransform = GetBoneTransform( boneId );
-
-			if ( puppetBoneBody.IsValid() )
-			{
-				puppetBoneBody.Position = playerBoneTransform.Position;
-				puppetBoneBody.Rotation = playerBoneTransform.Rotation;
-			}
-		}
-	}
-
-	internal void PlaceClientPuppets()
-	{
-		foreach ( var player in Entity.All.OfType<Player>() )
-		{
-			var puppet = player.ClientPuppet;
-
-			if ( !puppet.IsValid() ) return;
-
-			puppet.ResetInterpolation();
-
-			puppet.Position = Position;
-			puppet.PhysicsGroup.Velocity = 0f;
-
-			var positionDifference = player.ServerPuppet.Position - (player.IsKnockedOut ? player.Position : player.CollisionCenter);
-
-			for ( int boneId = 0; boneId < player.ServerPuppet.BoneCount; boneId++ )
-			{
-				var serverBoneBody = player.ServerPuppet.GetBonePhysicsBody( boneId );
-				var clientBoneBody = puppet.GetBonePhysicsBody( boneId );
-
-				if ( serverBoneBody.IsValid() && clientBoneBody.IsValid() )
-				{
-					var newTransform = serverBoneBody.Transform.WithPosition( serverBoneBody.Transform.Position - positionDifference );
-					clientBoneBody.Transform = newTransform;
-				}
-			}
-
-			if ( player.IsGrabbing )
-			{
-				for ( int boneId = 0; boneId < player.ServerPuppet.BoneCount; boneId++ )
-				{
-					var clientBoneName = puppet.GetBoneName( boneId );
-
-					if ( clientBoneName.Contains( "hand" ) )
-					{
-						puppet.SetBoneTransform( boneId, puppet.GetBoneTransform( boneId ).WithPosition( player.GrabbingPosition ) );
-					}
-				}
-			}
-		}
-	}
-
-	internal void MoveServerPuppet()
-	{
-		if ( !ServerPuppet.IsValid() ) return;
-
-		for ( int boneId = 0; boneId < BoneCount; boneId++ )
-		{
-			var puppetBoneBody = ServerPuppet.GetBonePhysicsBody( boneId );
-			var playerBoneTransform = GetBoneTransform( boneId );
-			var boneName = GetBoneName( boneId );
-
-			if ( puppetBoneBody.IsValid() )
-			{
-				if ( !IsKnockedOut )
-				{
-					if ( boneName.Contains( "ankle" ) )
-					{
-						puppetBoneBody.Position = playerBoneTransform.Position;
-						puppetBoneBody.Rotation = playerBoneTransform.Rotation;
-					}
-					else
-					{
-						var moveDirection = playerBoneTransform.Position - puppetBoneBody.Position;
-						puppetBoneBody.ApplyForce( moveDirection * 500000 * puppetBoneBody.Mass * Time.Delta );
-						puppetBoneBody.LinearDamping = 0.5f / Time.Delta;
-					}
-
-					puppetBoneBody.Rotation = playerBoneTransform.Rotation;
-				}
-				else
-				{
-					puppetBoneBody.LinearDamping = 0f;
-				}
-			}
-		}
 	}
 
 	internal void SpawnCollider()
 	{
 		Collider = new ModelEntity();
 		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" );
-		Collider.SetupPhysicsFromSphere( PhysicsMotionType.Dynamic, Vector3.Zero, CollisionHeight / 1.5f );
+		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth / 2f, Vector3.Up * CollisionHeight, CollisionWidth / 2f ));
+
+		Collider.EnableAllCollisions = true;
+		Collider.EnableDrawing = false;
 		Collider.Tags.Add( "collider" );
 
 		PlaceCollider();
-		Collider.EnableAllCollisions = true;
-		Collider.EnableDrawing = false;
-		PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, Vector3.Up * CollisionHeight * Scale / 1.5f ), 0f, 0f );
+
+		var connectionPosition = Vector3.Up * CollisionHeight * Scale;
+		PhysicsJoint.CreateSlider( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, connectionPosition ), 0f, CollisionHeight );
+		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, connectionPosition ), 0f, 0f );
+		spring.SpringLinear = new PhysicsSpring( 2f, 0.1f );
 	}
 	internal void PlaceCollider()
 	{
@@ -418,23 +216,17 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Collider.IsValid() ) return;
 
-		Collider.Rotation = InputRotation;
-
 		if ( Collider.Position.Distance( CollisionTop ) >= CollisionHeight )
 			PlaceCollider();
 	}
 
 	public void Punch()
 	{
-		var animationHelper = Animations;
-		var puppetAnimationsHelper = ServerPuppetAnimations;
-
 		punchFinish = 0.3f;
+
+		var animationHelper = new CitizenAnimationHelper( this );
 		animationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
-		puppetAnimationsHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
 		SetAnimParameter( "b_attack", true );
-		ServerPuppet?.SetAnimParameter( "b_attack", true );
-		ClientPuppet?.SetAnimParameter( "b_attack", true );
 
 		Release();
 
@@ -444,7 +236,6 @@ public partial class Player : AnimatedEntity
 			.Size( CollisionHeight * 1.5f )
 			.DynamicOnly()
 			.WithoutTags( "collider", "player" )
-			.Ignore( ServerPuppet )
 			.Run();
 
 		if ( punchTrace.Entity is ModelEntity punchTarget )
@@ -480,7 +271,6 @@ public partial class Player : AnimatedEntity
 			.Size( CollisionHeight * 0.8f )
 			.DynamicOnly()
 			.WithoutTags( "collider", "player" )
-			.Ignore( ServerPuppet )
 			.Run();
 
 		if ( grabTrace.Entity is ModelEntity grabTarget )
