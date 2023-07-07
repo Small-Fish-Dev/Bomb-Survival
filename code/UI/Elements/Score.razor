@@ -5,17 +5,22 @@
 @inherits Panel
 
 <root>
-	<wrappedtext class="text" Value=@(Game.LocalClient.Name) SteamID=@(Game.LocalClient.SteamId) />
+	<wrappedtext Value=@(Game.LocalClient.Name) SteamID=@(Game.LocalClient.SteamId) />
 
 	<div class="image stamp shadow" />
-	<div class="image stamp">
-	
-	</div>
+	<div class="image stamp" />
+
+	@*Hacky method of fitting the score in to the stamp lol.*@
+	<div class="score" style="font-size: @(128 - displayScore.ToString().Length * 12)px">@(displayScore)</div>
 
 	<div class="image bubble" />
 </root>
 	
 @code {
+	private float lerpedScore = 0;
+	private int displayScore => (int)(lerpedScore + 0.5f);
+	private static int score => (Game.LocalPawn as Player)?.Score ?? 0;
+
 	class WrappedText : Panel
 	{
 		public string Value { get; set; }
@@ -109,6 +114,16 @@
 			}
 		}
 	}
+
+	public override void Tick()
+	{
+		lerpedScore = MathX.Lerp( lerpedScore, score, 10f * Time.Delta );
+	}
+
+	protected override int BuildHash()
+	{
+		return displayScore.GetHashCode();
+	}
 }
 
 <style>
@@ -118,6 +133,8 @@
 		top: 50px;
 		width: 250px;
 		height: 250px;
+		justify-content: center;
+		align-items: center;
 
 		.image {
 			position: absolute;
@@ -148,11 +165,10 @@
 			background-image-tint: rgba(white, 0.5);
 		}
 
-		.text {
-			font-family: 'Poppins-Medium';
-			font-style: bold;
-			font-size: 32px;
+		.score {
+			font-family: 'Poppins-Bold';
 			text-shadow: 0px 3px 0px black;
+			opacity: 0.75;
 		}
 	}
 
