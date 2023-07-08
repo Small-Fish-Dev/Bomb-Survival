@@ -194,12 +194,16 @@
         {
           "a": "puppet",
           "b": "bubble",
-          "r": "Trigger"
+          "r": "Ignore"
         },
         {
           "a": "collider",
           "b": "bubble",
           "r": "Trigger"
+        },
+        {
+          "a": "solid",
+          "b": "puppet"
         }
       ]
     }

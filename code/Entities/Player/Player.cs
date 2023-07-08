@@ -1,4 +1,5 @@
-﻿using Sandbox.Physics;
+﻿using Sandbox;
+using Sandbox.Physics;
 
 namespace BombSurvival;
 
@@ -24,6 +25,7 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsBeingGrabbed { get; private set; } = false;
 	public SpringJoint GrabSpring { get; private set; }
 	public float CrouchLevel => Math.Clamp( ( Collider?.Position.z - Position.z ) / ( CollisionWidth / 1.5f ) * 0.7f ?? 0f, 0f, 0.7f ) + 0.3f;
+	internal ModelEntity Ragdoll;
 
 	public override void Spawn()
 	{
@@ -47,6 +49,7 @@ public partial class Player : AnimatedEntity
 		EnableAllCollisions = true;
 		knockedOutTimer = 0f;
 		IsKnockedOut = false;
+		EnableDrawing = true;
 		IsDead = false;
 
 		SetCharred( false );
@@ -70,13 +73,15 @@ public partial class Player : AnimatedEntity
 
 	public void Kill()
 	{
+		Release();
+		WakeUp();
+
 		IsDead = true;
 		respawnTimer = 1f;
 		EnableAllCollisions = false;
 		Collider.EnableAllCollisions = false;
+		EnableDrawing = false;
 		LivesLeft--;
-
-		Release();
 	}
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
@@ -118,15 +123,6 @@ public partial class Player : AnimatedEntity
 	{
 		base.Simulate( cl );
 
-		ComputeAnimations();
-		ComputeMotion();
-
-		if ( Game.IsServer )
-		{
-			MoveCollider();
-			SimulateGrab();
-		}
-
 		if ( IsDead )
 		{
 			if ( LivesLeft > 0 )
@@ -136,9 +132,17 @@ public partial class Player : AnimatedEntity
 			return;
 		}
 
+		ComputeAnimations();
+		ComputeMotion();
+
+		if ( Game.IsServer )
+		{
+			MoveCollider();
+			SimulateGrab();
+		}
+
 		if ( IsKnockedOut )
-			if ( knockedOutTimer && GroundEntity != null )
-				IsKnockedOut = false;
+			SimulateKnockedOut();
 	}
 
 	private float cameraDistance = 200f;
@@ -148,6 +152,8 @@ public partial class Player : AnimatedEntity
 	{
 		base.FrameSimulate( cl );
 
+		if ( IsDead ) return;
+
 		if ( Velocity.Length > 1f )
 			lastMoved = 0f;
 
@@ -156,12 +162,16 @@ public partial class Player : AnimatedEntity
 		else
 			cameraDistance = cameraDistance.LerpTo( 200f + Velocity.Length * 0.15f, Time.Delta * 0.5f );
 
-		Camera.Position = Vector3.Lerp( Camera.Position, Position + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
+		var wishPosition = Ragdoll.IsValid() ? ( Ragdoll.PhysicsBody.Position + Position  ) / 2f : Position;
+		Camera.Position = Vector3.Lerp( Camera.Position, wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
 		ComputeAnimations();
+
+		if ( IsKnockedOut )
+			SimulateKnockedOut();
 	}
 
 	public void SetCharred( bool charred )
@@ -180,21 +190,89 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 
 		IsKnockedOut = true;
+		EnableDrawing = false;
 		knockedOutTimer = amount;
 
 		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 		Velocity = direction * strength;
 
+		Collider.EnableSolidCollisions = false;
+
+		if ( Game.IsClient )
+			Ragdoll = CreateRagdoll();
+
 		Release();
+	}
+
+	public void WakeUp()
+	{
+		if ( IsDead ) return;
+
+		IsKnockedOut = false;
+		EnableDrawing = true;
+
+		Collider.EnableSolidCollisions = true;
+		Ragdoll?.Delete();
+	}
+
+	internal void SimulateKnockedOut()
+	{
+		if ( knockedOutTimer && GroundEntity != null )
+			WakeUp();
+	}
+
+	public ModelEntity CreateRagdoll()
+	{
+		Ragdoll?.Delete();
+
+		var ent = new ModelEntity();
+		ent.Tags.Add( "ragdoll", "solid", "debris" );
+		ent.Position = Position;
+		ent.Rotation = Rotation;
+		ent.Scale = Scale;
+		ent.UsePhysicsCollision = true;
+		ent.EnableAllCollisions = true;
+		ent.SetModel( GetModelName() );
+		ent.CopyBonesFrom( this );
+		ent.CopyBodyGroups( this );
+		ent.CopyMaterialGroup( this );
+		ent.CopyMaterialOverrides( this );
+		ent.TakeDecalsFrom( this );
+		ent.EnableAllCollisions = true;
+		ent.SurroundingBoundsMode = SurroundingBoundsType.Physics;
+		ent.RenderColor = RenderColor;
+		ent.PhysicsEnabled = true;
+		ent.PhysicsGroup.Velocity = Velocity;
+		ent.Tags.Add( "puppet" );
+
+		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( ent.PhysicsBody, Vector3.Down * CollisionHeight ), new PhysicsPoint( PhysicsBody ), 0f, 0f );
+		spring.SpringLinear = new PhysicsSpring( 15f, 0.7f );
+
+		foreach ( var child in Children )
+		{
+			if ( !child.Tags.Has( "clothes" ) ) continue;
+			if ( child is not ModelEntity e ) continue;
+
+			var model = e.GetModelName();
+
+			var clothing = new ModelEntity();
+			clothing.SetModel( model );
+			clothing.SetParent( ent, true );
+			clothing.RenderColor = e.RenderColor;
+			clothing.CopyBodyGroups( e );
+			clothing.CopyMaterialGroup( e );
+		}
+
+		return ent;
 	}
 
 	internal void SpawnCollider()
 	{
 		Collider = new ModelEntity();
-		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" );
+		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" ); // Needs a model :)
 		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * ( CollisionHeight + CollisionWidth / 4f ), CollisionWidth / 1.5f ));
 
-		Collider.PhysicsBody.Mass = 70f;
+		Collider.PhysicsBody.Mass = 30f;
 
 		Collider.EnableAllCollisions = true;
 		Collider.EnableDrawing = false;
@@ -206,6 +284,7 @@ public partial class Player : AnimatedEntity
 		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
 		spring.SpringLinear = new PhysicsSpring( 3f, 0.8f );
 	}
+
 	internal void PlaceCollider()
 	{
 		if ( !Collider.IsValid() ) return;
