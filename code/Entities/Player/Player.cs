@@ -17,7 +17,6 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsKnockedOut { get; private set; } = false;
 	[Net] public int LivesLeft { get; private set; } = 4;
 
-	[Net] public ModelEntity Collider { get; private set; }
 	[Net] public ModelEntity Grabbing { get; private set; } = null;
 	[Net] public Vector3 GrabbingPosition { get; private set; } = Vector3.Zero;
 	[Net] public bool WantsToGrab { get; private set; } = false;
@@ -25,7 +24,6 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsBeingGrabbed { get; private set; } = false;
 	public SpringJoint GrabSpring { get; private set; }
 	public float CrouchLevel => Math.Clamp( ( Collider?.Position.z - Position.z ) / ( CollisionWidth / 1.5f ) * 0.7f ?? 0f, 0f, 0.7f ) + 0.3f;
-	internal ModelEntity Ragdoll;
 
 	public override void Spawn()
 	{
@@ -35,8 +33,17 @@ public partial class Player : AnimatedEntity
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
 		Tags.Add( "player" );
 
+		EnableDrawing = false;
+
 		SpawnCollider();
 		Respawn();
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		SpawnRagdoll();
 	}
 
 	public void Respawn()
@@ -49,7 +56,6 @@ public partial class Player : AnimatedEntity
 		EnableAllCollisions = true;
 		knockedOutTimer = 0f;
 		IsKnockedOut = false;
-		EnableDrawing = true;
 		IsDead = false;
 
 		SetCharred( false );
@@ -190,16 +196,12 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 
 		IsKnockedOut = true;
-		EnableDrawing = false;
 		knockedOutTimer = amount;
 
 		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 		Velocity = direction * strength;
 
 		Collider.EnableSolidCollisions = false;
-
-		if ( Game.IsClient )
-			Ragdoll = CreateRagdoll();
 
 		Release();
 	}
@@ -209,96 +211,14 @@ public partial class Player : AnimatedEntity
 		if ( IsDead ) return;
 
 		IsKnockedOut = false;
-		EnableDrawing = true;
 
 		Collider.EnableSolidCollisions = true;
-		Ragdoll?.Delete();
 	}
 
 	internal void SimulateKnockedOut()
 	{
 		if ( knockedOutTimer && GroundEntity != null )
 			WakeUp();
-	}
-
-	public ModelEntity CreateRagdoll()
-	{
-		Ragdoll?.Delete();
-
-		var ent = new ModelEntity();
-		ent.Tags.Add( "ragdoll", "solid", "debris" );
-		ent.Position = Position;
-		ent.Rotation = Rotation;
-		ent.Scale = Scale;
-		ent.UsePhysicsCollision = true;
-		ent.EnableAllCollisions = true;
-		ent.SetModel( GetModelName() );
-		ent.CopyBonesFrom( this );
-		ent.CopyBodyGroups( this );
-		ent.CopyMaterialGroup( this );
-		ent.CopyMaterialOverrides( this );
-		ent.TakeDecalsFrom( this );
-		ent.EnableAllCollisions = true;
-		ent.SurroundingBoundsMode = SurroundingBoundsType.Physics;
-		ent.RenderColor = RenderColor;
-		ent.PhysicsEnabled = true;
-		ent.PhysicsGroup.Velocity = Velocity;
-		ent.Tags.Add( "puppet" );
-
-		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( ent.PhysicsBody, Vector3.Down * CollisionHeight ), new PhysicsPoint( PhysicsBody ), 0f, 0f );
-		spring.SpringLinear = new PhysicsSpring( 15f, 0.7f );
-
-		foreach ( var child in Children )
-		{
-			if ( !child.Tags.Has( "clothes" ) ) continue;
-			if ( child is not ModelEntity e ) continue;
-
-			var model = e.GetModelName();
-
-			var clothing = new ModelEntity();
-			clothing.SetModel( model );
-			clothing.SetParent( ent, true );
-			clothing.RenderColor = e.RenderColor;
-			clothing.CopyBodyGroups( e );
-			clothing.CopyMaterialGroup( e );
-		}
-
-		return ent;
-	}
-
-	internal void SpawnCollider()
-	{
-		Collider = new ModelEntity();
-		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" ); // Needs a model :)
-		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * ( CollisionHeight + CollisionWidth / 4f ), CollisionWidth / 1.5f ));
-
-		Collider.PhysicsBody.Mass = 30f;
-
-		Collider.EnableAllCollisions = true;
-		Collider.EnableDrawing = false;
-		Collider.Tags.Add( "collider" );
-
-		PlaceCollider();
-
-		PhysicsJoint.CreateSlider( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, CollisionHeight );
-		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
-		spring.SpringLinear = new PhysicsSpring( 3f, 0.8f );
-	}
-
-	internal void PlaceCollider()
-	{
-		if ( !Collider.IsValid() ) return;
-
-		Collider.Position = CollisionTop;
-		Collider.Velocity = 0f;
-	}
-
-	internal void MoveCollider()
-	{
-		if ( !Collider.IsValid() ) return;
-
-		if ( Collider.Position.Distance( CollisionTop ) >= CollisionHeight * 2 )
-			PlaceCollider();
 	}
 
 	public void Punch()
