@@ -194,7 +194,7 @@ public partial class Player : AnimatedEntity
 		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" );
 		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * ( CollisionHeight + CollisionWidth / 4f ), CollisionWidth / 1.5f ));
 
-		Collider.PhysicsBody.Mass = 150f;
+		Collider.PhysicsBody.Mass = 70f;
 
 		Collider.EnableAllCollisions = true;
 		Collider.EnableDrawing = false;
@@ -204,7 +204,7 @@ public partial class Player : AnimatedEntity
 
 		PhysicsJoint.CreateSlider( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, CollisionHeight );
 		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
-		spring.SpringLinear = new PhysicsSpring( 2f, 0.5f );
+		spring.SpringLinear = new PhysicsSpring( 3f, 0.8f );
 	}
 	internal void PlaceCollider()
 	{
