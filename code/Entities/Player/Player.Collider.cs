@@ -14,6 +14,7 @@ public partial class Player : AnimatedEntity
 		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * ( CollisionHeight + CollisionWidth / 4f ), CollisionWidth / 1.5f ));
 
 		Collider.PhysicsBody.Mass = 30f;
+		Collider.Owner = this;
 
 		Collider.EnableAllCollisions = true;
 		Collider.EnableDrawing = false;

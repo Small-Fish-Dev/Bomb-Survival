@@ -257,12 +257,23 @@ public partial class Player : AnimatedEntity
 
 		Release();
 
-		if ( Game.IsClient ) return;
+		if ( Game.IsClient )
+		{
+			if ( Ragdoll.IsValid() )
+			{
+				var ragdollHelper = new CitizenAnimationHelper( Ragdoll );
+				ragdollHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
+				Ragdoll.SetAnimParameter( "b_attack", true );
+			}
+
+			return;
+		}
 
 		var punchTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
 			.Size( CollisionHeight * 1.5f )
 			.DynamicOnly()
-			.WithoutTags( "collider", "player" )
+			.Ignore( this )
+			.Ignore( Collider )
 			.Run();
 
 		if ( punchTrace.Entity is ModelEntity punchTarget )
