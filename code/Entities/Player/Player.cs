@@ -131,7 +131,7 @@ public partial class Player : AnimatedEntity
 
 		if ( IsDead )
 		{
-			if ( LivesLeft > 0 )
+			if ( LivesLeft >= 0 )
 				if ( respawnTimer )
 					Respawn();
 
@@ -168,7 +168,7 @@ public partial class Player : AnimatedEntity
 		else
 			cameraDistance = cameraDistance.LerpTo( 200f + Velocity.Length * 0.15f, Time.Delta * 0.5f );
 
-		var wishPosition = Ragdoll.IsValid() ? ( Ragdoll.PhysicsBody.Position + Position  ) / 2f : Position;
+		var wishPosition = Position;
 		Camera.Position = Vector3.Lerp( Camera.Position, wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
@@ -178,6 +178,8 @@ public partial class Player : AnimatedEntity
 
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
+
+		MoveRagdoll();
 	}
 
 	public void SetCharred( bool charred )
