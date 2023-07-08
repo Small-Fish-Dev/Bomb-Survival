@@ -25,75 +25,13 @@ public partial class Player : AnimatedEntity
 	public SpringJoint GrabSpring { get; private set; }
 	public float CrouchLevel => Math.Clamp( ( Collider?.Position.z - Position.z ) / ( CollisionWidth / 1.5f ) * 0.7f ?? 0f, 0f, 0.7f ) + 0.3f;
 
-	public override void Spawn()
-	{
-		base.Spawn();
-
-		SetModel( "models/citizen/citizen.vmdl" );
-		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
-		Tags.Add( "player" );
-
-		EnableDrawing = false;
-
-		SpawnCollider();
-		Respawn();
-	}
-
-	public override void ClientSpawn()
-	{
-		base.ClientSpawn();
-
-		SpawnRagdoll();
-	}
-
-	public void Respawn()
-	{
-		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
-
-		Position = spawnPoint.GetBoneTransform( 1 ).Position;
-		Velocity = Vector3.Zero;
-
-		EnableAllCollisions = true;
-		knockedOutTimer = 0f;
-		IsKnockedOut = false;
-		IsDead = false;
-
-		SetCharred( false );
-
-		if ( Game.IsServer )
-		{
-			if ( Collider.IsValid() )
-			{
-				PlaceCollider();
-				Collider.EnableAllCollisions = true;
-			}
-
-			AssignPoints( (int)(Score * -0.05f) ); // Remove 5% of their score
-		}
-		else
-		{
-			spawnPoint.ClientModel.CurrentSequence.Time = 0;
-			spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
-		}
-	}
-
-	public void Kill()
-	{
-		Release();
-		WakeUp();
-
-		IsDead = true;
-		respawnTimer = 1f;
-		EnableAllCollisions = false;
-		Collider.EnableAllCollisions = false;
-		EnableDrawing = false;
-		LivesLeft--;
-	}
-
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
 	private Rotation wishRotation;
 	TimeSince lastRotation = 0f;
+
+	private float cameraDistance = 200f;
+	private TimeSince lastMoved;
 
 	public override void BuildInput()
 	{
@@ -124,16 +62,23 @@ public partial class Player : AnimatedEntity
 		InputRotation = Rotation.Slerp( InputRotation, wishRotation, Time.Delta * 5f );
 	}
 
-
 	public override void Simulate( IClient cl )
 	{
 		base.Simulate( cl );
 
 		if ( IsDead )
 		{
-			if ( LivesLeft >= 0 )
-				if ( respawnTimer )
-					Respawn();
+			if ( Game.IsServer )
+			{
+				var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+				Position = spawnPoint.GetBoneTransform( 1 ).Position;
+
+				if ( LivesLeft >= 0 )
+					if ( respawnTimer )
+						Respawn();
+			}
+			else
+				PlaceRagdoll();
 
 			return;
 		}
@@ -150,9 +95,6 @@ public partial class Player : AnimatedEntity
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
 	}
-
-	private float cameraDistance = 200f;
-	private TimeSince lastMoved;
 
 	public override void FrameSimulate( IClient cl )
 	{
@@ -182,13 +124,91 @@ public partial class Player : AnimatedEntity
 		MoveRagdoll();
 	}
 
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		SetModel( "models/citizen/citizen.vmdl" );
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
+		Tags.Add( "player" );
+
+		EnableDrawing = false;
+
+		SpawnCollider();
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		SpawnRagdoll();
+	}
+
+	public void Respawn()
+	{
+		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+
+		Position = spawnPoint.GetBoneTransform( 1 ).Position;
+		Velocity = Vector3.Zero;
+
+		EnableAllCollisions = true;
+		knockedOutTimer = 0f;
+		IsKnockedOut = false;
+		IsDead = false;
+		SetCharred( false );
+
+		if ( Collider.IsValid() )
+		{
+			PlaceCollider();
+			Collider.EnableAllCollisions = true;
+		}
+
+		AssignPoints( (int)(Score * -0.05f) ); // Remove 5% of their score
+
+		respawnToClient();
+	}
+
+	[ClientRpc]
+	void respawnToClient()
+	{
+		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+
+		spawnPoint.ClientModel.CurrentSequence.Time = 0;
+		spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
+
+		PlaceRagdoll();
+		Ragdoll.EnableDrawing = true;
+	}
+
+	public void Kill()
+	{
+		Release();
+		WakeUp();
+
+		IsDead = true;
+		respawnTimer = 1f;
+		EnableAllCollisions = false;
+		Collider.EnableAllCollisions = false;
+		LivesLeft--;
+
+		killToClient();
+	}
+
+	[ClientRpc]
+	void killToClient()
+	{
+		if ( !Ragdoll.IsValid() ) return;
+		Ragdoll.EnableDrawing = false;
+	}
+
+	[ClientRpc]
 	public void SetCharred( bool charred )
 	{
 		var colorToApply = charred ? Color.Black : Color.White;
 
-		RenderColor = colorToApply;
+		Ragdoll.RenderColor = colorToApply;
 
-		foreach ( var child in Children )
+		foreach ( var child in Ragdoll.Children )
 			if ( child is ModelEntity clothing )
 				clothing.RenderColor = colorToApply;
 	}
@@ -196,6 +216,7 @@ public partial class Player : AnimatedEntity
 	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
 	{
 		if ( IsDead ) return;
+		if ( !Game.IsServer ) return;
 
 		IsKnockedOut = true;
 		knockedOutTimer = amount;

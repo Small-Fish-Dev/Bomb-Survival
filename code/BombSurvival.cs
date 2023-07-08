@@ -24,10 +24,8 @@ public partial class BombSurvival : GameManager
 
 		var pawn = new Player();
 		client.Pawn = pawn;
-		pawn.Respawn();
+		pawn.DressRagdoll( client );
 
-		var container = new ClothingContainer();
-		container.LoadFromClient( client );
-		container.DressEntity( pawn );
+		pawn.Respawn();
 	}
 }
