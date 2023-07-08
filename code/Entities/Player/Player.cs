@@ -183,7 +183,7 @@ public partial class Player : AnimatedEntity
 		knockedOutTimer = amount;
 
 		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
-
+		Velocity = direction * strength;
 
 		Release();
 	}

@@ -20,17 +20,15 @@ public partial class Player
 
 	public void ComputeMotion()
 	{
-		var animationHelper = new CitizenAnimationHelper( this );
-
 		if ( IsKnockedOut )
-		{
-			if ( Game.IsServer )
-			{
-				//ServerPuppet.Position = ServerPuppet.Position.WithY( 0 );
-				//Position = ServerPuppet.Position.WithY( 0 );
-				//Velocity = ServerPuppet.Velocity.WithY( 0 );
-			}
-		}
+			knockedOutMotion();
+		else
+			normalMotion();
+	}
+
+	void normalMotion()
+	{
+		var animationHelper = new CitizenAnimationHelper( this );
 
 		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
@@ -39,24 +37,21 @@ public partial class Player
 		else
 			WishSpeed = 0f;
 
-		if ( !IsKnockedOut )
-		{
-			Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
-				.WithZ( Velocity.z ); // Don't smooth vertical movement
+		Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
+			.WithZ( Velocity.z ); // Don't smooth vertical movement
 
-			if ( TimeSinceLostFooting > Time.Delta * 5f )
-				Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
+		if ( TimeSinceLostFooting > Time.Delta * 5f )
+			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
 
-			if ( Input.Pressed( "punch" ) && !IsPunching )
-				Punch();
+		if ( Input.Pressed( "punch" ) && !IsPunching )
+			Punch();
 
-			WantsToGrab = Input.Down( "grab" );
+		WantsToGrab = Input.Down( "grab" );
 
-			if ( WantsToGrab && !IsGrabbing )
-				Grab();
-			else if ( Input.Released( "grab" ) )
-				Release();
-		}
+		if ( WantsToGrab && !IsGrabbing )
+			Grab();
+		else if ( Input.Released( "grab" ) )
+			Release();
 
 		var moveHelper = new MoveHelper( Position, Velocity );
 		moveHelper.MaxStandableAngle = MaxWalkableAngle;
@@ -76,7 +71,7 @@ public partial class Player
 		Position = moveHelper.Position.WithY( 0 );
 		Velocity = moveHelper.Velocity.WithY( 0 );
 
-		var traceDown = moveHelper.TraceDirection( Vector3.Down * 3f * (IsKnockedOut ? 3f : 1f) * (Velocity.z > 50f ? 0.3f : 1f) );
+		var traceDown = moveHelper.TraceDirection( Vector3.Down * 3f * (Velocity.z > 50f ? 0.3f : 1f) );
 
 		if ( traceDown.Entity != null )
 		{
@@ -114,5 +109,32 @@ public partial class Player
 		if ( Input.Down( "launch" ) )
 			if ( !IsKnockedOut )
 				KnockOut( CollisionCenter + InputRotation.Backward * 50f, 400f, 1f );
+	}
+
+	void knockedOutMotion()
+	{
+		var moveHelper = new MoveHelper( Position, Velocity );
+		moveHelper.MaxStandableAngle = MaxWalkableAngle;
+
+		moveHelper.Trace = moveHelper.Trace
+			.Size( CollisionBox.Mins, CollisionBox.Maxs )
+			.WithoutTags( "puppet", "collider" )
+			.Ignore( this );
+
+		moveHelper.TryMove( Time.Delta );
+		moveHelper.TryUnstuck2D( CollisionHeight - 1f );
+
+		Position = moveHelper.Position.WithY( 0 );
+		Velocity = moveHelper.Velocity.WithY( 0 );
+
+		var traceDown = moveHelper.TraceDirection( Vector3.Down * 10f );
+
+		if ( traceDown.Entity != null )
+		{
+			GroundEntity = traceDown.Entity;
+			Velocity -= Velocity * Time.Delta * 3f;
+		}
+		else
+			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
 	}
 }
