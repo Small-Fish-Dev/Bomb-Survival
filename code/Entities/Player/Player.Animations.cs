@@ -29,7 +29,6 @@ public partial class Player
 
 		animationHelper.HoldType = IsPunching ? CitizenAnimationHelper.HoldTypes.Punch : CitizenAnimationHelper.HoldTypes.None;
 
-
 		animationHelper.DuckLevel = 2 - CrouchLevel * 2f ;
 
 		if ( Game.IsServer )

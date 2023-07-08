@@ -8,7 +8,8 @@ public partial class Player : AnimatedEntity
 	public float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
 	public Vector3 CollisionCenter => Position + Vector3.Up * CollisionHeight * Scale;
-	public Vector3 CollisionTop => Position + Vector3.Up * CollisionHeight * Scale / 1.5f;
+	public Vector3 CollisionTopLocal => Vector3.Up * CollisionHeight * Scale / 1.5f;
+	public Vector3 CollisionTop => Position + CollisionTopLocal;
 	[Net] public bool IsDead { get; private set; } = false;
 	[Net] internal TimeUntil respawnTimer { get; private set; } = 0f;
 	[Net] internal TimeUntil knockedOutTimer { get; private set; } = 0f;
@@ -22,7 +23,7 @@ public partial class Player : AnimatedEntity
 	public bool IsGrabbing => Grabbing != null;
 	[Net] public bool IsBeingGrabbed { get; private set; } = false;
 	public SpringJoint GrabSpring { get; private set; }
-	public float CrouchLevel => Math.Clamp( Collider?.Position.Distance( Position ) / CollisionWidth ?? 0f, 0f, 1f );
+	public float CrouchLevel => Math.Clamp( ( Collider?.Position.z - Position.z ) / ( CollisionWidth / 1.5f ) * 0.7f ?? 0f, 0f, 0.7f ) + 0.3f;
 
 	public override void Spawn()
 	{
@@ -191,9 +192,9 @@ public partial class Player : AnimatedEntity
 	{
 		Collider = new ModelEntity();
 		Collider.SetModel( "models/editor/axis_helper_thick.vmdl_c" );
-		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth / 2f, Vector3.Up * CollisionHeight, CollisionWidth / 2f ));
+		Collider.SetupPhysicsFromOrientedCapsule( PhysicsMotionType.Dynamic, new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * ( CollisionHeight + CollisionWidth / 4f ), CollisionWidth / 1.5f ));
 
-		Collider.PhysicsBody.Mass = 50f;
+		Collider.PhysicsBody.Mass = 150f;
 
 		Collider.EnableAllCollisions = true;
 		Collider.EnableDrawing = false;
@@ -201,10 +202,9 @@ public partial class Player : AnimatedEntity
 
 		PlaceCollider();
 
-		var connectionPosition = Vector3.Up * CollisionHeight * Scale;
-		PhysicsJoint.CreateSlider( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, connectionPosition ), 0f, CollisionHeight );
-		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, connectionPosition ), 0f, 0f );
-		spring.SpringLinear = new PhysicsSpring( 2.5f, 0.1f );
+		PhysicsJoint.CreateSlider( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, CollisionHeight );
+		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Collider.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
+		spring.SpringLinear = new PhysicsSpring( 2f, 0.5f );
 	}
 	internal void PlaceCollider()
 	{
@@ -218,7 +218,7 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Collider.IsValid() ) return;
 
-		if ( Collider.Position.Distance( CollisionTop ) >= CollisionHeight )
+		if ( Collider.Position.Distance( CollisionTop ) >= CollisionHeight * 2 )
 			PlaceCollider();
 	}
 

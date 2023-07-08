@@ -12,7 +12,7 @@ public enum GameState
 
 public partial class BombSurvival
 {
-	[Net, Change] public GameState CurrentState { get; private set; } = GameState.Starting;
+	[Net, Change] public GameState CurrentState { get; private set; } = GameState.Playing;
 
 	public static Dictionary<GameState, Action> StateActions = new()
 	{
