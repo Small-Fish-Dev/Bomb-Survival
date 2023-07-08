@@ -31,6 +31,9 @@ public partial class Player : AnimatedEntity
 		Ragdoll.PhysicsGroup.Velocity = Velocity;
 
 		PlaceRagdoll();
+
+		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Ragdoll.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
+		spring.SpringLinear = new PhysicsSpring( 8f, 0.8f );
 	}
 
 	public void DressRagdoll( IClient cl )
@@ -67,17 +70,31 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Ragdoll.IsValid() || !Ragdoll.PhysicsBody.IsValid() ) return;
 
-		foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
+		if ( !IsKnockedOut )
 		{
-			var ragdollBone = Ragdoll.GetBone( body );
-			var boneTransform = GetBoneTransform( ragdollBone );
+			foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
+			{
+				var ragdollBone = Ragdoll.GetBone( body );
+				var boneTransform = GetBoneTransform( ragdollBone );
 
-			var direction = boneTransform.Position - body.Position;
-			var force = body.Mass * 500000f;
+				var direction = boneTransform.Position - body.Position;
+				var force = body.Mass * 500000f;
 
-			body.ApplyForce( direction * force * Time.Delta );
-			body.LinearDamping = 0.5f / Time.Delta;
-			body.Rotation = boneTransform.Rotation;
+				body.ApplyForce( direction * force * Time.Delta );
+				body.LinearDamping = 0.5f / Time.Delta;
+				body.Rotation = boneTransform.Rotation;
+			}
+		}
+		else
+		{
+			foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
+				body.LinearDamping = 0f;
+
+			if ( knockedOutTimer.Passed <= 0.1f )
+			{
+				Ragdoll.PhysicsGroup.Velocity = Velocity;
+				Ragdoll.PhysicsGroup.AngularVelocity = Vector3.Right * (Velocity.x >= 0f ? -50f : 50f );
+			}
 		}
 	}
 }

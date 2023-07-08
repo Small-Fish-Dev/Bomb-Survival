@@ -141,6 +141,9 @@ public partial class Player : AnimatedEntity
 	{
 		base.ClientSpawn();
 
+		SetModel( "models/citizen/citizen.vmdl" );
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
+
 		SpawnRagdoll();
 	}
 
