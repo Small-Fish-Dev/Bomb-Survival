@@ -28,6 +28,7 @@
       "DefaultRoughness": 1,
       "DefaultMetalness": 0,
       "DefaultAmbientOcclusion": 1,
+      "PositionOffset": {},
       "Identifier": "0",
       "Position": "2240,736"
     },
@@ -37,7 +38,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Colour",
@@ -57,7 +58,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Normal",
@@ -79,7 +80,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Rough",
@@ -386,7 +387,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "AO",
@@ -422,7 +423,7 @@
         "Identifier": "48",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Blend Mask",
@@ -544,7 +545,7 @@
         "Identifier": "38",
         "Output": "Result"
       },
-      "Texture": "dev/vgui/materials/white.vtex",
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {
         "AddressU": "Clamp",
         "AddressV": "Clamp"
@@ -703,7 +704,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Scorch Colour",
@@ -724,7 +725,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Scorch AO",
@@ -746,7 +747,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Scorch Blend Mask",
@@ -818,7 +819,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Scorch Rough",
@@ -840,7 +841,7 @@
         "Identifier": "47",
         "Output": "Result"
       },
-      "Texture": null,
+      "Image": "materials/dev/white_color.tga",
       "Sampler": {},
       "UI": {
         "Name": "Scorch Normal",

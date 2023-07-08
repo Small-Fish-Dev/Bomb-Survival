@@ -2,7 +2,7 @@
 
 Layer0
 {
-	shader "shaders/foreground_scorch.shader_c"
+	shader "shaders/foreground_scorch.shader"
 
 	BlendMask "materials/default/default_mask.tga"
 
