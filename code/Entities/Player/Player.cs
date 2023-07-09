@@ -117,6 +117,7 @@ public partial class Player : AnimatedEntity
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
 		ComputeAnimations();
+		MoveCollider();
 
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
@@ -145,6 +146,7 @@ public partial class Player : AnimatedEntity
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
 
 		SpawnRagdoll();
+		SpawnCollider();
 	}
 
 	public void Respawn()
@@ -282,7 +284,7 @@ public partial class Player : AnimatedEntity
 			if ( player != null )
 			{
 				player.KnockOut( CollisionCenter, 500f, 1f );
-				PlaySound( "sounds/punch.sound" );
+				PlaySound( "sounds/punch/punch.sound" );
 			}
 			else
 			{
@@ -294,7 +296,7 @@ public partial class Player : AnimatedEntity
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
 				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 300f * targetBody.Mass );
-				PlaySound( "sounds/punch.sound" );
+				PlaySound( "sounds/punch/punch.sound" );
 			}
 		}
 	}

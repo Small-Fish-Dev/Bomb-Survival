@@ -5,7 +5,7 @@ namespace BombSurvival;
 
 public partial class Player : AnimatedEntity
 {
-	[Net] internal ModelEntity Collider { get; private set; }
+	internal ModelEntity Collider { get; private set; }
 
 	internal void SpawnCollider()
 	{

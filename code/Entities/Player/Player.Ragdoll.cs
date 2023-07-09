@@ -72,16 +72,18 @@ public partial class Player : AnimatedEntity
 
 		if ( !IsKnockedOut )
 		{
+			var positionDifference = Ragdoll.GetBoneTransform( 0 ).Position - Ragdoll.PhysicsBody.Position;
+
 			foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
 			{
 				var ragdollBone = Ragdoll.GetBone( body );
-				var boneTransform = GetBoneTransform( ragdollBone );
+				var boneTransform = GetBoneTransform( ragdollBone ).Add( positionDifference, true );
 
 				var direction = boneTransform.Position - body.Position;
-				var force = body.Mass * 500000f;
+				var force = body.Mass * 70000f;
 
 				body.ApplyForce( direction * force * Time.Delta );
-				body.LinearDamping = 0.5f / Time.Delta;
+				body.LinearDamping = 15f;
 				body.Rotation = boneTransform.Rotation;
 			}
 		}
@@ -95,6 +97,18 @@ public partial class Player : AnimatedEntity
 				Ragdoll.PhysicsGroup.Velocity = Velocity;
 				Ragdoll.PhysicsGroup.AngularVelocity = Vector3.Right * (Velocity.x >= 0f ? -50f : 50f );
 			}
+		}
+	}
+
+	internal void MoveRagdolls()
+	{
+		foreach ( var player in Entity.All.OfType<Player>() )
+		{
+			if ( player.IsDead ) continue;
+			if ( player.Client == Game.LocalClient ) continue;
+
+			if ( player.Ragdoll.IsValid() && player.Ragdoll.PhysicsBody.IsValid() )
+				player.MoveRagdoll();
 		}
 	}
 }
