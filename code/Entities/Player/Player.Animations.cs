@@ -34,24 +34,27 @@ public partial class Player
 
 		animationHelper.DuckLevel = 2 - CrouchLevel * 2f;
 
-		if ( Game.IsServer )
+		if ( WantsToGrab && !IsPunching )
 		{
-			if ( WantsToGrab && !IsPunching )
-			{
-				target.SetAnimParameter( "b_vr", true );
+			target.SetAnimParameter( "b_vr", true );
 
-				var startingOffset = Vector3.Up * CollisionHeight * Scale / 2f;
-				var grabPosition = InputRotation.Forward * 100f;
-				var localPosition = Transform.PointToLocal( Position + grabPosition + startingOffset );
-				target.SetAnimParameter( "left_hand_ik.position", localPosition + Vector3.Left * 50f );
-				target.SetAnimParameter( "right_hand_ik.position", localPosition + Vector3.Right * 50f );
+			var startingOffset = Vector3.Up * CollisionHeight * Scale / 2f;
+			var grabPosition = InputRotation.Forward * 100f;
+			var localPosition = Transform.PointToLocal( Position + grabPosition + startingOffset );
+			target.SetAnimParameter( "left_hand_ik.position", localPosition + Vector3.Left * 50f );
+			target.SetAnimParameter( "right_hand_ik.position", localPosition + Vector3.Right * 50f );
 
-				var localRotation = Transform.RotationToLocal( Rotation.From( new Angles( 0f, -90f, 90f ) ) );
-				target.SetAnimParameter( "left_hand_ik.rotation", localRotation );
-				target.SetAnimParameter( "right_hand_ik.rotation", localRotation );
-			}
-			else
-				target.SetAnimParameter( "b_vr", false );
+			var angleInRadians = Math.Atan2( InputRotation.Forward.z, InputRotation.Forward.x );
+			var angleInDegrees = angleInRadians * (180 / Math.PI) + 180f;
+			var pitch = ( 360 - (float)angleInDegrees + 180 ) % 360;
+			var roll = ( 360 - (float)angleInDegrees - 90 ) % 360;
+			var localRotation = Transform.RotationToLocal( Rotation.From( new Angles( pitch, 0f, roll ) ) );
+
+			Log.Info( roll );
+			target.SetAnimParameter( "left_hand_ik.rotation", localRotation );
+			target.SetAnimParameter( "right_hand_ik.rotation", localRotation );
 		}
+		else
+			target.SetAnimParameter( "b_vr", false );
 	}
 }
