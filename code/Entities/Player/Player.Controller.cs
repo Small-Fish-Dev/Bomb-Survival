@@ -13,17 +13,35 @@ public partial class Player
 	public float StepSize => 12f;
 	public float MaxWalkableAngle => 55f;
 
-	internal TimeUntil punchFinish { get; set; } = 0f;
-	public bool IsPunching => !punchFinish;
-
 	public TimeSince TimeSinceLostFooting = 0f;
 
-	public void ComputeMotion()
+	public void ComputeController()
 	{
 		if ( IsKnockedOut )
 			knockedOutMotion();
 		else
+		{
 			normalMotion();
+			computeGrab();
+			computeLaunch();
+		}
+	}
+
+	void computeGrab()
+	{
+		WantsToGrab = Input.Down( "grab" );
+
+		if ( WantsToGrab && !IsGrabbing )
+			Grab();
+		else if ( Input.Released( "grab" ) )
+			Release();
+	}
+
+	void computeLaunch()
+	{
+		if ( Input.Down( "launch" ) )
+			if ( !IsKnockedOut )
+				KnockOut( CollisionCenter + InputRotation.Backward * 50f, 400f, 1f );
 	}
 
 	void normalMotion()
@@ -45,13 +63,6 @@ public partial class Player
 
 		if ( Input.Pressed( "punch" ) && !IsPunching )
 			Punch();
-
-		WantsToGrab = Input.Down( "grab" );
-
-		if ( WantsToGrab && !IsGrabbing )
-			Grab();
-		else if ( Input.Released( "grab" ) )
-			Release();
 
 		var moveHelper = new MoveHelper( Position, Velocity );
 		moveHelper.MaxStandableAngle = MaxWalkableAngle;
@@ -105,10 +116,6 @@ public partial class Player
 			if ( Velocity.z > 0f ) // Floaty jump
 				Velocity += Vector3.Up * -Game.PhysicsWorld.Gravity * Time.Delta / 2f;
 		}
-
-		if ( Input.Down( "launch" ) )
-			if ( !IsKnockedOut )
-				KnockOut( CollisionCenter + InputRotation.Backward * 50f, 400f, 1f );
 	}
 
 	void knockedOutMotion()

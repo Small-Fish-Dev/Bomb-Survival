@@ -13,16 +13,8 @@ public partial class Player : AnimatedEntity
 	public Vector3 CollisionTop => Position + CollisionTopLocal;
 	[Net] public bool IsDead { get; private set; } = false;
 	[Net] internal TimeUntil respawnTimer { get; private set; } = 0f;
-	[Net] internal TimeUntil knockedOutTimer { get; private set; } = 0f;
-	[Net] public bool IsKnockedOut { get; private set; } = false;
 	[Net] public int LivesLeft { get; private set; } = 4;
 
-	[Net] public ModelEntity Grabbing { get; private set; } = null;
-	[Net] public Vector3 GrabbingPosition { get; private set; } = Vector3.Zero;
-	[Net] public bool WantsToGrab { get; private set; } = false;
-	public bool IsGrabbing => Grabbing != null;
-	[Net] public bool IsBeingGrabbed { get; private set; } = false;
-	public SpringJoint GrabSpring { get; private set; }
 	public float CrouchLevel => Math.Clamp( ( Collider?.Position.z - Position.z ) / ( CollisionWidth / 1.5f ) * 0.7f ?? 0f, 0f, 0.7f ) + 0.3f;
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
@@ -83,8 +75,8 @@ public partial class Player : AnimatedEntity
 			return;
 		}
 
-		ComputeAnimations();
-		ComputeMotion();
+		ComputeAnimations( this );
+		ComputeController();
 
 		if ( Game.IsServer )
 		{
@@ -116,7 +108,9 @@ public partial class Player : AnimatedEntity
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
-		ComputeAnimations();
+		if ( Ragdoll.IsValid() )
+			ComputeAnimations( Ragdoll );
+
 		MoveCollider();
 
 		if ( IsKnockedOut )
@@ -204,186 +198,5 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Ragdoll.IsValid() ) return;
 		Ragdoll.EnableDrawing = false;
-	}
-
-	[ClientRpc]
-	public void SetCharred( bool charred )
-	{
-		var colorToApply = charred ? Color.Black : Color.White;
-
-		Ragdoll.RenderColor = colorToApply;
-
-		foreach ( var child in Ragdoll.Children )
-			if ( child is ModelEntity clothing )
-				clothing.RenderColor = colorToApply;
-	}
-
-	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
-	{
-		if ( IsDead ) return;
-		if ( !Game.IsServer ) return;
-
-		IsKnockedOut = true;
-		knockedOutTimer = amount;
-
-		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
-		Velocity = direction * strength;
-
-		Collider.EnableSolidCollisions = false;
-
-		Release();
-	}
-
-	public void WakeUp()
-	{
-		if ( IsDead ) return;
-
-		IsKnockedOut = false;
-
-		Collider.EnableSolidCollisions = true;
-	}
-
-	internal void SimulateKnockedOut()
-	{
-		if ( knockedOutTimer && GroundEntity != null )
-			WakeUp();
-	}
-
-	public void Punch()
-	{
-		punchFinish = 0.3f;
-
-		var animationHelper = new CitizenAnimationHelper( this );
-		animationHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
-		SetAnimParameter( "b_attack", true );
-
-		Release();
-
-		if ( Game.IsClient )
-		{
-			if ( Ragdoll.IsValid() )
-			{
-				var ragdollHelper = new CitizenAnimationHelper( Ragdoll );
-				ragdollHelper.HoldType = CitizenAnimationHelper.HoldTypes.Punch;
-				Ragdoll.SetAnimParameter( "b_attack", true );
-			}
-
-			return;
-		}
-
-		var punchTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
-			.Size( CollisionHeight * 1.5f )
-			.DynamicOnly()
-			.Ignore( this )
-			.Ignore( Collider )
-			.Run();
-
-		if ( punchTrace.Entity is ModelEntity punchTarget )
-		{
-			var player = punchTarget.GetPlayer();
-			if ( player != null )
-			{
-				player.KnockOut( CollisionCenter, 500f, 1f );
-				PlaySound( "sounds/punch/punch.sound" );
-			}
-			else
-			{
-				if ( !punchTarget.PhysicsEnabled ) return;
-
-				var targetBody = punchTarget.PhysicsBody;
-
-				if ( !targetBody.IsValid() ) return;
-				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
-
-				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 300f * targetBody.Mass );
-				PlaySound( "sounds/punch/punch.sound" );
-			}
-		}
-	}
-
-	public void Grab()
-	{
-		if ( Game.IsClient ) return;
-		if ( IsPunching ) return;
-		if ( IsGrabbing ) return;
-
-		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 0.8f )
-			.Size( CollisionHeight * 0.8f )
-			.DynamicOnly()
-			.WithoutTags( "collider", "player" )
-			.Run();
-
-		if ( grabTrace.Entity is ModelEntity grabTarget )
-		{
-			var player = grabTarget.GetPlayer();
-			if ( player != null )
-			{
-				Grabbing = player;
-				player.IsBeingGrabbed = true;
-			}
-			else
-			{
-				if ( !grabTarget.PhysicsEnabled ) return;
-
-				var targetBody = grabTarget.PhysicsBody;
-
-				if ( !targetBody.IsValid() ) return;
-				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
-				if ( grabTarget is Bomb bombTarget && bombTarget.IsExploding ) return;
-
-				Grabbing = grabTarget;
-				Grabbing.PhysicsBody.SurfaceMaterial = "slippery_wave_entity";
-
-				var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
-				var grabPosition = targetBody.FindClosestPoint( armPosition );
-				var distance = armPosition.Distance( grabPosition );
-				GrabSpring = PhysicsJoint.CreateSpring(
-					PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
-					PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
-
-				GrabbingPosition = grabPosition;
-			}
-		}
-	}
-
-	internal void SimulateGrab()
-	{
-		if ( IsKnockedOut ) return;
-		if ( IsDead ) return;
-		if ( !IsGrabbing ) return;
-		if ( Grabbing is Bomb bombTarget && bombTarget.IsExploding )
-		{
-			Release();
-			return;
-		}
-
-		if ( Grabbing is Player player )
-		{
-			if ( player.IsDead ) return;
-			player.Velocity += Velocity.WithZ( 0 );
-			GrabbingPosition = player.Position + Vector3.Up * player.CollisionHeight;
-		}
-		else
-		{
-			GrabbingPosition = GrabSpring.Point2.Transform.Position;
-		}
-
-		//DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
-		//DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
-		//DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
-		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
-	}
-
-	public void Release()
-	{
-		GrabSpring?.Remove();
-		if ( Grabbing != null )
-		{
-			Grabbing.PhysicsBody.SurfaceMaterial = "normal_wave_entity";
-
-			if ( Grabbing is Player player )
-				player.IsBeingGrabbed = false;
-		}
-		Grabbing = null;
 	}
 }
