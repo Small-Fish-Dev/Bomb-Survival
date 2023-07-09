@@ -28,4 +28,11 @@ public partial class BombSurvival : GameManager
 
 		pawn.Respawn();
 	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		Sound.FromScreen( "sounds/music/fifth_of_beethoven.sound" );
+	}
 }
