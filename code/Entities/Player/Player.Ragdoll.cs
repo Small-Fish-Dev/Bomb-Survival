@@ -29,6 +29,7 @@ public partial class Player : AnimatedEntity
 		Ragdoll.RenderColor = RenderColor;
 		Ragdoll.PhysicsEnabled = true;
 		Ragdoll.PhysicsGroup.Velocity = Velocity;
+		Ragdoll.UseAnimGraph = true;
 
 		PlaceRagdoll();
 

@@ -5,9 +5,9 @@ public partial class Player
 	Vector3 currentLookAt = Vector3.Zero;
 	Vector3 nextLookAt = Vector3.Zero;
 
-	public void ComputeAnimations()
+	public void ComputeAnimations( AnimatedEntity target )
 	{
-		var animationHelper = new CitizenAnimationHelper( this );
+		var animationHelper = new CitizenAnimationHelper( target );
 
 		if ( InputRotation == new Rotation() )
 			if ( !Velocity.IsNearlyZero( 1 ) )
@@ -27,28 +27,31 @@ public partial class Player
 		animationHelper.WithVelocity( Velocity );
 		animationHelper.IsGrounded = GroundEntity != null;
 
+		if ( !target.GetAnimParameterBool( "b_attack" ) && IsPunching && animationHelper.HoldType != CitizenAnimationHelper.HoldTypes.Punch )
+			target.SetAnimParameter( "b_attack", true );
+
 		animationHelper.HoldType = IsPunching ? CitizenAnimationHelper.HoldTypes.Punch : CitizenAnimationHelper.HoldTypes.None;
 
-		animationHelper.DuckLevel = 2 - CrouchLevel * 2f ;
+		animationHelper.DuckLevel = 2 - CrouchLevel * 2f;
 
 		if ( Game.IsServer )
 		{
 			if ( WantsToGrab && !IsPunching )
 			{
-				SetAnimParameter( "b_vr", true );
+				target.SetAnimParameter( "b_vr", true );
 
 				var startingOffset = Vector3.Up * CollisionHeight * Scale / 2f;
 				var grabPosition = InputRotation.Forward * 100f;
 				var localPosition = Transform.PointToLocal( Position + grabPosition + startingOffset );
-				SetAnimParameter( "left_hand_ik.position", localPosition + Vector3.Left * 50f );
-				SetAnimParameter( "right_hand_ik.position", localPosition + Vector3.Right * 50f );
+				target.SetAnimParameter( "left_hand_ik.position", localPosition + Vector3.Left * 50f );
+				target.SetAnimParameter( "right_hand_ik.position", localPosition + Vector3.Right * 50f );
 
 				var localRotation = Transform.RotationToLocal( Rotation.From( new Angles( 0f, -90f, 90f ) ) );
-				SetAnimParameter( "left_hand_ik.rotation", localRotation );
-				SetAnimParameter( "right_hand_ik.rotation", localRotation );
+				target.SetAnimParameter( "left_hand_ik.rotation", localRotation );
+				target.SetAnimParameter( "right_hand_ik.rotation", localRotation );
 			}
 			else
-				SetAnimParameter( "b_vr", false );
+				target.SetAnimParameter( "b_vr", false );
 		}
 	}
 }
