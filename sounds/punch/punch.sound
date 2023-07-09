@@ -5,9 +5,9 @@
   "Decibels": 70,
   "SelectionMode": "Random",
   "Sounds": [
-    "sounds/punch1.vsnd",
-    "sounds/punch2.vsnd",
-    "sounds/punch3.vsnd"
+    "sounds/punch/punch1.vsnd",
+    "sounds/punch/punch2.vsnd",
+    "sounds/punch/punch3.vsnd"
   ],
   "MaximumDistance": 1143.9335,
   "MinimumDistance": 57.196674

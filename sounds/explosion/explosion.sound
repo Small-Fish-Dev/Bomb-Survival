@@ -5,9 +5,9 @@
   "Decibels": 70,
   "SelectionMode": "Random",
   "Sounds": [
-    "sounds/explosion1.vsnd",
-    "sounds/explosion2.vsnd",
-    "sounds/explosion3.vsnd"
+    "sounds/explosion/explosion1.vsnd",
+    "sounds/explosion/explosion2.vsnd",
+    "sounds/explosion/explosion3.vsnd"
   ],
   "MaximumDistance": 1143.9335,
   "MinimumDistance": 57.196674

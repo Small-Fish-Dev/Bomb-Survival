@@ -124,7 +124,7 @@ public partial class BombSurvival
 		Particles.Create( "particles/explosion.vpcf", position )
 			.Set( "size", charSize );
 
-		Sound.FromWorld( "sounds/explosion.sound", position );
+		Sound.FromWorld( "sounds/explosion/explosion.sound", position );
 	}
 	public static void Explosion( Vector2 position, float size = 75f ) => Explosion( PointToWorld( position ), size );
 
