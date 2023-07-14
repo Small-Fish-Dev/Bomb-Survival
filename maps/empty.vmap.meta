@@ -1,11 +1,12 @@
 {
   "publish": {
+    "Allowed": true,
     "Enabled": false,
     "ProjectConfig": {
-      "Title": null,
-      "Type": null,
-      "Org": null,
-      "Ident": null,
+      "Title": "empty",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "empty",
       "Tags": null,
       "Schema": 0,
       "HasAssets": false,
@@ -18,7 +19,9 @@
       "EditorReferences": [
         "local.bomb_survival#local"
       ],
-      "Metadata": {}
+      "Metadata": {
+        "SingleAssetSource": "maps/empty.vmap"
+      }
     }
   }
 }
