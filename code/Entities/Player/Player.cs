@@ -146,7 +146,7 @@ public partial class Player : AnimatedEntity
 	public void Respawn()
 	{
 		var spawnPoint = Entity.All.OfType<Checkpoint>()
-			.Where( x => x.IsScoreboardCheckpoint != ( BombSurvival.Instance.CurrentState == GameState.Playing ) )
+			.Where( x => x.IsScoreboardCheckpoint != ( BombSurvival.Instance.CurrentState is PlayingState ) )
 			.FirstOrDefault();
 
 		Position = spawnPoint.GetBoneTransform( 1 ).Position;
@@ -180,7 +180,7 @@ public partial class Player : AnimatedEntity
 	void respawnToClient()
 	{
 		var spawnPoint = Entity.All.OfType<Checkpoint>()
-			.Where( x => x.IsScoreboardCheckpoint != (BombSurvival.Instance.CurrentState == GameState.Playing) )
+			.Where( x => x.IsScoreboardCheckpoint != ( BombSurvival.Instance.CurrentState is PlayingState ) )
 			.FirstOrDefault();
 
 		spawnPoint.ClientModel.CurrentSequence.Time = 0;
