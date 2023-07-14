@@ -9,10 +9,9 @@ public enum GameState
 	Ending
 }
 
-
 public partial class BombSurvival
 {
-	[Net, Change] public GameState CurrentState { get; private set; } = GameState.Playing;
+	[Net, Change] public GameState CurrentState { get; private set; } = GameState.Starting;
 
 	public static Dictionary<GameState, Action> StateActions = new()
 	{

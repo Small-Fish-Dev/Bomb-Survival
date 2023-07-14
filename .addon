@@ -206,6 +206,19 @@
           "b": "puppet"
         }
       ]
-    }
+    },
+    "TickRate": 50,
+    "LaunchConfigs": [
+      {
+        "Name": "My New Config",
+        "GameIdent": "local.bomb_survival#local",
+        "MapName": "empty.vmap",
+        "MaxPlayers": 64,
+        "GameSettings": {},
+        "Addons": "",
+        "PreLaunchCommand": "",
+        "PostLaunchCommand": ""
+      }
+    ]
   }
 }

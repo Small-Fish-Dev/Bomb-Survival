@@ -145,7 +145,9 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn()
 	{
-		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+		var spawnPoint = Entity.All.OfType<Checkpoint>()
+			.Where( x => x.IsScoreboardCheckpoint != ( BombSurvival.Instance.CurrentState == GameState.Playing ) )
+			.FirstOrDefault();
 
 		Position = spawnPoint.GetBoneTransform( 1 ).Position;
 		Velocity = Vector3.Zero;
@@ -167,10 +169,19 @@ public partial class Player : AnimatedEntity
 		respawnToClient();
 	}
 
+	[ConCmd.Admin( "respawn" )]
+	public static void RespawnCommand()
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player caller ) return;
+		caller.Respawn();
+	}
+
 	[ClientRpc]
 	void respawnToClient()
 	{
-		var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
+		var spawnPoint = Entity.All.OfType<Checkpoint>()
+			.Where( x => x.IsScoreboardCheckpoint != (BombSurvival.Instance.CurrentState == GameState.Playing) )
+			.FirstOrDefault();
 
 		spawnPoint.ClientModel.CurrentSequence.Time = 0;
 		spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
