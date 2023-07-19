@@ -88,21 +88,48 @@ public partial class Player : AnimatedEntity
 			SimulateKnockedOut();
 	}
 
+	public bool IsZoomed = false;
+
 	public override void FrameSimulate( IClient cl )
 	{
 		base.FrameSimulate( cl );
 
 		if ( IsDead ) return;
 
+		var nearbyPlayers = Entity.FindInSphere( Position, 512 )
+			.OfType<Player>()
+			.Where( x => x != this ) // Exclude the current player
+			.ToList();
+
+		Vector3 centerPoint = this.Position;
+		float maxDistance = 200f; // Default camera distance
+		float minDistance = 150f; // Minimum camera distance
+
+		if ( nearbyPlayers.Count > 0 )
+		{
+			Vector3 othersCenter = nearbyPlayers.Aggregate( Vector3.Zero, ( sum, player ) => sum + player.Position ) / nearbyPlayers.Count;
+			maxDistance = nearbyPlayers.Max( player => Vector3.DistanceBetween( centerPoint, player.Position ) );
+
+			// Adjust centerPoint to be a weighted average between player's position (70% weight) and othersCenter (30% weight)
+			centerPoint = 0.7f * this.Position + 0.3f * othersCenter;
+		}
+
 		if ( Velocity.Length > 1f )
 			lastMoved = 0f;
 
 		if ( lastMoved > 2.5f )
+		{
+			centerPoint = this.Position;  // focus on the current player
 			cameraDistance = cameraDistance.LerpTo( 100f, Time.Delta * lastMoved );
+			IsZoomed = true;
+		}
 		else
-			cameraDistance = cameraDistance.LerpTo( 200f + Velocity.Length * 0.15f, Time.Delta * 0.5f );
-
-		var wishPosition = Position;
+		{
+			cameraDistance = Math.Clamp( maxDistance, minDistance, float.MaxValue );
+			IsZoomed = false;
+		}
+		
+		var wishPosition = centerPoint;
 		Camera.Position = Vector3.Lerp( Camera.Position, wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
 		Camera.Rotation = Rotation.FromYaw( 90f );
 
@@ -118,6 +145,8 @@ public partial class Player : AnimatedEntity
 
 		MoveRagdoll();
 	}
+
+
 
 	public override void Spawn()
 	{
