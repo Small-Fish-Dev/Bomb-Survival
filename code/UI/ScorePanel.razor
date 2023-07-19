@@ -1,0 +1,185 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+
+@namespace BombSurvival
+@inherits WorldPanel
+
+<root>
+	<div class="header">
+		Hi-Scores
+		<div class="players">(@(Game.Clients.Count) Player)</div>
+	</div>
+
+	<div class="border">
+		<div class="fill" />
+	</div>
+
+	<div class="stats">
+		@{
+			var index = 1;
+			var previous = (Player)null;
+		}
+
+		@foreach ( var player in players )
+		{
+			<div class="player">
+				<div style="font-size: 30px;">
+					#@(previous != null && previous.Score == player.Score ? --index : index)
+				</div>
+
+				<div class="avatar" style="transform: rotate(@(new Random( player.Client.Id ).Int( -10, 10 )));">
+					<img class="image" src="avatar:@(player.Client.SteamId)" />
+				</div>
+
+				<div class="name">
+					@(player.Client.Name)
+				</div>
+
+				<div class="score">
+					@(player.Score.ToString( "N0" ))
+				</div>
+
+				<div class="bottom" />
+			</div>
+
+			@{
+				index++;
+				previous = player;
+			}
+		}
+	</div>
+</root>	
+
+@code {
+	IOrderedEnumerable<Player> players 
+		=> Game.Clients.Select( cl => cl.Pawn as Player )
+			.OrderByDescending( player => player.Score );
+
+	public ScorePanel( Vector2 size, float scale = 1 )
+	{
+		WorldScale = scale;
+		PanelBounds = new Rect( -size / 2f, size );
+	}
+
+	protected override int BuildHash()
+	{
+		return players.GetHashCode();
+	}
+}
+
+<style>
+	ScorePanel {
+		width: 100%;
+		height: 100%;
+		background-color: #202226;
+		flex-direction: column;
+		
+		.header {
+			padding: 20px;
+			padding-top: 5px;
+			padding-bottom: 0px;
+			font-size: 52px;
+			font-family: Poppins-Bold;
+			color: darken(gray, 25%);
+			align-items: center;
+			flex-direction: row;
+			flex-wrap: wrap;
+			flex-grow: 1;
+
+			.players {
+				flex-grow: 1;
+				font-family: Poppins-Medium;
+				font-size: 38px;
+				justify-content: flex-end;
+			}
+		}
+
+		.border {
+			top: 0px;
+			padding-left: 20px;
+			padding-right: 20px;
+			padding-bottom: 4px;
+			width: 100%;
+			
+			.fill {
+				width: 100%;
+				height: 5px;
+				background-color: darken(gray, 25%);
+				opacity: 1;
+			}
+		}
+
+		.stats {
+			height: 100%;
+			width: 100%;
+			padding-left: 20px;
+			padding-right: 20px;
+			flex-direction: column;
+			overflow: visible;
+
+			.player {
+				width: 100%;
+				margin-bottom: 5px;
+				height: 45px;
+				font-family: 'Poppins-SemiBold';
+				align-items: center;
+				color: darken(gray, 25%);
+				font-size: 40px;
+
+				.avatar {
+					height: 32px;
+					width: 28px;
+					background-color: white;
+					margin-left: 10px;
+					margin-right: 10px;
+
+					.image {
+						width: 24px;
+						height: 24px;
+						left: 2px;
+						top: 2px;
+					}
+				}
+
+				.name {
+					color: white;
+					align-self: flex-start;
+					bottom: 5px;
+					font-family: Poppins-Medium;
+					text-decoration: underline;
+					text-decoration-thickness: 6px;
+					text-decoration-color: rgb(50, 140, 135);
+				}
+
+				.score {
+					position: absolute;
+					right: 0px;
+				}
+
+				&:last-child {
+					.bottom {
+						opacity: 0;
+					}
+				}
+			}
+
+			.bottom {
+				position: absolute;
+				bottom: -18px;
+				width: 100%;
+				height: 15px;
+				background-repeat: repeat-x;
+				background-color: rgba(white, 0);
+				background-image: url(ui/score/dots.png);
+				background-image-tint: gray;
+				opacity: 1;
+			}
+		}
+
+		img {
+			background-position: center;
+			background-size: 100%;
+			background-repeat: no-repeat;
+		}
+	}
+</style>
