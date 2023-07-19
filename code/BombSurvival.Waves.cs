@@ -62,6 +62,8 @@ public partial class BombSurvival
 
 	public static void ComputeWaves()
 	{
+		if ( !Bombs ) return;
+
 		if ( nextWave )
 		{
 			if ( waveEntititesSpawned == 0 )

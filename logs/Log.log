@@ -1,0 +1,773 @@
+2023/07/19 20:05:28.0807	engine/Engine	SteamAPI_Init succeeded.  SteamID is [U:1:89129374] (76561198049395102), AppID is 590830	
+2023/07/19 20:05:28.1189	engine/Steam	CSteam3Client::Activate succeeded.  SteamID is [U:1:89129374] (76561198049395102), AppID is 590830	
+2023/07/19 20:05:31.1265	tools	Was unable to determine package for /models/animals/kong.vmdl_c	
+2023/07/19 20:05:31.1265	tools	Was unable to determine package for /models/animals/textures/eyesao_trans_png_27573572.generated.vtex_c	
+2023/07/19 20:05:31.1265	tools	Was unable to determine package for /models/animals/kong.vmat_c	
+2023/07/19 20:05:31.1265	tools	Was unable to determine package for /models/animals/eyes_ao.vmat_c	
+2023/07/19 20:05:31.1265	tools	Was unable to determine package for /models/animals/textures/kong_color_png_9916427a.generated.vtex_c	
+2023/07/19 20:05:31.1265	tools	Was unable to determine package for /models/animals/textures/kong_normal_png_9931a49.generated.vtex_c	
+2023/07/19 20:05:31.1721	tools	Was unable to determine package for /obsolete/obsolete.txt	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /sounds/raw/music/wave_music_3_end.vsnd_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/dark_grey_vmat_g_tcolor_a0ce44b8.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/spherelights_basecolor_and_selfillum_png_3b1d48f8.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/spherelights_basecolor_and_selfillum_png_dada7847.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/towers/lightning_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/lightningtower_png_8d7109bc.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/tankgas_base_color_png_68dfe7f4.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/zombie_citizen_jpg_b9182107.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/chair_normal_png_e35e431e.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/chair_base_color_png_6227431b.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/dark_grey_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/grey_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/tankgas_normal_png_17a6df49.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/grey_vmat_g_tcolor_a0ce44b8.generated.vtex_c	
+2023/07/19 20:05:31.1731	tools	Was unable to determine package for /materials/raw/time displacer/base_roughness_jpg_f374829a.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/npcs/spawnpoint_portal_vmat_g_tselfillummask_b8cad02f.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/npcs/spawnpoint_portal_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/raw/time displacer/sphere_base_color_jpg_88e5da26.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/npcs/zombie_vmat_g_tambientocclusion_8b5a0197.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/raw/bullets/albedo_png_40a0ec50.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/raw/time displacer/base_base_color_jpg_98c02ed0.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/raw/bullets/ao_png_6cd1c7ef.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /models/raw/crackling_lava/lava001_color_jpg_cfc38a5e.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /materials/raw/bullets/normal_png_37ca19f.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /sounds/raw/music/wave_music_3.vsnd_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /models/raw/crackling_lava/lava001_normal_jpg_61b2b004.generated.vtex_c	
+2023/07/19 20:05:31.1891	tools	Was unable to determine package for /models/raw/crackling_lava/lava001_selfillum_jpg_8c7fe48f.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/npc_portal/portal-16-cell-animation1_jpg_c108de2d.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/magma_citizen_jpg_2d7e0299.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/npc_portal/npc_portal_color_png_43d4068f.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/citizen_skin_normal_png_d8c24e8f.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/void_citizen_jpg_dd78330e.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/ice_citizen_jpg_162408c0.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/husk_citizen_jpg_d8016894.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/radartower/foot_ao_png_7691929d.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/radartower/base_ao_png_1b00a114.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/radartower/midbeam_ambient_occlusion_png_7695599a.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/radartower/beams_ambient_occlusion_png_84cf835e.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/radartower/dish_ambient_occlusion_png_51cfeb28.generated.vtex_c	
+2023/07/19 20:05:31.2047	tools	Was unable to determine package for /materials/raw/radartower/radar_base_color_png_9834ca76.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_beams_color_png_2d133147.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_foot_color_png_a59f8767.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_midbeam_color_png_200e11.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_beams_normal_png_c23a639c.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_rotater_color_png_6f392026.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_midbeam_normal_png_4ffe88d8.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radioactivemitter_png_edad00e3.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_rotatebase_color_png_5c54fa13.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_foot_normal_png_58a778a1.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/rotatemidbase_ambient_occlusion_png_7730004f.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/rotater_ambient_occlusion_png_3648b4a5.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_rotatemidbase_color_png_e2274e7d.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/radar_dish_color_png_7d8c617e.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_foot_ao_png_83d7208f.generated.vtex_c	
+2023/07/19 20:05:31.2196	tools	Was unable to determine package for /materials/raw/radartower/rotatebase_ambient_occlusion_png_65585c1a.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/radar_rotater_normal_png_367f128a.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/radar_rotatemidbase_normal_png_5692ac61.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/radar_base_normal_png_f024144.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/tip_ambient_occlusion_png_303a1a4f.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/radar_tip_color_png_a941b78c.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_barrel_ao_png_cfa8675a.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_base_ao_png_c38ab28f.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/npc_portal/npc_portal_ao_png_3d0123e1.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/radar_tip_normal_png_e2813f69.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/smgtower/foot_ambient_occlusion_png_13bc4540.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/smgtower/barrel_ambient_occlusion_png_cc8b6fc8.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_foot_color_png_f974b1f1.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_gunbox_ao_png_b029121c.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/radartower/radar_dish_normal_png_14dfea07.generated.vtex_c	
+2023/07/19 20:05:31.2359	tools	Was unable to determine package for /materials/raw/smgtower/base_ambient_occlusion_png_8f8590da.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_barrel_normal_png_7e3ecfa4.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/smgtower/gunbox_ambient_occlusion_png_f0b9fd5d.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_base_color_png_47ae33c2.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_foot_normal_png_fdb76e9e.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_barrel_color_png_d94d7f6b.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_foot_basecolor_png_2c5aa771.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/radartower/radar_rotatebase_normal_png_466ce8fa.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_barrel_basecolor_png_34626d02.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/snipertower/snipertower_ao_png_dfe76ab6.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/snipertower/snipertower_metal_png_70306de3.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/towers/basetower_vmat_g_tcolor_a0ce44b8.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/towers/basetower_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/towers/bluecastle_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.2520	tools	Was unable to determine package for /materials/raw/snipertower/snipertower_color_png_74e45b3f.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_base_normal_png_91d06dac.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/towers/bluecastle_vmat_g_tcolor_a0ce44b8.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_gunbox_normal_png_b4f8c0.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_foot_normal_png_4198aea9.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_base_basecolor_png_ce9dbf19.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/snipertower/snipertower_normal_png_b9e97801.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/towers/radioemitter_vmat_g_tnormal_49b3bca5.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_base_normal_png_64315bc4.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_gunbox_normal_png_2a36eb9d.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_barrel_normal_png_709bf992.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/towers/trickster_vmat_g_tambientocclusion_8b5a0197.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/shotguntower/shotgun_tower_gunbox_color_png_d390e52.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/npc_portal/npc_portal_normal_png_cecf9437.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /materials/raw/smgtower/smg tower_gunbox_basecolor_png_e3576b42.generated.vtex_c	
+2023/07/19 20:05:31.2670	tools	Was unable to determine package for /models/towers/prefabs/pistol_tower.prefab_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/editor/cd_comp_setup_png_c048b698.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/editor/cd_wave_setup_png_e892ea59.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/raw/trickstertower/trickstertower_base_color_png_103fe6c4.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/raw/trickstertower/trickstertower_normal_png_552d6161.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_foot_metallic_png_f88f797f.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_base_metallic_png_f2f76b73.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_gunbox_metallic_png_fae23c44.generated.vtex_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /animgraphs/base_tower_anim.vanmgrph_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /animgraphs/base_tower_anim_misc.vanmgrph_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /animgraphs/dummytower.vanmgrph_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /animgraphs/spider.vanmgrph_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /maps/supertd2_testmap.vpk	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /maps/tutorial.vpk	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/bullets/9mm.vmat_c	
+2023/07/19 20:05:31.2830	tools	Was unable to determine package for /materials/dark_grey.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/editor/cd_comp_setup_icon.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/editor/cd_wave_setup_icon.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/grey.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/husk.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/ice.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/magma.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/spawnpoint_mat.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/spawnpoint_portal.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/void.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/npcs/zombie.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/raw/npc_portal/npc_portal.vmat_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/raw/pistoltower/barrel_ambient_occlusion_png_8ad06b9a.generated.vtex_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/raw/pistoltower/base_ambient_occlusion_png_c5fc3930.generated.vtex_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/raw/pistoltower/foot_ambient_occlusion_png_79cd62ef.generated.vtex_c	
+2023/07/19 20:05:31.2984	tools	Was unable to determine package for /materials/raw/pistoltower/gunbox_ambient_occlusion_png_d5a0041.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/lowerleg_ambient_occlusion_png_9f9a72e7.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/midbase_ambient_occlusion_png_ca188541.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_barrel_basecolor_png_e4872151.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_barrel_normal_png_cb652d9e.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_base_basecolor_png_ffdd0953.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_base_normal_png_34ff8fb1.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_black_basecolor_png_58910b08.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_foot_basecolor_png_f7bbb01.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_foot_normal_png_e356be6f.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_gunbox_basecolor_png_46aef243.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_gunbox_normal_png_10518568.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_lowerleg_basecolor_png_34961b80.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_lowerleg_normal_png_21b0b083.generated.vtex_c	
+2023/07/19 20:05:31.3137	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_midbase_basecolor_png_9c4e2b4.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_midbase_normal_png_1122e78b.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_screw_basecolor_png_621b39e5.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_screw_normal_png_d325b1c0.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_topbase_basecolor_png_92922e4c.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_topbase_normal_png_e68d8ac8.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_upperleg_basecolor_png_5f473ce3.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/pistol tower_upperleg_normal_png_2a1b5a32.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/screw_ambient_occlusion_png_14a7c4b6.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/topbase_ambient_occlusion_png_3dd23dd.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/pistoltower/upperleg_ambient_occlusion_png_1daeb150.generated.vtex_c	
+2023/07/19 20:05:31.3336	tools	Was unable to determine package for /materials/raw/spider/spider.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/antiair_tower/antiair_base.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/antiair_tower/antiair_box.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/antiair_tower/antiair_feet.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/basetower.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/bluecastle.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/lightning.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_barrel.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_base.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_base_mid.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_base_top.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_black.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_feet.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_gunbox.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_legs.vmat_c	
+2023/07/19 20:05:31.3452	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_screws.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/pistol_tower/tower_upper_legs.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarbase.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarbeams.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radardish.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarfeet.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarmidbeam.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarrotatebase.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarrotatemid.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radarrotater.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radar_tower/radartip.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/radioemitter.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/shotgun_tower/shotgunbarrel.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/shotgun_tower/shotgunbase.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/shotgun_tower/shotgunfoot.vmat_c	
+2023/07/19 20:05:31.3606	tools	Was unable to determine package for /materials/towers/shotgun_tower/shotgungunbox.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/smg_tower/barrel.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/smg_tower/base.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/smg_tower/feet.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/smg_tower/gunbox.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/snipertower.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/tankgas.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/timedisplacer_base.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/timedisplacer_chair.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/timedisplacer_metal.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/timedisplacer_spherelight.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /materials/towers/trickster.vmat_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /models/blue_castle.vmdl_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /models/bullets/9mmbullet.vmdl_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /models/castle.vmdl_c	
+2023/07/19 20:05:31.3760	tools	Was unable to determine package for /models/npc_portal.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/npc_portal_stone.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/raw/spider/spider.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/red_castle.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/antiairtower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/dummytower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/lightningtower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/pistol_tower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/radartower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/radioactivemitter.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/shotguntower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/smgtower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/snipertower.vmdl_c	
+2023/07/19 20:05:31.3922	tools	Was unable to determine package for /models/towers/timedisplacer.vmdl_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /models/towers/trickstertower.vmdl_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /particles/bullet_muzzleflash.vpcf_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /particles/deploy_dust.vpcf_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /particles/explosive_muzzleflash.vpcf_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /particles/lightning_beam.vpcf_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /particles/lightning_flash.vpcf_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /particles/sniper_beam.vpcf_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /sounds/gameplay/boss_music_1.sound_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /sounds/gameplay/boss_music_1_end.sound_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /sounds/gameplay/boss_music_2.sound_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /sounds/gameplay/boss_music_2_end.sound_c	
+2023/07/19 20:05:31.4086	tools	Was unable to determine package for /sounds/gameplay/boss_music_3.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/boss_music_3_end.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/game_waiting.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/music_lost.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/music_win.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/wave_inbound_boss.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/wave_music_1.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/wave_music_1_end.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/wave_music_2.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/gameplay/wave_music_2_end.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/npcs/healing.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/npcs/husk_split.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/player/level_up.sound_c	
+2023/07/19 20:05:31.4233	tools	Was unable to determine package for /sounds/raw/btesat1a.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/btesat2a.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/btespow.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/build_finish.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/build_start.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/cardboard_hit.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/cardboard_open.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/confusion_deploy.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/confusion_destroy.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/geiger1.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/geiger2.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/geiger3.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/healing.vsnd_c	
+2023/07/19 20:05:31.4390	tools	Was unable to determine package for /sounds/raw/husk_split.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/level_up.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/lightstorm_deploy.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/boss_music_1.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/boss_music_1_end.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/boss_music_2.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/boss_music_2_end.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/boss_music_3.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/boss_music_3_end.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/game_waiting.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/music_lost.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/music_lost_new.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/music_win.vsnd_c	
+2023/07/19 20:05:31.4546	tools	Was unable to determine package for /sounds/raw/music/music_win_new.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/music/wave_inbound_boss.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/music/wave_music_1.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/music/wave_music_1_end.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/music/wave_music_2.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/music/wave_music_2_end.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/nuclearsilo_alert.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/nuclearsilo_deploy.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/nuclearsilo_explode.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/nuclearsilo_hit.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/nuclearsilo_launch.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/pistol_fire.vsnd_c	
+2023/07/19 20:05:31.4720	tools	Was unable to determine package for /sounds/raw/radio_deploy.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/shotgun_fire.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/singularity_use.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/smg_fire.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/sniper_fire.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/thunder_strike_1.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/thunder_strike_2.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/thunder_strike_3.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/thunder_strike_4.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/thunder_strike_start.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/timedisplacer_deploy.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/timedisplacer_use.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/trickster_fire.vsnd_c	
+2023/07/19 20:05:31.4864	tools	Was unable to determine package for /sounds/raw/upgrade.vsnd_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/advanced/confusion_apply.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/advanced/confusion_recover.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/advanced/geiger_radiation.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/advanced/trickster_fire.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/build_finish.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/build_start.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/cardboard_hit.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/cardboard_open.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/elemental/lightning_attack.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/elemental/lightning_charge.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/lightstorm_deploy.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/nuclearsilo_deploy.sound_c	
+2023/07/19 20:05:31.5018	tools	Was unable to determine package for /sounds/towers/ranged/pistol_fire.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/ranged/shotgun_fire.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/ranged/smg_fire.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/ranged/sniper_fire.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/nuclearsilo_alert.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/nuclearsilo_deploy.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/nuclearsilo_explode.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/nuclearsilo_hit.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/nuclearsilo_launch.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/timedisplacer_deploy.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/super/timedisplacer_use.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/thunder_strike.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/thunder_strike_start.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /sounds/towers/upgrade.sound_c	
+2023/07/19 20:05:31.5171	tools	Was unable to determine package for /ui/achievements/sniper_kills.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/hud_cash.png	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/antiaircraft.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/antimatter.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/blizzard.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/cannon.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/chainblade.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/combatrobot.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/fire.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/frost.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/hands.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/heatray.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/lab.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/lightning.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/lightningstorm.jpg	
+2023/07/19 20:05:31.5332	tools	Was unable to determine package for /ui/towers/locked.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/mace.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/mindcontrol.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/neonsword.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/nuke.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/orbitial.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/pistol.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/plasma.jpg	
+2023/07/19 20:05:31.5729	tools	Was unable to determine package for /ui/towers/powergenerator.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/radar.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/radioactiveemitter.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/roboticfactory.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/samurai.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/shotgun.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/shuriken.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/singularity.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/smg.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/sniper.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/timedisplacer.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/trickster.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/voidemitter.jpg	
+2023/07/19 20:05:31.5793	tools	Was unable to determine package for /ui/towers/whirl.jpg	
+2023/07/19 20:05:31.6959	tools	Was unable to determine package for /materials/bomb/bomb.vmat_c	
+2023/07/19 20:05:31.6959	tools	Was unable to determine package for /materials/bomb/bomb_selfillum_png_3cb30994.generated.vtex_c	
+2023/07/19 20:05:31.6959	tools	Was unable to determine package for /materials/bomb/bomb_ao_png_34e76544.generated.vtex_c	
+2023/07/19 20:05:31.6959	tools	Was unable to determine package for /materials/bomb/bomb_color_png_9015083d.generated.vtex_c	
+2023/07/19 20:05:31.6959	tools	Was unable to determine package for /materials/bomb/bomb_normal_png_39952e48.generated.vtex_c	
+2023/07/19 20:05:31.7560	tools	Was unable to determine package for /models/weapons/sbox_attachments/silencer_9mm/silencer_9mm.vmat_c	
+2023/07/19 20:05:31.7560	tools	Was unable to determine package for /models/weapons/sbox_attachments/silencer_9mm/silencer_9mm_normal_tga_c266ce8.generated.vtex_c	
+2023/07/19 20:05:31.7560	tools	Was unable to determine package for /models/weapons/sbox_attachments/silencer_9mm/silencer_9mm_ao_tga_8ae7d9f.generated.vtex_c	
+2023/07/19 20:05:31.7560	tools	Was unable to determine package for /models/weapons/sbox_pistol_usp/usp_raisedsights_normal_tga_5f974b1.generated.vtex_c	
+2023/07/19 20:05:31.7693	tools	Was unable to determine package for /models/weapons/sbox_pistol_usp/v_usp_match_ao_tga_ec0b2a8f.generated.vtex_c	
+2023/07/19 20:05:31.7693	tools	Was unable to determine package for /models/weapons/sbox_pistol_usp/w_usp.vmdl_c	
+2023/07/19 20:05:31.7693	tools	Was unable to determine package for /models/weapons/sbox_pistol_usp/w_usp.vmat_c	
+2023/07/19 20:05:31.7693	tools	Was unable to determine package for /models/weapons/sbox_pistol_usp/w_usp_color_tga_c96487ed.generated.vtex_c	
+2023/07/19 20:05:31.7693	tools	Was unable to determine package for /models/weapons/sbox_pistol_usp/w_usp_normal_tga_66da1cd9.generated.vtex_c	
+2023/07/19 20:05:35.0154	engine/AssetSystem	AssetSystem initialized in 4.32 seconds. [0.13 load, 0.16 scan, 4.01 dependencies, 0.02 save]	
+2023/07/19 20:05:36.3099	Generic	Create Compiler `base`	
+2023/07/19 20:05:36.3199	Generic	Create Compiler `local.menu`	
+2023/07/19 20:05:36.3199	Generic	Create Compiler `toolbase`	
+2023/07/19 20:05:36.3199	Generic	Create Compiler `local.entityprefabed`	
+2023/07/19 20:05:36.3199	Generic	Create Compiler `local.shadergraph`	
+2023/07/19 20:05:36.3199	Generic	Create Compiler `fish.grid_and_astar`	
+2023/07/19 20:05:36.3199	Generic	Create Compiler `local.bomb_survival`	
+2023/07/19 20:05:41.9091	engine/HangWatchdog	Hang detected.	
+2023/07/19 20:05:47.3197	GameMenu	Package local.bomb_survival wasn't found!	
+2023/07/19 20:05:47.4690	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\dx\dxfunctions.h (118) : Assertion Failed in function _DOD3D():
+false
+D3D call for D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) failed with 0x80070057, logging minidump	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 24	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 0	
+2023/07/19 20:05:47.4699	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 27
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4699	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4699	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4699	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 0	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 27
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 0	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 27
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 63	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 44
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 72
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 63	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 44
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 72
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 0	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 27
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 0	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 27
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.4857	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.4857	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 0	
+2023/07/19 20:05:47.4857	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 27
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.4857	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.5016	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.5016	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 24	
+2023/07/19 20:05:47.5016	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 40
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.5016	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.5016	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.5016	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 63	
+2023/07/19 20:05:47.5016	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 44
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 72
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.5016	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.5016	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.5016	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22856x-32764 1 mips fmt 63	
+2023/07/19 20:05:47.5016	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22856
+	Height = -32764
+	MipLevels = 1
+	ArraySize = 1
+	Format = 44
+	SampleDesc.Count = 2
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 72
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.5016	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.5016	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.5016	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 62	
+2023/07/19 20:05:47.5167	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 39
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 72
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.5167	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.5167	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.5167	engine/Assert	C:\build\_work\sbox\sbox\src\rendersystem\texturebase.cpp (93) : Assertion Failed in function AssertIsValidTextureSpec():
+bValid
+Invalid texture spec (ComputeTextureObject): -22098x-8191 1 mips fmt 24	
+2023/07/19 20:05:47.5167	engine/Engine	CreateTexture2D FAILED with E_INVALIDARG! bImmutable = false desc = 
+	Width = -22098
+	Height = -8191
+	MipLevels = 1
+	ArraySize = 1
+	Format = 9
+	SampleDesc.Count = 1
+	SampleDesc.Quality = 0
+	Usage = 0
+	BindFlags = 168
+	CPUAccessFlags = 0
+	MiscFlags = 0	
+2023/07/19 20:05:47.5167	engine/RenderSystem	ERROR! D3D call failed! hr = E_INVALIDARG ( D3D11Device()->CreateTexture2D( &desc, bImmutable ? pSubResource : nullptr, ( ID3D11Texture2D ** ) &pDx11Texture ) )	
+2023/07/19 20:05:47.5167	engine/RenderSystem	*** Run with -dx11debug to see native D3D errors!	
+2023/07/19 20:05:47.7527	engine/SceneSystem	CScratchRenderTargetSystem::FindOrCreateRenderTarget: invalid texture handle for "backColorBuffer"!	
+2023/07/19 20:05:47.7527	engine/SceneSystem	CScratchRenderTargetSystem::FindOrCreateRenderTarget: invalid other view render target for "backColorBuffer"!	
+2023/07/19 20:05:47.7527	engine/RenderSystem	Attempting to render without calling BindRenderTargets!	
+2023/07/19 20:05:47.7527	engine/RenderSystem	Attempting to render without calling BindRenderTargets!	
+2023/07/19 20:05:47.7527	engine/RenderSystem	Attempting to render without calling BindRenderTargets!	
+2023/07/19 20:05:47.7527	engine/RenderSystem	Attempting to render without calling BindRenderTargets!	
+2023/07/19 20:05:47.7527	engine/RenderSystem	Attempting to render without calling BindRenderTargets!	
+2023/07/19 20:05:47.7527	engine/RenderSystem	Attempting to render without calling BindRenderTargets!	
+2023/07/19 20:05:47.7527	Generic	EngineLoop::Exiting	
+2023/07/19 20:05:47.7719	engine/ToolFramework2	Shutting down Qt windows.............	
+2023/07/19 20:05:47.7719	engine/Engine	Source2Shutdown	
+2023/07/19 20:05:47.7719	engine/Engine	ShutdownSource2Logging	
