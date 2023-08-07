@@ -4,50 +4,59 @@ global using Sandbox.UI;
 global using Sandbox.MenuSystem;
 global using Sandbox.Menu;
 global using Sandbox.UI.Construct; // TODO Move these somewhere else
+using Sandbox.Utility;
 
 namespace BombSurvival.UI;
 
 public class PodView : Panel
 {
-	private readonly ScenePanel _renderScene;
-	private float _renderSceneDistance = 100f;
-	private float _yaw = -175;
+	ScenePanel scenePanel;
+	float cameraDistance = 250f;
+	float cameraMinimumDistance => 250f;
+	float cameraMaximumDistance => 1000f;
+	Vector3 cameraCenter => new Vector3( 200f, 0f, 125f );
+	Vector3 cameraShake = Vector3.Zero;
 
 	public PodView()
 	{
 		StyleSheet.Load( "UI/MainMenu/PodView/PodView.cs.scss" );
 
-		_renderScene?.Delete( true );
+		scenePanel?.Delete( true );
 
 		var sceneWorld = new SceneWorld();
-		var map = new SceneMap( sceneWorld, "maps/pod" );
+		var sceneMap = new SceneMap( sceneWorld, "maps/pod" );
 
-		_renderScene = Add.ScenePanel( sceneWorld, Vector3.One, Rotation.Identity, 75, "renderScene" );
-		_renderScene.Camera.Position = Vector3.Backward * _renderSceneDistance;
+		scenePanel = Add.ScenePanel( sceneWorld, Vector3.Zero, Rotation.Identity, Game.Preferences.FieldOfView, "scenePanel" );
+
+		scenePanel.Camera.Position = cameraCenter + Vector3.Backward * cameraDistance;
 	}
 
 	public override void OnMouseWheel( float value )
 	{
-		_renderSceneDistance += value * 3;
-		_renderSceneDistance = _renderSceneDistance.Clamp( 150, 800 );
+		cameraDistance = Math.Clamp( cameraDistance + value * 5f, cameraMinimumDistance, cameraMaximumDistance );
 		base.OnMouseWheel( value );
 	}
 
 	public override void Tick()
 	{
-		
-		if ( _renderScene == null )
+		if ( scenePanel == null )
 			return;
 
-		if ( HasMouseCapture )
-			_yaw -= Mouse.Delta.x * 0.05f;
+		var deltaCameraDistance = ( cameraDistance - cameraMinimumDistance ) / ( cameraMaximumDistance - cameraMinimumDistance );
 
-		_yaw = _yaw.Clamp( -200, -130 );
+		var oldRotation = scenePanel.Camera.Rotation;
+		var newRotation = Rotation.FromPitch( (float)Math.Pow( deltaCameraDistance * 4, 2.5 ) );
 
-		float yawRad = MathX.DegreeToRadian( _yaw );
-		float height = 16;
+		var oldPosition = scenePanel.Camera.Position;
+		var newPosition = cameraCenter + newRotation.Backward * cameraDistance;
 
-		var currentPosition = _renderScene.Camera.Position;
-		_renderScene.Camera.Position = currentPosition.LerpTo( Vector3.Backward * _renderSceneDistance, Time.Delta * 4.0f );
+		var cameraShakeAmount = Math.Max( deltaCameraDistance - 0.33f, 0f ) * 3f;
+		var cameraShakeX = Noise.Perlin( Time.Now * cameraShakeAmount * 50f ) - 0.5f;
+		var cameraShakeY = Noise.Perlin( Time.Now * cameraShakeAmount * 50f + 1000f ) - 0.5f;
+
+		cameraShake = ( newRotation.Right * cameraShakeX + newRotation.Up * cameraShakeY ) * cameraShakeAmount;
+
+		scenePanel.Camera.Rotation = Rotation.Lerp( oldRotation, newRotation, Time.Delta * 5f );
+		scenePanel.Camera.Position = Vector3.Lerp( oldPosition, newPosition, Time.Delta * 5f ) + cameraShake;
 	}
 }
