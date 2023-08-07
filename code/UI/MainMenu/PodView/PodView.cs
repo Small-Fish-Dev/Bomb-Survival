@@ -11,6 +11,9 @@ namespace BombSurvival.UI;
 public class PodView : Panel
 {
 	ScenePanel scenePanel;
+	SceneWorld sceneWorld;
+	SceneModel scenePlayer;
+	List<SceneModel> scenePlayerClothing;
 	float cameraDistance = 400f;
 	float cameraMinimumDistance => 250f;
 	float cameraMaximumDistance => 1000f;
@@ -22,9 +25,16 @@ public class PodView : Panel
 		StyleSheet.Load( "UI/MainMenu/PodView/PodView.cs.scss" );
 
 		scenePanel?.Delete( true );
+		sceneWorld?.Delete();
 
-		var sceneWorld = new SceneWorld();
-		var sceneMap = new SceneMap( sceneWorld, "maps/pod" );
+		sceneWorld = new SceneWorld();
+		new SceneMap( sceneWorld, "maps/pod" );
+
+		scenePlayer = new SceneModel( sceneWorld, Model.Load( "models/citizen/citizen.vmdl" ), Transform.Zero );
+		
+		var clothingContainer = new ClothingContainer();
+		clothingContainer.Deserialize( ConsoleSystem.GetValue( "avatar" ) ); // ResourceLibrary doesn't load clothing??
+		scenePlayerClothing = clothingContainer.DressSceneObject( scenePlayer );
 
 		scenePanel = Add.ScenePanel( sceneWorld, Vector3.Zero, Rotation.Identity, Game.Preferences.FieldOfView, "scenePanel" );
 		scenePanel.Camera.AmbientLightColor = new Color( 0.3f, 0.3f, 1f ) * 0.1f;
@@ -71,5 +81,19 @@ public class PodView : Panel
 
 		scenePanel.Camera.Rotation = Rotation.Lerp( oldRotation, newRotation, Time.Delta * 5f );
 		scenePanel.Camera.Position = Vector3.Lerp( oldPosition, newPosition, Time.Delta * 5f ) + cameraShake;
+
+		var startPos = scenePanel.Camera.Position;
+		var direction = Screen.GetDirection( Mouse.Position, Game.Preferences.FieldOfView, scenePanel.Camera.Rotation );
+		var endPos = startPos + direction * ( 50f +  cameraDistance );
+
+		var trace = sceneWorld.Trace.Ray( startPos, endPos )
+			.Run();
+
+		scenePlayer.Position = trace.Hit ? trace.HitPosition : endPos;
+		scenePlayer.Update( Time.Delta );
+
+		foreach ( var clothing in scenePlayerClothing )
+			clothing.Update( Time.Delta );
+		
 	}
 }
