@@ -14,11 +14,13 @@ public class PodView : Panel
 	SceneWorld sceneWorld;
 	SceneModel scenePlayer;
 	List<SceneModel> scenePlayerClothing;
-	float cameraDistance = 400f;
+	float cameraDistance;
+	float cameraStartDistance = 400f;
 	float cameraMinimumDistance => 250f;
 	float cameraMaximumDistance => 1000f;
 	Vector3 cameraCenter => new Vector3( 200f, 0f, 125f );
 	Vector3 cameraShake = Vector3.Zero;
+	TimeUntil transitionTime = 3f;
 
 	public PodView()
 	{
@@ -51,12 +53,16 @@ public class PodView : Panel
 		ceilingLight.ConeOuter = 90f;
 		ceilingLight.Radius = 512f;
 
-		scenePanel.Camera.Position = cameraCenter + Vector3.Backward * cameraDistance;
+		scenePanel.Camera.Rotation = Rotation.FromPitch( (float)Math.Pow( 4, 2.5 ) );
+		scenePanel.Camera.Position = cameraCenter + scenePanel.Camera.Rotation.Backward * cameraMaximumDistance; // Make it zoom in when first loading :-)
+		cameraDistance = cameraStartDistance;
 	}
 
 	public override void OnMouseWheel( float value )
 	{
-		cameraDistance = Math.Clamp( cameraDistance + value * 5f, cameraMinimumDistance, cameraMaximumDistance );
+		if ( transitionTime )
+			cameraDistance = Math.Clamp( cameraDistance + value * 5f, cameraMinimumDistance, cameraMaximumDistance );
+
 		base.OnMouseWheel( value );
 	}
 
@@ -65,26 +71,30 @@ public class PodView : Panel
 		if ( scenePanel == null )
 			return;
 
-		var deltaCameraDistance = ( cameraDistance - cameraMinimumDistance ) / ( cameraMaximumDistance - cameraMinimumDistance );
+		var transitionDelta = 1 - transitionTime.Fraction;
+		var distanceOffset = ( cameraMaximumDistance - cameraStartDistance ) * transitionDelta;
+		var currentDistance = cameraDistance + distanceOffset;
+
+		var deltaCameraDistance = (currentDistance - cameraMinimumDistance ) / ( cameraMaximumDistance - cameraMinimumDistance );
 
 		var oldRotation = scenePanel.Camera.Rotation;
 		var newRotation = Rotation.FromPitch( (float)Math.Pow( deltaCameraDistance * 4, 2.5 ) );
 
 		var oldPosition = scenePanel.Camera.Position;
-		var newPosition = cameraCenter + newRotation.Backward * cameraDistance;
+		var newPosition = cameraCenter + newRotation.Backward * currentDistance;
 
 		var cameraShakeAmount = Math.Max( deltaCameraDistance - 0.33f, 0f ) * 3f;
 		var cameraShakeX = Noise.Perlin( Time.Now * cameraShakeAmount * 50f ) - 0.5f;
 		var cameraShakeY = Noise.Perlin( Time.Now * cameraShakeAmount * 50f + 1000f ) - 0.5f;
 
-		cameraShake = ( newRotation.Right * cameraShakeX + newRotation.Up * cameraShakeY ) * cameraShakeAmount;
+		cameraShake = ( newRotation.Right * cameraShakeX + newRotation.Up * cameraShakeY ) * cameraShakeAmount * ( 1 + transitionDelta * 5 );
 
 		scenePanel.Camera.Rotation = Rotation.Lerp( oldRotation, newRotation, Time.Delta * 5f );
 		scenePanel.Camera.Position = Vector3.Lerp( oldPosition, newPosition, Time.Delta * 5f ) + cameraShake;
 
 		var startPos = scenePanel.Camera.Position;
 		var direction = Screen.GetDirection( Mouse.Position, Game.Preferences.FieldOfView, scenePanel.Camera.Rotation );
-		var endPos = startPos + direction * ( 50f +  cameraDistance );
+		var endPos = startPos + direction * ( 50f + currentDistance);
 
 		var trace = sceneWorld.Trace.Ray( startPos, endPos )
 			.Run();
