@@ -6,13 +6,6 @@ public partial class BombSurvival : GameManager
 	{
 		base.FrameSimulate( cl );
 
-		foreach ( var player in Entity.All.OfType<Player>() )
-		{
-			if ( player.IsDead ) continue;
-			if ( player.Client == Game.LocalClient ) continue;
-
-			if ( player.Ragdoll.IsValid() && player.Ragdoll.PhysicsBody.IsValid() )
-				player.MoveRagdoll();
-		}
+		Player.MoveRagdolls();
 	}
 }

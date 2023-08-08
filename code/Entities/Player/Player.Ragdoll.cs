@@ -64,6 +64,8 @@ public partial class Player : AnimatedEntity
 		foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
 			body.Position = Position;
 
+		Ragdoll.Position = Position;
+
 		Ragdoll.ResetInterpolation(); // I always forget if I'm supposed to do it before or after
 	}
 
@@ -101,7 +103,7 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	internal void MoveRagdolls()
+	public static void MoveRagdolls()
 	{
 		foreach ( var player in Entity.All.OfType<Player>() )
 		{
