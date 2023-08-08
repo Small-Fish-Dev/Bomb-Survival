@@ -14,6 +14,9 @@ public class PodView : Panel
 	SceneWorld sceneWorld;
 	SceneModel scenePlayer;
 	List<SceneModel> scenePlayerClothing;
+	Vector3 scenePlayerTarget = Vector3.Zero;
+	float scenePlayerSpeed = 0f;
+	TimeUntil scenePlayerNextTarget = 2f;
 	float cameraDistance;
 	float cameraStartDistance = 400f;
 	float cameraMinimumDistance => 250f;
@@ -92,14 +95,27 @@ public class PodView : Panel
 		scenePanel.Camera.Rotation = Rotation.Lerp( oldRotation, newRotation, Time.Delta * 5f );
 		scenePanel.Camera.Position = Vector3.Lerp( oldPosition, newPosition, Time.Delta * 5f ) + cameraShake;
 
-		var startPos = scenePanel.Camera.Position;
+		/*var startPos = scenePanel.Camera.Position;
 		var direction = Screen.GetDirection( Mouse.Position, Game.Preferences.FieldOfView, scenePanel.Camera.Rotation );
 		var endPos = startPos + direction * ( 50f + currentDistance);
 
 		var trace = sceneWorld.Trace.Ray( startPos, endPos )
-			.Run();
+			.Run();*/
 
-		scenePlayer.Position = trace.Hit ? trace.HitPosition : endPos;
+		if ( scenePlayerNextTarget )
+		{
+			scenePlayerTarget = new Vector3( Game.Random.Float( -120f, 120f ), Game.Random.Float( -120f, 120f ), 0 );
+			scenePlayerNextTarget = Game.Random.Float( 4f, 8f );
+		}
+
+		var wishRotation = Rotation.LookAt( (scenePlayerTarget - scenePlayer.Position).Normal, Vector3.Up );
+		var distance = scenePlayer.Position.Distance( scenePlayerTarget );
+		scenePlayerSpeed = Math.Clamp( scenePlayerSpeed + Time.Delta * 20f * (distance > 60f ? 1 : -1), 0f, 60f );
+
+		scenePlayer.Rotation = Rotation.Slerp( scenePlayer.Rotation, wishRotation, Time.Delta * 2f);
+		scenePlayer.Position += scenePlayer.Rotation.Forward * Time.Delta * scenePlayerSpeed;
+		scenePlayer.SetAnimParameter( "move_x", scenePlayerSpeed );
+
 		scenePlayer.Update( Time.Delta );
 
 		foreach ( var clothing in scenePlayerClothing )
