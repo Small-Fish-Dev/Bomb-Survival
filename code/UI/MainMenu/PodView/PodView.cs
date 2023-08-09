@@ -110,7 +110,7 @@ public class PodView : Panel
 
 		var wishRotation = Rotation.LookAt( (scenePlayerTarget - scenePlayer.Position).Normal, Vector3.Up );
 		var distance = scenePlayer.Position.Distance( scenePlayerTarget );
-		scenePlayerSpeed = Math.Clamp( scenePlayerSpeed + Time.Delta * 20f * (distance > 60f ? 1 : -1), 0f, 60f );
+		scenePlayerSpeed = Math.Clamp( Math.Min( scenePlayerSpeed + Time.Delta * 20f, distance ), 0f, 60f );
 
 		scenePlayer.Rotation = Rotation.Slerp( scenePlayer.Rotation, wishRotation, Time.Delta * 2f);
 		scenePlayer.Position += scenePlayer.Rotation.Forward * Time.Delta * scenePlayerSpeed;
