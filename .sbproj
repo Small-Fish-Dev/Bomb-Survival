@@ -1,14 +1,14 @@
 {
   "Title": "Bomb Survival",
   "Type": "game",
-  "Org": "local",
+  "Org": "fish",
   "Ident": "bomb_survival",
   "Tags": null,
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "Resources": null,
-  "MenuResources": null,
+  "Resources": "",
+  "MenuResources": "\nui/menu/*\nUI/MainMenu/*\nmaps/pod.vpk",
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [
