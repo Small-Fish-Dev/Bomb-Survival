@@ -1,7 +1,7 @@
 {
   "Title": "Bomb Survival",
   "Type": "game",
-  "Org": "fish",
+  "Org": "local",
   "Ident": "bomb_survival",
   "Tags": null,
   "Schema": 1,
