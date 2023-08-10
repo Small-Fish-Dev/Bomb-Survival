@@ -15,7 +15,7 @@
 						[
 							{
 								from = "button.vmat"
-								to = "models/citizen/skin/citizen_skin08.vmat"
+								to = "models/button/button.vmat"
 							},
 						]
 						use_global_default = false
