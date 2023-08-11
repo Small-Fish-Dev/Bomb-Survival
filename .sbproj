@@ -210,7 +210,7 @@
     "TickRate": 50,
     "LaunchConfigs": [
       {
-        "Name": "My New Config",
+        "Name": "Testing",
         "GameIdent": "local.bomb_survival#local",
         "MapName": "empty.vmap",
         "MaxPlayers": 64,
