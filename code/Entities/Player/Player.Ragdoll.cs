@@ -83,10 +83,10 @@ public partial class Player : AnimatedEntity
 				var boneTransform = GetBoneTransform( ragdollBone ).Add( positionDifference, true );
 
 				var direction = boneTransform.Position - body.Position;
-				var force = body.Mass * 70000f;
+				var force = body.Mass * 600000f;
 
 				body.ApplyForce( direction * force * Time.Delta );
-				body.LinearDamping = 15f;
+				body.LinearDamping = 150f;
 				body.Rotation = boneTransform.Rotation;
 			}
 		}
