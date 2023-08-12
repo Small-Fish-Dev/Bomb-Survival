@@ -100,7 +100,7 @@ public abstract partial class Bomb : AnimatedEntity
 	[GameEvent.Tick]
 	void changeStick()
 	{
-		if ( stopSticky && sticky || PhysicsBody.IsValid() && PhysicsBody.Sleeping && sticky )
+		if ( stopSticky && sticky && PhysicsBody.IsValid() || PhysicsBody.IsValid() && PhysicsBody.Sleeping && sticky )
 		{
 			PhysicsBody.AngularDrag = 0f;
 			PhysicsBody.AngularDamping = 0f;
