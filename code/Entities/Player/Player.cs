@@ -16,7 +16,7 @@ public partial class Player : AnimatedEntity
 	[Net] internal TimeUntil respawnTimer { get; private set; } = 0f;
 	[Net] public int LivesLeft { get; private set; } = 4;
 
-	public float CrouchLevel => Math.Clamp( ( Collider?.Position.z - Position.z ) / ( CollisionWidth / 1.5f ) * 0.7f ?? 0f, 0f, 0.7f ) + 0.3f;
+	public float CrouchLevel { get; set; } = 1f;
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
@@ -86,6 +86,14 @@ public partial class Player : AnimatedEntity
 
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
+
+		var capsule = new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * (CollisionHeight + CollisionWidth / 4f), CollisionWidth / 1.5f );
+		var crouchTrace = Trace.Capsule( capsule, Position, CollisionTop )
+			.Ignore( this )
+			.WithoutTags( "puppet", "collider" )
+			.Run();
+
+		CrouchLevel = crouchTrace.Distance / (CollisionHeight * Scale / 1.5f);
 	}
 
 	public bool IsZoomed = false;
@@ -138,11 +146,8 @@ public partial class Player : AnimatedEntity
 		Camera.Rotation = Rotation.FromYaw( 90f );
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
-
 		if ( Ragdoll.IsValid() )
 			ComputeAnimations( Ragdoll );
-
-		MoveCollider();
 
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
@@ -208,11 +213,9 @@ public partial class Player : AnimatedEntity
 		{
 			SpawnRagdoll();
 			DressRagdoll();
-			SpawnCollider();
 		}
 
 		PlaceRagdoll();
-		PlaceCollider();
 		Ragdoll.EnableDrawing = true;
 	}
 
