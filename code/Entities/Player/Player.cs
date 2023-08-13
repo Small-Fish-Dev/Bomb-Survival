@@ -208,9 +208,11 @@ public partial class Player : AnimatedEntity
 		{
 			SpawnRagdoll();
 			DressRagdoll();
+			SpawnCollider();
 		}
 
 		PlaceRagdoll();
+		PlaceCollider();
 		Ragdoll.EnableDrawing = true;
 	}
 
