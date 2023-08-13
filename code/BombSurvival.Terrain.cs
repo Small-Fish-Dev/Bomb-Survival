@@ -95,13 +95,13 @@ public partial class BombSurvival
 
 	public static Vector2 PointToLocal( Vector3 point )
 	{
-		var localPosition = Foreground.Transform.PointToLocal( point );
+		var localPosition = Foreground?.Transform.PointToLocal( point ) ?? point;
 		return new Vector2( localPosition.x, localPosition.y );
 	}
 
 	public static Vector3 PointToWorld( Vector2 point )
 	{
-		var worldPosition = Foreground.Transform.PointToWorld( point );
+		var worldPosition = Foreground?.Transform.PointToWorld( point ) ?? point;
 		return new Vector3( worldPosition.x, Foreground.Position.y, worldPosition.z );
 	}
 
