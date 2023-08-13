@@ -12,6 +12,8 @@ public partial class HomingMine : Bomb
 		AnimateOnServer = true;
 		PlaybackRate = 1;
 		Scale = 0.3f;
+
+		PhysicsBody.GravityEnabled = false;
 	}
 
 	[GameEvent.Tick.Server]
@@ -26,6 +28,6 @@ public partial class HomingMine : Bomb
 		var wishRotation = Rotation.LookAt( wishDirection, Vector3.Right );
 
 		Rotation = Rotation.Lerp( Rotation, wishRotation, Time.Delta * 10f );
-		Position += Rotation.Forward * Time.Delta * 500f;
+		Position += Rotation.Forward * Time.Delta * 50f;
 	}
 }

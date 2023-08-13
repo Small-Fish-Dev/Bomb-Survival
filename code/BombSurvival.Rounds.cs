@@ -12,6 +12,14 @@ public abstract partial class GameState : Entity // BaseNetworkable sucks
 	public virtual void End() { }
 }
 
+public partial class PodState : GameState
+{
+	public override void Compute()
+	{
+		base.Compute();
+	}
+}
+
 public partial class StartingState : GameState
 {
 	public override void Compute()

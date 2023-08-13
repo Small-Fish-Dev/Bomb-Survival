@@ -67,7 +67,7 @@ public partial class BombSurvival
 	public static void ComputeWaves()
 	{
 		if ( !Bombs ) return;
-
+		DebugOverlay.Sphere( BombSpawner.FirstPosition(), 15f, Color.Red );
 		if ( nextWave )
 		{
 			if ( waveEntititesSpawned == 0 )
@@ -78,13 +78,13 @@ public partial class BombSurvival
 
 			if ( nextWaveEntity )
 			{
-				var spawner = Checkpoint.First();
-				var spawnPosition = Checkpoint.FirstPosition().WithY( 0 );
+				var spawner = BombSpawner.First();
+				var spawnPosition = BombSpawner.FirstPosition().WithY( 0 );
 				var currentWaveEntity = CreateWaveEntity( currentWaveEntityId );
 
 				currentWaveEntity.Item1.Position = spawnPosition;
 				currentWaveEntity.Item1.Rotation = Rotation.FromYaw( -90f );
-				currentWaveEntity.Item1.Velocity = spawner.Velocity * 50f; // Eeeh because of the air drag it doesn't look right until I multiply it
+				currentWaveEntity.Item1.Velocity = spawner.Velocity;
 
 				nextWaveEntity = currentWaveEntity.Item2;
 				waveEntititesSpawned++;

@@ -15,7 +15,6 @@ public partial class BombSpawner : AnimatedEntity
 		Rotation = Rotation.FromYaw( -90f ) * Rotation.FromPitch( 90f );
 		UseAnimGraph = false;
 		AnimateOnServer = true;
-		PlaybackRate = 0.3f;
 	}
 
 	public override void ClientSpawn()
@@ -28,17 +27,30 @@ public partial class BombSpawner : AnimatedEntity
 	}
 
 	Vector3 lastPosition = Vector3.Zero;
-	[GameEvent.Tick.Server]
-	void calculateVelocity()
+	[GameEvent.Tick]
+	void compute()
 	{
-		var currentBonePosition = GetBoneTransform( 1 ).Position;
-		if ( lastPosition == Vector3.Zero && Position != Vector3.Zero )
-			lastPosition = currentBonePosition;
+		CurrentSequence.Time = Time.Now / 4f % CurrentSequence.Duration;
 
-		if ( lastPosition != Vector3.Zero )
+		if ( Game.IsServer )
 		{
-			Velocity = currentBonePosition - lastPosition;
-			lastPosition = currentBonePosition;
-		}	
+			var currentBonePosition = GetBoneTransform( 1 ).Position;
+			if ( lastPosition == Vector3.Zero && Position != Vector3.Zero )
+				lastPosition = currentBonePosition;
+
+			if ( lastPosition != Vector3.Zero )
+			{
+				Velocity = currentBonePosition - lastPosition;
+				lastPosition = currentBonePosition;
+			}
+		}
 	}
+
+	public static BombSpawner First()
+	{
+		return Entity.All.OfType<BombSpawner>()
+			.FirstOrDefault();
+	}
+
+	public static Vector3 FirstPosition() => First().GetBoneTransform( 1 ).Position;
 }
