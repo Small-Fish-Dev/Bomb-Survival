@@ -94,8 +94,6 @@ public partial class Player : AnimatedEntity
 	{
 		base.FrameSimulate( cl );
 
-		if ( IsDead ) return;
-
 		var nearbyPlayers = Entity.FindInSphere( Position, 512 )
 			.OfType<Player>()
 			.Where( x => x != this ) // Exclude the current player
@@ -128,12 +126,18 @@ public partial class Player : AnimatedEntity
 			cameraDistance = Math.Clamp( maxDistance, minDistance, float.MaxValue );
 			IsZoomed = false;
 		}
-		
-		var wishPosition = centerPoint;
-		Camera.Position = Vector3.Lerp( Camera.Position, wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
-		Camera.Rotation = Rotation.FromYaw( 90f );
 
+		if ( Camera.Position == Vector3.Zero )
+			Camera.Position = Checkpoint.FirstPosition();
+		else
+		{
+			var wishPosition = centerPoint;
+			Camera.Position = Vector3.Lerp( Camera.Position, wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
+		}
+
+		Camera.Rotation = Rotation.FromYaw( 90f );
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
+
 
 		if ( Ragdoll.IsValid() )
 			ComputeAnimations( Ragdoll );
@@ -174,11 +178,7 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn()
 	{
-		var spawnPoint = Entity.All.OfType<Checkpoint>()
-			.Where( x => x.IsScoreboardCheckpoint != ( BombSurvival.Instance.CurrentState is PlayingState ) )
-			.FirstOrDefault();
-
-		Position = spawnPoint.GetBoneTransform( 1 ).Position;
+		Position = Checkpoint.FirstPosition();
 		Velocity = Vector3.Zero;
 
 		EnableAllCollisions = true;
@@ -208,9 +208,7 @@ public partial class Player : AnimatedEntity
 	[ClientRpc]
 	void respawnToClient()
 	{
-		var spawnPoint = Entity.All.OfType<Checkpoint>()
-			.Where( x => x.IsScoreboardCheckpoint != ( BombSurvival.Instance.CurrentState is PlayingState ) )
-			.FirstOrDefault();
+		var spawnPoint = Checkpoint.First();
 
 		spawnPoint.ClientModel.CurrentSequence.Time = 0;
 		spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
