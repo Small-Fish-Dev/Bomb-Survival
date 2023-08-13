@@ -237,7 +237,8 @@ public partial class Player : AnimatedEntity
 		IsDead = true;
 		respawnTimer = 1f;
 		EnableAllCollisions = false;
-		Collider.EnableAllCollisions = false;
+		if ( Collider.IsValid() )
+			Collider.EnableAllCollisions = false;
 		LivesLeft--;
 
 		killToClient();

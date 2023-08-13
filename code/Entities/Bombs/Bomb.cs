@@ -83,7 +83,8 @@ public abstract partial class Bomb : AnimatedEntity
 			player.KnockOut( Position, 1000, 2f );
 		}
 
-		Delete();
+		if ( Game.IsServer )
+			Delete();
 	}
 
 	[GameEvent.Tick.Server]
