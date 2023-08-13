@@ -59,14 +59,19 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Ragdoll.IsValid() || !Ragdoll.PhysicsBody.IsValid() ) return;
 
-		Ragdoll.ResetInterpolation();
 
 		foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
-			body.Position = Position;
+		{
+			var ragdollBone = Ragdoll.GetBone( body );
+			var boneTransform = GetBoneTransform( ragdollBone );
 
-		Ragdoll.Position = Position;
+			body.Position = boneTransform.Position;
+			body.Rotation = boneTransform.Rotation;
 
-		Ragdoll.ResetInterpolation(); // I always forget if I'm supposed to do it before or after
+			Log.Info( boneTransform.Position );
+		}
+
+		Ragdoll.ResetInterpolation();
 	}
 
 	internal void MoveRagdoll()
