@@ -30,7 +30,7 @@
     "CsProjName": "",
     "HttpAllowList": null,
     "Physics": {
-      "SubSteps": 4,
+      "SubSteps": 3,
       "TimeScale": 1,
       "Gravity": "0,0,-800",
       "AirDensity": 1.2,
@@ -207,7 +207,7 @@
         }
       ]
     },
-    "TickRate": 50,
+    "TickRate": 20,
     "LaunchConfigs": [
       {
         "Name": "Testing",
