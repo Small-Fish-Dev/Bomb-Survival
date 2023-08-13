@@ -201,7 +201,7 @@ public partial class Player : AnimatedEntity
 	{
 		return All.OfType<Player>()
 			.Where( x => !x.IsDead )
-			.OrderByDescending( x => x.LastRespawn ).First();
+			.OrderByDescending( x => x.LastRespawn ).FirstOrDefault();
 	}
 
 	[ConCmd.Admin( "respawn" )]

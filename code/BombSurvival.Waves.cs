@@ -29,7 +29,7 @@ public partial class BombSurvival
 		{ WaveEntity.BigTimedBomb, () =>
 		{
 			var bomb = new TimedBomb();
-			bomb.Scale = 1.5f;
+			bomb.Scale = 1.2f;
 			return ( bomb, 0.15f );
 		} },
 		{ WaveEntity.SmallTimedBomb, () =>
@@ -46,7 +46,7 @@ public partial class BombSurvival
 	public static List<List<WaveEntity>> Waves = new()
 	{
 		/*new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
-		new() {  WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb },
+		new() { WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb },
 		new() { WaveEntity.TimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.TimedBomb },
 		new() { WaveEntity.TimedBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.InertBomb },
 		new() { WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.TimedBomb },

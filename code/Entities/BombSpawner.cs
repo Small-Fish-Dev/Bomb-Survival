@@ -30,7 +30,7 @@ public partial class BombSpawner : AnimatedEntity
 	[GameEvent.Tick]
 	void compute()
 	{
-		CurrentSequence.Time = Time.Now / 4f % CurrentSequence.Duration;
+		CurrentSequence.Time = Time.Now / 6f % CurrentSequence.Duration;
 
 		if ( Game.IsServer )
 		{

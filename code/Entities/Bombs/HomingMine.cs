@@ -20,14 +20,34 @@ public partial class HomingMine : Bomb
 	internal virtual void SeekAndExplode()
 	{
 		if ( Target == null || Target.IsDead )
-			Target = Game.Random.FromList( Entity.All.OfType<Player>().Where( x => !x.IsDead ).ToList() );
+			Target = Player.GetLongestLiving();
 
-		if ( Target == null || Target.IsDead ) return;
+		if ( Target != null && !Target.IsDead )
+		{
+			var wishDirection = (Target.Position - Position).Normal;
+			var wishRotation = Rotation.LookAt( wishDirection, Vector3.Forward );
 
-		var wishDirection = (Target.Position - Position ).Normal;
-		var wishRotation = Rotation.LookAt( wishDirection, Vector3.Right );
+			Rotation = Rotation.Lerp( Rotation, wishRotation, Time.Delta * 10f );
+		}
 
-		Rotation = Rotation.Lerp( Rotation, wishRotation, Time.Delta * 10f );
-		Position += Rotation.Forward * Time.Delta * 50f;
+		if ( PhysicsBody.IsValid() )
+		{
+			Velocity /= 1f + Time.Delta;
+			PhysicsBody.ApplyForce( PhysicsBody.Mass * Rotation.Forward * Time.Delta * 90000f );
+		}
+	}
+
+	protected override void OnPhysicsCollision( CollisionEventData eventData )
+	{
+		base.OnPhysicsCollision( eventData );
+
+		var other = eventData.Other.Entity;
+
+		if ( other.GetPlayer() is Player )
+			Explode();
+		else
+			if ( Velocity.Length > 50f )
+			Explode();
+
 	}
 }
