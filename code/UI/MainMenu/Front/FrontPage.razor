@@ -13,11 +13,10 @@
         }
         else
         {
-            <a class="button" onclick="@CreateNewGame">Create Game</a>
+            <a class="button" onclick="@CreateNewGame">Open your Pod</a>
         }
 
-        <a class="button" onclick="@OpenServerList">Find a Game</a>
-        <a class="button" href="/settings">Settings</a>
+        <a class="button" onclick="@OpenServerList">Join another Pod</a>
 
         <span style="height: 20px;"></span>
 
@@ -41,20 +40,7 @@
 
     void CreateNewGame()
     {
-        var options = new Sandbox.Modals.GameCreateModalOptions();
-        options.Cookie = $"{Game.Menu.Package.FullIdent}.serverconfig";
-
-        options.ModalTitle = "Create Game";
-        options.MapFilter = "type:map sort:trending";
-        options.Default.Map = "facepunch.construct23";
-        options.Default.GameTitle = $"{Game.Menu.Package.Title} Server";
-
-        options.OnStartGame = (setup) =>
-        {
-            Game.Menu.StartServerAsync(setup.MaxPlayers, setup.GameTitle, setup.Map);
-        };
-
-        Game.Overlay.ShowCreateGame(options);
+        Game.Menu.StartServerAsync(8, $"{Game.UserName}'s Pod", "empty");
     }
 
     void OpenServerList()
