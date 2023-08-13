@@ -67,7 +67,7 @@ public partial class BombSurvival
 	public static void ComputeWaves()
 	{
 		if ( !Bombs ) return;
-		DebugOverlay.Sphere( BombSpawner.FirstPosition(), 15f, Color.Red );
+
 		if ( nextWave )
 		{
 			if ( waveEntititesSpawned == 0 )

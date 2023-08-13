@@ -18,7 +18,6 @@ public partial class Checkpoint : AnimatedEntity
 		Rotation = Rotation.FromYaw( -90f );
 		UseAnimGraph = false;
 		AnimateOnServer = true;
-		PlaybackRate = IsScoreboardCheckpoint ? 0f : 0.2f;
 	}
 
 	public override void ClientSpawn()
@@ -38,6 +37,8 @@ public partial class Checkpoint : AnimatedEntity
 	{
 		if ( IsScoreboardCheckpoint )
 			CurrentSequence.Time = ( (float)Math.Sin( (double)Time.Now ) + 1 ) / 4;
+		else
+			CurrentSequence.Time = Time.Now / 5f % CurrentSequence.Duration;
 
 		if ( Game.IsServer )
 		{

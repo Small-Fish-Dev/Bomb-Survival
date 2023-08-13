@@ -40,7 +40,7 @@ public partial class BombSpawner : AnimatedEntity
 
 			if ( lastPosition != Vector3.Zero )
 			{
-				Velocity = currentBonePosition - lastPosition;
+				Velocity = ( currentBonePosition - lastPosition ) / Time.Delta;
 				lastPosition = currentBonePosition;
 			}
 		}
