@@ -14,7 +14,9 @@ public partial class Player : AnimatedEntity
 	public Vector3 CollisionTop => Position + CollisionTopLocal;
 	[Net] public bool IsDead { get; private set; } = false;
 	[Net] internal TimeUntil respawnTimer { get; private set; } = 0f;
-	[Net] public int LivesLeft { get; private set; } = 4;
+	[Net, Local] public int LivesLeft { get; private set; } = 4;
+	public TimeSince LastRespawn { get; private set; } = 0f;
+
 
 	public float CrouchLevel { get; set; } = 1f;
 
@@ -175,6 +177,7 @@ public partial class Player : AnimatedEntity
 		knockedOutTimer = 0f;
 		IsKnockedOut = false;
 		IsDead = false;
+		LastRespawn = 0f;
 		SetCharred( false );
 
 		if ( initial )
@@ -192,6 +195,13 @@ public partial class Player : AnimatedEntity
 		}
 
 		respawnToClient( initial );
+	}
+
+	public static Player GetLongestLiving()
+	{
+		return All.OfType<Player>()
+			.Where( x => !x.IsDead )
+			.OrderByDescending( x => x.LastRespawn ).First();
 	}
 
 	[ConCmd.Admin( "respawn" )]

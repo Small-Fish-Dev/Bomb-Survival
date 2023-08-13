@@ -59,7 +59,7 @@ public partial class Player
 			.WithZ( Velocity.z ); // Don't smooth vertical movement
 
 		if ( TimeSinceLostFooting > Time.Delta * 5f )
-			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta;
+			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta * 2f;
 
 		if ( Input.Pressed( "punch" ) && !IsPunching )
 			Punch();
