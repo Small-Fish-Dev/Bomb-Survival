@@ -9,7 +9,8 @@ public enum WaveEntity
 	ScoreBubble,
 	SmallInertBomb,
 	BigTimedBomb,
-	SmallTimedBomb
+	SmallTimedBomb,
+	Missile,
 }
 
 public partial class BombSurvival
@@ -36,14 +37,15 @@ public partial class BombSurvival
 			var bomb = new TimedBomb();
 			bomb.Scale = 0.5f;
 			return ( bomb, 0.4f );
-		} }
+		} },
+		{WaveEntity.Missile, () => ( new HomingMine(), 0.2f ) }
 	};
 
 	public static (ModelEntity, float) CreateWaveEntity( WaveEntity type ) => WaveEntities[type].Invoke();
 
 	public static List<List<WaveEntity>> Waves = new()
 	{
-		new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
+		/*new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
 		new() {  WaveEntity.InertBomb, WaveEntity.TimedBomb, WaveEntity.InertBomb },
 		new() { WaveEntity.TimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.TimedBomb },
 		new() { WaveEntity.TimedBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.InertBomb },
@@ -52,6 +54,8 @@ public partial class BombSurvival
 		new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
 		new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb },
 		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
+		*/
+		new() { WaveEntity.Missile }
 	};
 
 	static TimeUntil nextWave { get; set; } = 5f;
@@ -74,8 +78,8 @@ public partial class BombSurvival
 
 			if ( nextWaveEntity )
 			{
-				var spawner = Entity.All.OfType<BombSpawner>().FirstOrDefault();
-				var spawnPosition = spawner.GetBoneTransform( 1 ).Position.WithY( 0 );
+				var spawner = Checkpoint.First();
+				var spawnPosition = Checkpoint.FirstPosition().WithY( 0 );
 				var currentWaveEntity = CreateWaveEntity( currentWaveEntityId );
 
 				currentWaveEntity.Item1.Position = spawnPosition;
