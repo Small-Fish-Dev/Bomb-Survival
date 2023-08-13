@@ -31,10 +31,29 @@ public partial class Checkpoint : AnimatedEntity
 		ClientModel.SetParent( this, true );
 	}
 
+	Vector3 lastPosition = Vector3.Zero;
+
 	[GameEvent.Tick]
-	void blockAnimation()
+	void compute()
 	{
 		if ( IsScoreboardCheckpoint )
 			CurrentSequence.Time = ( (float)Math.Sin( (double)Time.Now ) + 1 ) / 4;
+
+		if ( Game.IsServer )
+		{
+			if ( lastPosition != Vector3.Zero )
+				Velocity = GetBoneTransform( 1 ).Position - lastPosition;
+
+			lastPosition = GetBoneTransform( 1 ).Position;
+		}
 	}
+
+	public static Checkpoint First()
+	{
+		return Entity.All.OfType<Checkpoint>()
+			.Where( x => x.IsScoreboardCheckpoint != (BombSurvival.Instance.CurrentState is PlayingState) )
+			.FirstOrDefault();
+	}
+
+	public static Vector3 FirstPosition() => First().GetBoneTransform( 1 ).Position;
 }
