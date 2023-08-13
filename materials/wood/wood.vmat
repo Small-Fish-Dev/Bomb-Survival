@@ -4,34 +4,33 @@ Layer0
 {
 	shader "shaders/foreground_scorch.shader"
 
+	AO "materials/wood/wood_ao.jpg"
 	BlendMask "materials/default/default_mask.tga"
-
-	//---- Fog ----
-	g_bFogEnabled "1"
-
-	//---- Position ----
-	g_flYPosition "64.000"
-	g_flYSmoothing "75.000"
-	g_flZPosition "0.000"
-	g_flZSmoothing "250.000"
-
-	//---- Scorch ----
-	g_flScorchBlendDistance "16.159"
-	g_vScorchTint_Colour "[0.000000 0.000000 0.000000 1.000000]"
+	Colour "materials/wood/wood_color.jpg"
+	Normal "materials/wood/wood_normal.jpg"
+	Rough "materials/wood/wood_rough.jpg"
 	ScorchAO "materials/wood/wood_ao.jpg"
 	ScorchBlendMask "materials/scorch/scorch_mask.jpg"
 	ScorchColour "materials/wood/wood_color.jpg"
 	ScorchNormal "materials/wood/wood_normal.jpg"
 	ScorchRough "materials/wood/wood_rough.jpg"
 
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Position ----
+	g_flZPosition "0.000"
+	g_flZSmoothing "512.000"
+
+	//---- Scorch ----
+	g_flScorchBlendDistance "16.000"
+
 	//---- Textures ----
-	AO "materials/wood/wood_ao.jpg"
-	Colour "materials/wood/wood_color.jpg"
 	g_flTiling "1.000"
-	Normal "materials/wood/wood_normal.jpg"
-	Rough "materials/wood/wood_rough.jpg"
 
 	//---- Tint ----
+	g_bGradientTint "1"
 	g_bTintDirectionToggle "0"
+	g_vScorchTint_Colour "[0.000000 0.000000 0.000000 1.000000]"
 	g_vTint_Colour "[1.000000 1.000000 1.000000 1.000000]"
 }
