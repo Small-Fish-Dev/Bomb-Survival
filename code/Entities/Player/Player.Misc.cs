@@ -16,11 +16,14 @@ public partial class Player : AnimatedEntity
 	{
 		var colorToApply = charred ? Color.Black : Color.White;
 
-		Ragdoll.RenderColor = colorToApply;
+		if ( Ragdoll.IsValid() )
+		{
+			Ragdoll.RenderColor = colorToApply;
 
-		foreach ( var child in Ragdoll.Children )
-			if ( child is ModelEntity clothing )
-				clothing.RenderColor = colorToApply;
+			foreach ( var child in Ragdoll.Children )
+				if ( child is ModelEntity clothing )
+					clothing.RenderColor = colorToApply;
+		}
 	}
 
 	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
@@ -45,7 +48,8 @@ public partial class Player : AnimatedEntity
 
 		IsKnockedOut = false;
 
-		Collider.EnableSolidCollisions = true;
+		if ( Collider.IsValid() )
+			Collider.EnableSolidCollisions = true;
 	}
 
 	internal void SimulateKnockedOut()

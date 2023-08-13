@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.Internal;
 using Sandbox.Physics;
 
 namespace BombSurvival;
@@ -62,8 +63,7 @@ public partial class Player : AnimatedEntity
 		{
 			if ( Game.IsServer )
 			{
-				var spawnPoint = Entity.All.OfType<Checkpoint>().FirstOrDefault();
-				Position = spawnPoint.GetBoneTransform( 1 ).Position;
+				Position = Checkpoint.FirstPosition();
 
 				if ( LivesLeft >= 0 )
 					if ( respawnTimer )
@@ -150,8 +150,6 @@ public partial class Player : AnimatedEntity
 		MoveRagdoll();
 	}
 
-
-
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -161,22 +159,9 @@ public partial class Player : AnimatedEntity
 		Tags.Add( "player" );
 
 		EnableDrawing = false;
-
-		SpawnCollider();
 	}
 
-	public override void ClientSpawn()
-	{
-		base.ClientSpawn();
-
-		SetModel( "models/citizen/citizen.vmdl" );
-		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, CollisionBox.Mins, CollisionBox.Maxs );
-
-		SpawnRagdoll();
-		SpawnCollider();
-	}
-
-	public void Respawn()
+	public void Respawn( bool initial = false )
 	{
 		Position = Checkpoint.FirstPosition();
 		Velocity = Vector3.Zero;
@@ -187,15 +172,21 @@ public partial class Player : AnimatedEntity
 		IsDead = false;
 		SetCharred( false );
 
-		if ( Collider.IsValid() )
+		if ( initial )
 		{
-			PlaceCollider();
-			Collider.EnableAllCollisions = true;
+			SpawnCollider();
+		}
+		else
+		{
+			if ( Collider.IsValid() )
+			{
+				PlaceCollider();
+				Collider.EnableAllCollisions = true;
+			}
+			AssignPoints( (int)(Score * -0.05f) ); // Remove 5% of their score
 		}
 
-		AssignPoints( (int)(Score * -0.05f) ); // Remove 5% of their score
-
-		respawnToClient();
+		respawnToClient( initial );
 	}
 
 	[ConCmd.Admin( "respawn" )]
@@ -206,12 +197,18 @@ public partial class Player : AnimatedEntity
 	}
 
 	[ClientRpc]
-	void respawnToClient()
+	void respawnToClient( bool initial = false )
 	{
 		var spawnPoint = Checkpoint.First();
 
 		spawnPoint.ClientModel.CurrentSequence.Time = 0;
 		spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
+
+		if ( initial )
+		{
+			SpawnRagdoll();
+			DressRagdoll();
+		}
 
 		PlaceRagdoll();
 		Ragdoll.EnableDrawing = true;

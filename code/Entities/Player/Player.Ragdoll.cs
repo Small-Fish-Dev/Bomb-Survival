@@ -1,11 +1,13 @@
 ﻿using Sandbox;
 using Sandbox.Physics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BombSurvival;
 
 public partial class Player : AnimatedEntity
 {
 	internal AnimatedEntity Ragdoll { get; private set; }
+	[Net] public string Clothing { get; set; }
 
 	internal void SpawnRagdoll()
 	{
@@ -31,27 +33,14 @@ public partial class Player : AnimatedEntity
 		Ragdoll.PhysicsGroup.Velocity = Velocity;
 		Ragdoll.UseAnimGraph = true;
 
-		PlaceRagdoll();
-
 		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Ragdoll.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
 		spring.SpringLinear = new PhysicsSpring( 8f, 0.8f );
 	}
 
-	public void DressRagdoll( IClient cl )
+	public void DressRagdoll()
 	{
-		Game.AssertServer();
-
-		var data = cl.GetClientData( "avatar" );
-		dressRagdollClient( data );
-	}
-
-	[ClientRpc]
-	private void dressRagdollClient( string data )
-	{
-		if ( !Ragdoll.IsValid() ) return;
-
 		var container = new ClothingContainer();
-		container.Deserialize( data );
+		container.Deserialize( Clothing );
 		container.DressEntity( Ragdoll );
 	}
 
@@ -59,19 +48,14 @@ public partial class Player : AnimatedEntity
 	{
 		if ( !Ragdoll.IsValid() || !Ragdoll.PhysicsBody.IsValid() ) return;
 
-
 		foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
 		{
 			var ragdollBone = Ragdoll.GetBone( body );
 			var boneTransform = GetBoneTransform( ragdollBone );
 
-			body.Position = boneTransform.Position;
+			body.Position = Position;
 			body.Rotation = boneTransform.Rotation;
-
-			Log.Info( boneTransform.Position );
 		}
-
-		Ragdoll.ResetInterpolation();
 	}
 
 	internal void MoveRagdoll()

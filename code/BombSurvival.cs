@@ -3,6 +3,7 @@ global using Sandbox.Sdf;
 global using System;
 global using System.Linq;
 global using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BombSurvival;
 
@@ -24,9 +25,8 @@ public partial class BombSurvival : GameManager
 
 		var pawn = new Player();
 		client.Pawn = pawn;
-		pawn.DressRagdoll( client );
-
-		pawn.Respawn();
+		pawn.Clothing = client.GetClientData( "avatar" );
+		pawn.Respawn( true );
 	}
 
 	public override void ClientSpawn()

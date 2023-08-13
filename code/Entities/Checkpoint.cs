@@ -41,10 +41,12 @@ public partial class Checkpoint : AnimatedEntity
 
 		if ( Game.IsServer )
 		{
-			if ( lastPosition != Vector3.Zero )
-				Velocity = GetBoneTransform( 1 ).Position - lastPosition;
+			var currentPosition = GetBoneTransform( 1 ).Position;
 
-			lastPosition = GetBoneTransform( 1 ).Position;
+			if ( lastPosition != Vector3.Zero )
+				Velocity = currentPosition - lastPosition;
+
+			lastPosition = currentPosition;
 		}
 	}
 
