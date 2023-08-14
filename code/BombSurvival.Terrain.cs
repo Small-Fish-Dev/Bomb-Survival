@@ -146,4 +146,27 @@ public partial class BombSurvival
 		Explosion( pawn.CollisionWorldSpaceCenter );
 
 	}
+
+	public static Vector3 GetHighestPoint()
+	{
+		var traceCount = 50f;
+		var traceQuality = LevelSize / traceCount;
+		List<Vector3> points = new();
+
+		for ( int i = (int)(-traceCount / 2f); i < (int)(traceCount / 2f); i++ )
+		{
+			var startingPos = new Vector3( i * traceQuality + traceQuality / 2f, 0, 1250f );
+			var endingPos = startingPos.WithZ( -1000f );
+
+			var heightTrace = Trace.Sphere( traceQuality / 2f, startingPos, endingPos )
+				.WithTag( "terrain" )
+				.Run();
+
+			if ( heightTrace.Hit )
+				points.Add( heightTrace.HitPosition );
+		}
+
+		return points.OrderByDescending( x => x.z )
+			.FirstOrDefault();
+	}
 }
