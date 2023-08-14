@@ -60,11 +60,14 @@ public partial class BombSurvival
 		new() { WaveEntity.Mine, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
 	};
 
-	static TimeUntil nextWave { get; set; } = 5f;
+	static TimeUntil nextWave { get; set; } = 15f;
 
 	static int currentWaveId = 0;
 	static TimeUntil nextWaveEntity = 0f;
 	static int waveEntititesSpawned = 0;
+
+	static Vector3 currentHighestPoint = Vector3.Zero;
+	static TimeUntil nextDamnedMine = 15f;
 
 	public static void ComputeWaves()
 	{
@@ -96,6 +99,23 @@ public partial class BombSurvival
 			{
 				nextWave = Game.Random.Float( 1.5f, 6.5f );
 				waveEntititesSpawned = 0;
+			}
+		}
+
+		if ( nextDamnedMine )
+		{
+			var spawnedPosition = BombSpawner.FirstPosition();
+
+			if ( currentHighestPoint == Vector3.Zero )
+				currentHighestPoint = GetHighestPoint().WithZ( spawnedPosition.z );
+
+			if ( spawnedPosition.Distance( currentHighestPoint ) <= 5f )
+			{
+				var damnedMine = new Mine();
+				damnedMine.Position = currentHighestPoint;
+
+				nextDamnedMine = Game.Random.Float( 3f, 12f );
+				currentHighestPoint = Vector3.Zero;
 			}
 		}
 	}
