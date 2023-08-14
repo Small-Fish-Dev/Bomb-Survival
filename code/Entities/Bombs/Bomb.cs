@@ -79,8 +79,15 @@ public abstract partial class Bomb : AnimatedEntity
 
 		foreach ( var player in playersToChar )
 		{
-			player.SetCharred( true );
-			player.KnockOut( Position, 1000, 2f );
+			var traceCheck = Trace.Ray( Position, player.CollisionTop )
+				.WithTag( "terrain" )
+				.Run();
+
+			if ( !traceCheck.Hit )
+			{
+				player.SetCharred( true );
+				player.KnockOut( Position, 1000 * Scale, 2f );
+			}
 		}
 
 		if ( Game.IsServer )
