@@ -60,14 +60,14 @@ public partial class BombSurvival
 		new() { WaveEntity.Mine, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
 	};
 
-	static TimeUntil nextWave { get; set; } = 15f;
+	static TimeUntil nextWave { get; set; } = 10f;
 
 	static int currentWaveId = 0;
 	static TimeUntil nextWaveEntity = 0f;
 	static int waveEntititesSpawned = 0;
 
 	static Vector3 currentHighestPoint = Vector3.Zero;
-	static TimeUntil nextDamnedMine = 15f;
+	static TimeUntil nextDamnedMine = 10f;
 
 	public static void ComputeWaves()
 	{
