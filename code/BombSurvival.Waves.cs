@@ -11,6 +11,7 @@ public enum WaveEntity
 	BigTimedBomb,
 	SmallTimedBomb,
 	Missile,
+	Mine,
 }
 
 public partial class BombSurvival
@@ -38,7 +39,8 @@ public partial class BombSurvival
 			bomb.Scale = 0.5f;
 			return ( bomb, 0.4f );
 		} },
-		{WaveEntity.Missile, () => ( new HomingMine(), 1.5f ) }
+		{WaveEntity.Missile, () => ( new HomingMine(), 1.5f ) },
+		{WaveEntity.Mine, () => ( new Mine(), 0.35f ) }
 	};
 
 	public static (ModelEntity, float) CreateWaveEntity( WaveEntity type ) => WaveEntities[type].Invoke();
@@ -54,7 +56,8 @@ public partial class BombSurvival
 		new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
 		new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb },
 		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
-		new() { WaveEntity.Missile, WaveEntity.Missile, WaveEntity.Missile }
+		new() { WaveEntity.Missile, WaveEntity.Missile, WaveEntity.Missile },
+		new() { WaveEntity.Mine, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble }
 	};
 
 	static TimeUntil nextWave { get; set; } = 5f;
