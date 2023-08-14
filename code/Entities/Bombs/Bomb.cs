@@ -55,7 +55,7 @@ public abstract partial class Bomb : AnimatedEntity
 			var direction = ((bomb.CollisionWorldSpaceCenter - CollisionWorldSpaceCenter).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 
 			bomb.PhysicsGroup.Velocity = 0;
-			bomb.PhysicsGroup.ApplyImpulse( direction * 2000f * bomb.PhysicsBody.Mass );
+			bomb.PhysicsGroup.ApplyImpulse( direction * 2000f * bomb.PhysicsBody.Mass * Scale );
 		}
 
 		var bubblesToBreak = entitiesInExplosion
