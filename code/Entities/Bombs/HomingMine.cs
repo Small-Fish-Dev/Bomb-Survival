@@ -49,7 +49,7 @@ public partial class HomingMine : Bomb
 
 			var wishRotation = Rotation.LookAt( wishDirection, Vector3.Right ) * Rotation.FromYaw( -90 );
 
-			Rotation = Rotation.Lerp( Rotation, wishRotation, Time.Delta * 5f );
+			Rotation = Rotation.Lerp( Rotation, wishRotation, Time.Delta * 3f );
 		}
 
 		if ( PhysicsBody.IsValid() )
@@ -65,11 +65,13 @@ public partial class HomingMine : Bomb
 
 		var other = eventData.Other.Entity;
 
-		if ( other.GetPlayer() is Player )
-			Explode();
-		else
-			if ( Velocity.Length > 50f )
-			Explode();
-
+		if ( Transform.PointToLocal( eventData.Position ).y > 50f )
+		{
+			if ( other.GetPlayer() is Player )
+				Explode();
+			else
+				if ( Velocity.Length > 50f )
+				Explode();
+		}
 	}
 }
