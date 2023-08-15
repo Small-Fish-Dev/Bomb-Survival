@@ -50,7 +50,6 @@ public partial class Player
 			var roll = ( 360 - (float)angleInDegrees - 90 ) % 360;
 			var localRotation = Transform.RotationToLocal( Rotation.From( new Angles( pitch, 0f, roll ) ) );
 
-			Log.Info( roll );
 			target.SetAnimParameter( "left_hand_ik.rotation", localRotation );
 			target.SetAnimParameter( "right_hand_ik.rotation", localRotation );
 		}
