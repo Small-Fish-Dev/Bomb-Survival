@@ -17,7 +17,9 @@
       "CodePath": null,
       "PackageReferences": [],
       "EditorReferences": [
-        "local.bomb_survival#local"
+        "local.bomb_survival#local",
+        "fish.bomb_survival#local",
+        "fish.bomb_survival"
       ],
       "Metadata": {
         "SingleAssetSource": "maps/empty.vmap"
