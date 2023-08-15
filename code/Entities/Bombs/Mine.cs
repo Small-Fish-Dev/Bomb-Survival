@@ -3,6 +3,7 @@
 public partial class Mine : Bomb
 {
 	public override string ModelPath { get; } = "models/bomb/bomb.vmdl";
+	TimeUntil enableExplosion = 0.5f;
 
 	public override void Spawn()
 	{
@@ -14,7 +15,7 @@ public partial class Mine : Bomb
 	{
 		base.OnPhysicsCollision( eventData );
 		
-		if ( Velocity.Length > 50f )
-				Explode();
+		if ( enableExplosion )
+			Explode();
 	}
 }

@@ -4,6 +4,7 @@ public partial class HomingMine : Bomb
 {
 	public override string ModelPath { get; } = "models/missile/missile.vmdl";
 	public Player Target { get; set; } = null;
+	TimeUntil enableExplosion = 0.5f;
 
 	public override void Spawn()
 	{
@@ -65,13 +66,8 @@ public partial class HomingMine : Bomb
 
 		var other = eventData.Other.Entity;
 
-		if ( Transform.PointToLocal( eventData.Position ).y > 50f )
-		{
-			if ( other.GetPlayer() is Player )
+		if ( enableExplosion )
+			if ( Transform.PointToLocal( eventData.Position ).y > 50f )
 				Explode();
-			else
-				if ( Velocity.Length > 50f )
-				Explode();
-		}
 	}
 }
