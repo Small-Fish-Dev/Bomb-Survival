@@ -216,10 +216,13 @@ public partial class Player : AnimatedEntity
 	[ClientRpc]
 	void respawnToClient( bool initial = false )
 	{
-		var spawnPoint = Checkpoint.First();
+		if ( Client == Game.LocalClient )
+		{
+			var spawnPoint = Checkpoint.First();
 
-		spawnPoint.ClientModel.CurrentSequence.Time = 0;
-		spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
+			spawnPoint.ClientModel.CurrentSequence.Time = 0;
+			spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
+		}
 
 		if ( initial )
 		{
