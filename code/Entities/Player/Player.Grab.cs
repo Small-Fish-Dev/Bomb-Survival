@@ -80,13 +80,11 @@ public partial class Player : AnimatedEntity
 			GrabbingPosition = player.CollisionTop;
 		}
 		else
-		{
 			GrabbingPosition = GrabSpring.Point2.Transform.Position;
-		}
 
-		DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
-		DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
-		DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
+		//DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
+		//DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
+		//DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
 		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
 

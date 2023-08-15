@@ -69,14 +69,24 @@ public partial class Player : AnimatedEntity
 			foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
 			{
 				var ragdollBone = Ragdoll.GetBone( body );
-				var boneTransform = GetBoneTransform( ragdollBone ).Add( positionDifference, true );
+				var boneName = Ragdoll.GetBoneName( ragdollBone );
 
-				var direction = boneTransform.Position - body.Position;
-				var force = body.Mass * 30000f;
+				if ( IsGrabbing && boneName.Contains( "hand" ) || IsGrabbing && boneName.Contains( "arm" ) )
+				{
+					if ( boneName.Contains( "hand" ) )
+						body.Position = GrabbingPosition;
+				}
+				else
+				{
+					var boneTransform = GetBoneTransform( ragdollBone ).Add( positionDifference, true );
 
-				body.ApplyForce( direction * force * Time.Delta );
-				body.LinearDamping = 10f;
-				body.Rotation = boneTransform.Rotation;
+					var direction = boneTransform.Position - body.Position;
+					var force = body.Mass * 30000f;
+
+					body.ApplyForce( direction * force * Time.Delta );
+					body.LinearDamping = 10f;
+					body.Rotation = boneTransform.Rotation;
+				}
 			}
 		}
 		else
