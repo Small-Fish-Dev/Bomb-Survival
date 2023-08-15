@@ -89,7 +89,7 @@ public partial class Player : AnimatedEntity
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
 
-		var capsule = new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * (CollisionHeight + CollisionWidth / 4f), CollisionWidth / 1.5f );
+		var capsule = new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * (CollisionHeight + CollisionWidth / 4f), CollisionWidth / 2f );
 		var crouchTrace = Trace.Capsule( capsule, Position, CollisionTop )
 			.Ignore( this )
 			.WithoutTags( "puppet", "collider" )
