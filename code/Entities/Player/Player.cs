@@ -168,6 +168,7 @@ public partial class Player : AnimatedEntity
 		Tags.Add( "player" );
 
 		EnableDrawing = false;
+		Transmit = TransmitType.Always;
 	}
 
 	public void Respawn( bool initial = false )
