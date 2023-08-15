@@ -1,7 +1,7 @@
 {
   "Title": "Bomb Survival",
   "Type": "game",
-  "Org": "local",
+  "Org": "fish",
   "Ident": "bomb_survival",
   "Tags": null,
   "Schema": 1,
@@ -211,7 +211,7 @@
     "LaunchConfigs": [
       {
         "Name": "Testing",
-        "GameIdent": "local.bomb_survival#local",
+        "GameIdent": "fish.bomb_survival#local",
         "MapName": "empty.vmap",
         "MaxPlayers": 64,
         "GameSettings": {},
