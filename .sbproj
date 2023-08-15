@@ -7,7 +7,7 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "Resources": "",
+  "Resources": "\nlevels/*\nimagefont/*\nui/*",
   "MenuResources": "\nui/menu/*\nUI/MainMenu/*\nmaps/pod.vpk",
   "HasCode": true,
   "CodePath": "/code/",
