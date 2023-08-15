@@ -21,12 +21,14 @@ public partial class Player : AnimatedEntity
 		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 0.8f )
 			.Size( CollisionHeight * 0.8f )
 			.DynamicOnly()
-			.WithoutTags( "collider", "player" )
+			.Ignore( this )
+			.Ignore( Collider )
 			.Run();
 
 		if ( grabTrace.Entity is ModelEntity grabTarget )
 		{
 			var player = grabTarget.GetPlayer();
+
 			if ( player != null )
 			{
 				Grabbing = player;
