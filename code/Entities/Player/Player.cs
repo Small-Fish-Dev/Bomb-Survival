@@ -222,7 +222,17 @@ public partial class Player : AnimatedEntity
 			var spawnPoint = Checkpoint.First();
 
 			spawnPoint.ClientModel.CurrentSequence.Time = 0;
-			spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
+
+			if ( LivesLeft != 0 )
+			{
+				spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
+				spawnPoint.ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.White );
+			}
+			else
+			{
+				spawnPoint.ClientModel.SetBodyGroup( "body", 0 );
+				spawnPoint.ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.Red );
+			}
 		}
 
 		if ( initial )

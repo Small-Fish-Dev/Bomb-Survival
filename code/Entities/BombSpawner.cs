@@ -24,6 +24,9 @@ public partial class BombSpawner : AnimatedEntity
 		ClientModel.Position = Position;
 		ClientModel.EnableDrawing = true;
 		ClientModel.SetParent( this, true );
+
+		ClientModel.SetBodyGroup( "body", 0 );
+		ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.White );
 	}
 
 	Vector3 lastPosition = Vector3.Zero;
