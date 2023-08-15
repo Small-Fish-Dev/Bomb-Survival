@@ -6,6 +6,16 @@ public partial class BombSurvival : GameManager
 	{
 		base.FrameSimulate( cl );
 
+		var players = Entity.All.OfType<Player>().ToList();
+
+		foreach( var player in players )
+			if ( !player.Ragdoll.IsValid() || player.Ragdoll == null )
+			{
+				player.SpawnRagdoll();
+				player.PlaceRagdoll();
+				player.DressRagdoll();
+			}
+
 		Player.MoveRagdolls();
 	}
 }

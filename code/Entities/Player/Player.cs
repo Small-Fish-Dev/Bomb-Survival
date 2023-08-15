@@ -169,6 +169,8 @@ public partial class Player : AnimatedEntity
 
 		EnableDrawing = false;
 		Transmit = TransmitType.Always;
+
+		SpawnCollider();
 	}
 
 	public void Respawn( bool initial = false )
@@ -183,21 +185,13 @@ public partial class Player : AnimatedEntity
 		LastRespawn = 0f;
 		SetCharred( false );
 
-		if ( initial )
+		if ( Collider.IsValid() )
 		{
-			SpawnCollider();
-		}
-		else
-		{
-			if ( Collider.IsValid() )
-			{
-				PlaceCollider();
-				Collider.EnableAllCollisions = true;
-			}
-			AssignPoints( (int)(Score * -0.05f) ); // Remove 5% of their score
+			PlaceCollider();
+			Collider.EnableAllCollisions = true;
 		}
 
-		respawnToClient( initial );
+		respawnToClient();
 	}
 
 	public static Player GetLongestLiving()
@@ -215,7 +209,7 @@ public partial class Player : AnimatedEntity
 	}
 
 	[ClientRpc]
-	void respawnToClient( bool initial = false )
+	void respawnToClient()
 	{
 		if ( Client == Game.LocalClient )
 		{
@@ -235,14 +229,11 @@ public partial class Player : AnimatedEntity
 			}
 		}
 
-		if ( initial )
+		if ( Ragdoll.IsValid() )
 		{
-			SpawnRagdoll();
-			DressRagdoll();
+			PlaceRagdoll();
+			Ragdoll.EnableDrawing = true;
 		}
-
-		PlaceRagdoll();
-		Ragdoll.EnableDrawing = true;
 	}
 
 	public void Kill()
