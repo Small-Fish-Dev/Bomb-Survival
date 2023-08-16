@@ -8,7 +8,7 @@ public partial class ScoreBubble : ModelEntity
 
 		SetModel( "models/score_bubble/score_bubble.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		Scale = 3f;
+		Scale = 1.5f;
 		Tags.Add( "bubble" );
 
 		BombSurvival.AxisLockedEntities.Add( this );
