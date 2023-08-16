@@ -14,10 +14,6 @@
 						remaps = 
 						[
 							{
-								from = "score_bubble.vmat"
-								to = "models/score_bubble/materials/score_bubble.vmat"
-							},
-							{
 								from = "score_center.vmat"
 								to = "models/score_bubble/materials/score_bubble_inside.vmat"
 							},
@@ -62,6 +58,7 @@
 							exception_list = 
 							[
 								"score_bubble",
+								"score_bubble_001",
 							]
 						}
 					},
