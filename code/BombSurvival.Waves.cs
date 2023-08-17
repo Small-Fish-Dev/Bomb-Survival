@@ -16,7 +16,7 @@ public enum WaveEntity
 
 public partial class BombSurvival
 {
-	static float timeUntilMaxDifficulty => 60f * 3f; // 3 Minutes
+	static float timeUntilMaxDifficulty => 60f * 2f; // 2 Minutes
 	public static float CurrentDifficulty => Math.Min( BombSurvival.Instance.CurrentState.SinceStarted, timeUntilMaxDifficulty ) / timeUntilMaxDifficulty;
 
 	public static Dictionary<WaveEntity, Func<(ModelEntity, float)>> WaveEntities = new()
@@ -58,7 +58,7 @@ public partial class BombSurvival
 		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
 		new() { WaveEntity.ScoreBubble, WaveEntity.InertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallInertBomb, WaveEntity.InertBomb, WaveEntity.ScoreBubble },
 		new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallTimedBomb },
-		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
+		new() { WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.BigTimedBomb, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
 		new() { WaveEntity.Missile, WaveEntity.Missile, WaveEntity.Missile },
 		new() { WaveEntity.Mine, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble, WaveEntity.ScoreBubble },
 		new() { WaveEntity.SmallTimedBomb, WaveEntity.SmallInertBomb, WaveEntity.SmallTimedBomb, WaveEntity.SmallInertBomb }
@@ -70,7 +70,7 @@ public partial class BombSurvival
 	static TimeUntil nextWaveEntity = 0f;
 	static int waveEntititesSpawned = 0;
 
-	static Vector3 currentHighestPoint = Vector3.Zero;
+	static List<Vector3> currentHighestPoints = new();
 	static TimeUntil nextDamnedMine = 4f;
 
 	public static void ComputeWaves()
@@ -101,9 +101,9 @@ public partial class BombSurvival
 
 			if ( waveEntititesSpawned >= currentWave.Count )
 			{
-				var timeRemoved = CurrentDifficulty * 1.5f;
+				var timeRemoved = CurrentDifficulty * 2f;
 
-				nextWave = Game.Random.Float( 2f, 4f ) - timeRemoved;
+				nextWave = Game.Random.Float( 2f, 3f ) - timeRemoved;
 				waveEntititesSpawned = 0;
 			}
 		}
@@ -112,18 +112,31 @@ public partial class BombSurvival
 		{
 			var spawnedPosition = BombSpawner.FirstPosition();
 
-			if ( currentHighestPoint == Vector3.Zero )
-				currentHighestPoint = GetHighestPoint().WithZ( spawnedPosition.z );
+			if ( currentHighestPoints.Count() == 0)
+				currentHighestPoints.AddRange( GetHighestPoints().Take( 5 ) );
 
-			if ( spawnedPosition.Distance( currentHighestPoint ) <= 5f )
+			List<Vector3> usedPoints = new();
+
+			foreach ( var point in currentHighestPoints )
 			{
-				var damnedMine = new Mine();
-				damnedMine.Position = currentHighestPoint;
+				var pointWithHeight = point.WithZ( spawnedPosition.z );
+				if ( spawnedPosition.Distance( pointWithHeight ) <= 5f )
+				{
+					var damnedMine = new Mine();
+					damnedMine.Position = pointWithHeight;
 
+					usedPoints.Add( point );
+				}
+			}
+
+			foreach ( var point in usedPoints )
+				currentHighestPoints.Remove( point );
+
+			if ( currentHighestPoints.Count() == 0 )
+			{
 				var timeRemoved = CurrentDifficulty * 5f;
 
-				nextDamnedMine = Game.Random.Float( 6f, 9f ) - nextDamnedMine;
-				currentHighestPoint = Vector3.Zero;
+				nextDamnedMine = Game.Random.Float( 5f, 8f ) - timeRemoved;
 			}
 		}
 	}

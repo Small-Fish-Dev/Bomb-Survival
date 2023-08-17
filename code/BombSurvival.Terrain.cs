@@ -147,7 +147,7 @@ public partial class BombSurvival
 
 	}
 
-	public static Vector3 GetHighestPoint()
+	public static IEnumerable<Vector3> GetHighestPoints()
 	{
 		var traceCount = 50f;
 		var traceQuality = LevelSize / traceCount;
@@ -166,7 +166,6 @@ public partial class BombSurvival
 				points.Add( heightTrace.HitPosition );
 		}
 
-		return points.OrderByDescending( x => x.z )
-			.FirstOrDefault();
+		return points.OrderByDescending( x => x.z );
 	}
 }
