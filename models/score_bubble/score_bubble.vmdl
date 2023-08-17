@@ -30,7 +30,7 @@
 					{
 						_class = "PhysicsShapeCylinder"
 						parent_bone = ""
-						surface_prop = "wood"
+						surface_prop = "glass"
 						collision_tags = "solid"
 						radius = 6.0
 						point0 = [ 6.0, 0.0, 0.0 ]
