@@ -2,9 +2,9 @@
 
 public partial class Player
 {
-	public float WalkSpeed => (IsGrabbing || IsBeingGrabbed) ? 50f : ( 140f * ( GroundEntity != null ? Math.Max( 0.5f, CrouchLevel ) : 1f ) );
-	public float AccelerationSpeed => (IsGrabbing || IsBeingGrabbed) ? 200f : 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
-	public float JumpHeight => (IsGrabbing || IsBeingGrabbed) ? 100f : 250f;
+	public float WalkSpeed => 140f * ( GroundEntity != null ? Math.Max( 0.5f, CrouchLevel ) : 1f );
+	public float AccelerationSpeed => 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
+	public float JumpHeight => 250f;
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
 
@@ -67,6 +67,28 @@ public partial class Player
 				Punch();
 				LastPunch = 0f;
 			}
+
+		if ( IsGrabbing )
+		{
+			var delta = GrabbingPosition - Position;
+			var magnitude = delta.Length;
+			var normal = delta.Normal;
+			var strength = Math.Max( magnitude - CollisionHeight * 1.5f, 0f );
+
+			Velocity += normal * strength * strength + Vector3.Down * 20f;
+			Velocity /= 1 + Time.Delta * strength / 10f;
+		}
+
+		if ( IsBeingGrabbed )
+		{
+			var delta = Grabber.CollisionTop - CollisionTop;
+			var magnitude = delta.Length;
+			var normal = delta.Normal;
+			var strength = Math.Max( magnitude - CollisionHeight * 1.5f, 0f );
+
+			Velocity += normal * strength * strength + Vector3.Down * 20f;
+			Velocity /= 1 + Time.Delta * strength / 10f;
+		}
 
 		var moveHelper = new MoveHelper( Position, Velocity );
 		moveHelper.MaxStandableAngle = MaxWalkableAngle;

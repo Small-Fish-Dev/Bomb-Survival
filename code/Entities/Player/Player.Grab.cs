@@ -10,6 +10,7 @@ public partial class Player : AnimatedEntity
 	[Net] public bool WantsToGrab { get; private set; } = false;
 	public bool IsGrabbing => Grabbing != null;
 	[Net] public bool IsBeingGrabbed { get; private set; } = false;
+	[Net] public Player Grabber { get; private set; } = null;
 	public SpringJoint GrabSpring { get; private set; }
 
 	public void Grab()
@@ -20,7 +21,6 @@ public partial class Player : AnimatedEntity
 
 		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 0.8f )
 			.Size( CollisionHeight * 0.8f )
-			.DynamicOnly()
 			.Ignore( this )
 			.Ignore( Collider )
 			.Run();
@@ -33,6 +33,7 @@ public partial class Player : AnimatedEntity
 			{
 				Grabbing = player;
 				player.IsBeingGrabbed = true;
+				player.Grabber = this;
 			}
 			else
 			{
@@ -41,20 +42,28 @@ public partial class Player : AnimatedEntity
 				var targetBody = grabTarget.PhysicsBody;
 
 				if ( !targetBody.IsValid() ) return;
-				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 				if ( grabTarget is Bomb bombTarget && bombTarget.IsExploding ) return;
 
-				Grabbing = grabTarget;
-				Grabbing.PhysicsBody.SurfaceMaterial = "slippery_wave_entity";
+				if ( targetBody.BodyType == PhysicsBodyType.Dynamic )
+				{
+					Grabbing = grabTarget;
+					Grabbing.PhysicsBody.SurfaceMaterial = "slippery_wave_entity";
 
-				var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
-				var grabPosition = targetBody.FindClosestPoint( armPosition );
-				var distance = armPosition.Distance( grabPosition );
-				GrabSpring = PhysicsJoint.CreateSpring(
-					PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
-					PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
+					var armPosition = CollisionTop + (InputRotation.Forward * CollisionHeight / 1.5f);
+					var grabPosition = targetBody.FindClosestPoint( armPosition );
+					var distance = armPosition.Distance( grabPosition );
+					GrabSpring = PhysicsJoint.CreateSpring(
+						PhysicsPoint.World( Collider.PhysicsBody, armPosition ),
+						PhysicsPoint.World( targetBody, grabPosition ), distance, distance );
+					GrabSpring.SpringLinear = new PhysicsSpring( 5f, 1.2f );
 
-				GrabbingPosition = grabPosition;
+					GrabbingPosition = grabPosition;
+				}
+				else
+				{
+					Grabbing = grabTarget;
+					GrabbingPosition = grabTrace.HitPosition;
+				}
 			}
 		}
 	}
@@ -78,15 +87,21 @@ public partial class Player : AnimatedEntity
 				return;
 			}
 
-			player.Velocity += Velocity.WithZ( 0 );
 			GrabbingPosition = player.CollisionTop;
 		}
 		else
-			GrabbingPosition = GrabSpring.Point2.Transform.Position;
+		{
+			if ( Grabbing.PhysicsBody.BodyType == PhysicsBodyType.Dynamic )
+			{
+				GrabbingPosition = GrabSpring.Point2.Transform.Position;
+				GrabSpring.SpringLinear = new PhysicsSpring( GroundEntity == null ? 1f : 5f, 1.2f );
+			}
+		}
 
 		//DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
 		//DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
 		//DebugOverlay.Sphere( GrabSpring.Point2.Transform.Position, 5f, Color.Blue );
+		//DebugOverlay.Sphere( GrabbingPosition, 5f, PlayerColor );
 		//Grabbing.Position = Vector3.Lerp( Grabbing.Position, CollisionCenter + InputRotation.Forward * 50f, Time.Delta * 10f );
 	}
 
@@ -98,7 +113,10 @@ public partial class Player : AnimatedEntity
 			Grabbing.PhysicsBody.SurfaceMaterial = "normal_wave_entity";
 
 			if ( Grabbing is Player player )
+			{
 				player.IsBeingGrabbed = false;
+				player.Grabber = null;
+			}
 		}
 		Grabbing = null;
 	}
