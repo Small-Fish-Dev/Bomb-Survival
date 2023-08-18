@@ -80,7 +80,12 @@ public partial class Player : AnimatedEntity
 				if ( IsGrabbing && boneName.Contains( "hand" ) || IsGrabbing && boneName.Contains( "arm" ) )
 				{
 					if ( boneName.Contains( "hand" ) )
+					{
+						body.Enabled = false;
 						body.Position = GrabbingPosition;
+					}
+					else
+						body.Position = body.Position.LerpTo( GrabbingPosition, Time.Delta * 10f );
 				}
 				else
 				{
@@ -92,13 +97,17 @@ public partial class Player : AnimatedEntity
 					body.ApplyForce( direction * force * Time.Delta );
 					body.LinearDamping = 10f;
 					body.Rotation = boneTransform.Rotation;
+					body.Enabled = true;
 				}
 			}
 		}
 		else
 		{
 			foreach ( var body in Ragdoll.PhysicsGroup.Bodies )
+			{
 				body.LinearDamping = 0f;
+				body.Enabled = true;
+			}
 
 			if ( knockedOutTimer.Passed <= 0.1f )
 			{
