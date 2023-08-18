@@ -2,6 +2,8 @@
 
 public partial class ScoreBubble : AnimatedEntity
 {
+	Player nearestPlayer = null;
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -53,20 +55,28 @@ public partial class ScoreBubble : AnimatedEntity
 	{
 		var timeOffset = Time.Tick + NetworkIdent; // Offset the timer so you don't have visible lag spikes
 
-		if ( timeOffset % 10 == 0 ) // Call this expensive code once every 10 ticks
+		if ( timeOffset % 15 == 0 ) // Call this expensive code once every 15 ticks
 		{
-			var nearestPlayer = All.OfType<Player>()
+			var currentNearestPlayer = All.OfType<Player>()
 				.Where( x => !x.IsDead )
 				.OrderBy( x => x.Position.Distance( Position ) )
 				.FirstOrDefault();
 
-			if ( !nearestPlayer.IsValid() || nearestPlayer == null ) return;
+			if ( !currentNearestPlayer.IsValid() || currentNearestPlayer == null ) return;
 
-			var distance = nearestPlayer.Position.Distance( Position );
+			var distance = currentNearestPlayer.Position.Distance( Position );
 
-			PlaybackRate = Math.Clamp( 5f - distance / 100f, 1f, 5f );
+			PlaybackRate = Math.Clamp( 10f - distance / 50f, 1f, 10f );
 
-			Model.Materials.Last().Set( "g_vColorTint", nearestPlayer.PlayerColor );
+			if ( nearestPlayer == null || currentNearestPlayer != nearestPlayer )
+			{
+				var material = Model.Materials.Last().CreateCopy();
+
+				material.Set( "g_vColorTint", currentNearestPlayer.PlayerColor );
+				SetMaterialOverride( material, "color" );
+
+				nearestPlayer = currentNearestPlayer;
+			}
 		}
 	}
 }
