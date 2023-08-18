@@ -34,7 +34,7 @@ public partial class Player : AnimatedEntity
 		Ragdoll.UseAnimGraph = true;
 
 		var spring = PhysicsJoint.CreateSpring( new PhysicsPoint( Ragdoll.PhysicsBody ), new PhysicsPoint( PhysicsBody, CollisionTopLocal ), 0f, 0f );
-		spring.SpringLinear = new PhysicsSpring( 8f, 0.8f );
+		spring.SpringLinear = new PhysicsSpring( 4f, 0.8f );
 	}
 
 	public void DressRagdoll()
