@@ -1,0 +1,63 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/blendable.shader"
+
+	F_MULTIBLEND 3 // 4 Layers
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Material A ----
+	g_flTintColorA "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusionA "materials/fabric/fabric_ao.jpg"
+	TextureBlendMaskA "materials/default/default_blend.tga"
+	TextureColorA "materials/fabric/fabric_color.jpg"
+	TextureMetalnessA "materials/default/default_metal.tga"
+	TextureNormalA "materials/fabric/fabric_normal.jpg"
+	TextureRoughnessA "materials/fabric/fabric_rough.jpg"
+	TextureTintMaskA "materials/default/default.tga"
+
+	//---- Material B ----
+	g_flBlendSoftnessB "0.118"
+	g_flTintColorB "[0.000000 0.000000 0.000000 0.000000]"
+	g_vTexCoordScale2 "[1.000 1.000]"
+	TextureAmbientOcclusionB "materials/fabric/fabric_ao.jpg"
+	TextureBlendMaskB "materials/ground/ground_ao.jpg"
+	TextureColorB "materials/fabric/fabric_color.jpg"
+	TextureMetalnessB "materials/default/default_metal.tga"
+	TextureNormalB "materials/fabric/fabric_normal.jpg"
+	TextureRoughnessB "materials/fabric/fabric_rough.jpg"
+	TextureTintMaskB "materials/default/default.tga"
+
+	//---- Material C ----
+	g_flBlendSoftnessC "0.142"
+	g_flTintColorC "[1.000000 1.000000 1.000000 0.000000]"
+	g_vTexCoordScale3 "[0.200 0.200]"
+	TextureAmbientOcclusionC "materials/ground/ground_ao.jpg"
+	TextureBlendMaskC "materials/ground/ground_ao.jpg"
+	TextureColorC "materials/ground/ground_color.jpg"
+	TextureMetalnessC "materials/default/default_metal.tga"
+	TextureNormalC "materials/ground/ground_normal.jpg"
+	TextureRoughnessC "materials/ground/ground_rough.jpg"
+	TextureTintMaskC "materials/default/default.tga"
+
+	//---- Material D ----
+	g_flBlendSoftnessD "0.500"
+	g_flTintColorD "[1.000000 1.000000 1.000000 0.000000]"
+	g_vTexCoordScale4 "[1.000 1.000]"
+	TextureAmbientOcclusionD "materials/fabric/fabric_ao.jpg"
+	TextureBlendMaskD "materials/default/default_blend.tga"
+	TextureColorD "[0.137255 0.466667 0.137255 1.000000]"
+	TextureMetalnessD "materials/default/default_metal.tga"
+	TextureNormalD "materials/fabric/fabric_normal.jpg"
+	TextureRoughnessD "materials/fabric/fabric_rough.jpg"
+	TextureTintMaskD "materials/default/default.tga"
+
+	SystemAttributes
+	{
+		WorldMappingWidth "256"
+		WorldMappingHeight "256"
+	}
+}

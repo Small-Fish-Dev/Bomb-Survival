@@ -1,0 +1,27 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/map_wall.shader"
+
+	AO "materials/wall/wall_ao.jpg"
+	BlendMask "materials/default/default_mask.tga"
+	Colour "materials/wall/wall_color.jpg"
+	Normal "materials/wall/wall_normal.jpg"
+	Rough "materials/wall/wall_rough.jpg"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Position ----
+	g_flZPosition "2048.000"
+	g_flZSmoothing "0.000"
+
+	//---- Textures ----
+	g_flTiling "1.000"
+
+	//---- Tint ----
+	g_bGradientTint "1"
+	g_bTintDirectionToggle "0"
+	g_vTint_Colour "[1.000000 1.000000 1.000000 1.000000]"
+}

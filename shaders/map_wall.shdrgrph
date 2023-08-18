@@ -1,0 +1,565 @@
+{
+  "Model": null,
+  "Description": "",
+  "BlendMode": "Opaque",
+  "nodes": [
+    {
+      "_class": "Result",
+      "Albedo": {
+        "Identifier": "26",
+        "Output": "Result"
+      },
+      "Emission": {},
+      "Opacity": {},
+      "Normal": {
+        "Identifier": "37",
+        "Output": "Result"
+      },
+      "Roughness": {
+        "Identifier": "22",
+        "Output": "Result"
+      },
+      "Metalness": {},
+      "AmbientOcclusion": {
+        "Identifier": "23",
+        "Output": "Result"
+      },
+      "DefaultOpacity": 1,
+      "DefaultRoughness": 1,
+      "DefaultMetalness": 0,
+      "DefaultAmbientOcclusion": 1,
+      "PositionOffset": {},
+      "Identifier": "0",
+      "Position": "2944,592"
+    },
+    {
+      "_class": "Multiply",
+      "A": {
+        "Identifier": "8",
+        "Output": "Result"
+      },
+      "B": {},
+      "DefaultA": 0,
+      "DefaultB": 0.00390625,
+      "Identifier": "1",
+      "Position": "-1792,592"
+    },
+    {
+      "_class": "SplitVector",
+      "Input": {
+        "Identifier": "4",
+        "Output": "Result"
+      },
+      "Identifier": "2",
+      "Position": "-1248,-1136"
+    },
+    {
+      "_class": "Divide",
+      "A": {
+        "Identifier": "5",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "11",
+        "Output": "Result"
+      },
+      "DefaultA": 0,
+      "DefaultB": 2000,
+      "Identifier": "3",
+      "Position": "-752,-1056"
+    },
+    {
+      "_class": "WorldPosition",
+      "Identifier": "4",
+      "Position": "-1456,-1136"
+    },
+    {
+      "_class": "Add",
+      "A": {
+        "Identifier": "2",
+        "Output": "Z"
+      },
+      "B": {
+        "Identifier": "10",
+        "Output": "Result"
+      },
+      "DefaultA": 0,
+      "DefaultB": 1024,
+      "Identifier": "5",
+      "Position": "-1008,-1056"
+    },
+    {
+      "_class": "Float4",
+      "Value": "0.40784,0.21569,0.1098,1",
+      "Name": "Tint_Colour",
+      "IsAttribute": false,
+      "UI": {
+        "Type": "Color",
+        "Priority": 2,
+        "PrimaryGroup": {
+          "Name": "Tint",
+          "Priority": 2
+        },
+        "SecondaryGroup": {
+          "Name": ""
+        }
+      },
+      "Identifier": "6",
+      "Position": "-272,-528"
+    },
+    {
+      "_class": "Saturate",
+      "Input": {
+        "Identifier": "3",
+        "Output": "Result"
+      },
+      "Identifier": "7",
+      "Position": "-592,-1056"
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 5,
+      "Value": 1,
+      "Name": "Tiling",
+      "IsAttribute": false,
+      "UI": {
+        "PrimaryGroup": {
+          "Name": "Textures"
+        },
+        "SecondaryGroup": {
+          "Name": "",
+          "Priority": 1
+        }
+      },
+      "Identifier": "8",
+      "Position": "-2016,560"
+    },
+    {
+      "_class": "Multiply",
+      "A": {
+        "Identifier": "34",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "1",
+        "Output": "Result"
+      },
+      "DefaultA": 0,
+      "DefaultB": 1,
+      "Identifier": "9",
+      "Position": "-1648,512"
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 2048,
+      "Value": 0,
+      "Name": "Z Position",
+      "IsAttribute": false,
+      "UI": {
+        "Priority": 1,
+        "PrimaryGroup": {
+          "Name": "Position"
+        },
+        "SecondaryGroup": {
+          "Name": "Z",
+          "Priority": 1
+        }
+      },
+      "Identifier": "10",
+      "Position": "-1232,-976"
+    },
+    {
+      "_class": "Float",
+      "Min": 0,
+      "Max": 2048,
+      "Value": 512,
+      "Name": "Z Smoothing",
+      "IsAttribute": false,
+      "UI": {
+        "Priority": 2,
+        "PrimaryGroup": {
+          "Name": "Position"
+        },
+        "SecondaryGroup": {
+          "Name": "Z",
+          "Priority": 1
+        }
+      },
+      "Identifier": "11",
+      "Position": "-976,-928"
+    },
+    {
+      "_class": "CommentNode",
+      "Size": "224,176",
+      "Color": "Red",
+      "Description": "",
+      "Title": "Z",
+      "Layer": 2,
+      "Identifier": "12",
+      "Position": "576,-512"
+    },
+    {
+      "_class": "Subtract",
+      "A": {},
+      "B": {
+        "Identifier": "7",
+        "Output": "Result"
+      },
+      "DefaultA": 1,
+      "DefaultB": 1,
+      "Identifier": "13",
+      "Position": "-368,-960"
+    },
+    {
+      "_class": "Branch",
+      "True": {
+        "Identifier": "7",
+        "Output": "Result"
+      },
+      "False": {
+        "Identifier": "13",
+        "Output": "Result"
+      },
+      "A": {},
+      "B": {},
+      "Name": "Tint Direction Toggle",
+      "Operator": "Equal",
+      "Enabled": false,
+      "UI": {
+        "Priority": 1,
+        "PrimaryGroup": {
+          "Name": "Tint",
+          "Priority": 1
+        }
+      },
+      "Identifier": "14",
+      "Position": "-192,-1056"
+    },
+    {
+      "_class": "Blend",
+      "A": {
+        "Identifier": "6",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "29",
+        "Output": "Result"
+      },
+      "C": {
+        "Identifier": "33",
+        "Output": "R"
+      },
+      "Fraction": 0.5,
+      "BlendMode": "SoftLight",
+      "Clamp": true,
+      "Identifier": "15",
+      "Position": "160,-544"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "9",
+        "Output": "Result"
+      },
+      "Identifier": "16",
+      "Position": "-528,-208"
+    },
+    {
+      "_class": "CommentNode",
+      "Size": "192,1200",
+      "Color": "Green",
+      "Description": "",
+      "Title": "Main Material",
+      "Layer": 4,
+      "Identifier": "17",
+      "Position": "-288,-768"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "32",
+        "Output": "Result"
+      },
+      "Identifier": "18",
+      "Position": "80,144"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "31",
+        "Output": "Result"
+      },
+      "Identifier": "19",
+      "Position": "80,128"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "30",
+        "Output": "Result"
+      },
+      "Identifier": "20",
+      "Position": "80,112"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "20",
+        "Output": "Result"
+      },
+      "Identifier": "21",
+      "Position": "1632,448"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": null,
+      "Input": {
+        "Identifier": "19",
+        "Output": "Result"
+      },
+      "Identifier": "22",
+      "Position": "1632,464"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "18",
+        "Output": "Result"
+      },
+      "Identifier": "23",
+      "Position": "1632,480"
+    },
+    {
+      "_class": "Branch",
+      "True": {
+        "Identifier": "27",
+        "Output": "Result"
+      },
+      "False": {
+        "Identifier": "28",
+        "Output": "Result"
+      },
+      "A": {},
+      "B": {},
+      "Name": "Gradient Tint",
+      "Operator": "Equal",
+      "Enabled": true,
+      "UI": {
+        "PrimaryGroup": {
+          "Name": "Tint"
+        }
+      },
+      "Identifier": "24",
+      "Position": "960,-320"
+    },
+    {
+      "_class": "CommentNode",
+      "Size": "1536,368",
+      "Color": "Orange",
+      "Description": "",
+      "Title": "World Position Gradient",
+      "Layer": 3,
+      "Identifier": "25",
+      "Position": "-1488,-1200"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "24",
+        "Output": "Result"
+      },
+      "Identifier": "26",
+      "Position": "1632,432"
+    },
+    {
+      "_class": "Blend",
+      "A": {
+        "Identifier": "29",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "15",
+        "Output": "Result"
+      },
+      "C": {
+        "Identifier": "14",
+        "Output": "Result"
+      },
+      "Fraction": 0.5,
+      "BlendMode": "Overlay",
+      "Clamp": true,
+      "Identifier": "27",
+      "Position": "608,-464"
+    },
+    {
+      "_class": "Blend",
+      "A": {
+        "Identifier": "6",
+        "Output": "Result"
+      },
+      "B": {
+        "Identifier": "29",
+        "Output": "Result"
+      },
+      "C": {},
+      "Fraction": 0.5,
+      "BlendMode": "Mix",
+      "Clamp": true,
+      "Identifier": "28",
+      "Position": "608,-288"
+    },
+    {
+      "_class": "TextureTriplanar",
+      "Coords": {
+        "Identifier": "16",
+        "Output": "Result"
+      },
+      "Normal": {
+        "Identifier": "36",
+        "Output": "Result"
+      },
+      "Image": "textures/environment/sand_shells_color.png",
+      "Sampler": {},
+      "UI": {
+        "Name": "Colour",
+        "Default": "1,1,1,1",
+        "SrgbRead": true,
+        "CreateInput": "CreateInputTexture2D"
+      },
+      "Identifier": "29",
+      "Position": "-272,-368"
+    },
+    {
+      "_class": "NormapMapTriplanar",
+      "Coords": {
+        "Identifier": "16",
+        "Output": "Result"
+      },
+      "Normal": {
+        "Identifier": "36",
+        "Output": "Result"
+      },
+      "Image": "textures/environment/sand_shells_normal.png",
+      "Sampler": {},
+      "UI": {
+        "Name": "Normal",
+        "Default": "1,1,1,1",
+        "Extension": "Normal",
+        "Processor": "NormalizeNormals",
+        "ColorSpace": "Linear",
+        "CreateInput": "CreateInputTexture2D"
+      },
+      "Identifier": "30",
+      "Position": "-272,-176"
+    },
+    {
+      "_class": "TextureTriplanar",
+      "Coords": {
+        "Identifier": "16",
+        "Output": "Result"
+      },
+      "Normal": {
+        "Identifier": "36",
+        "Output": "Result"
+      },
+      "Image": "textures/environment/sand_shells_rough.png",
+      "Sampler": {},
+      "UI": {
+        "Name": "Rough",
+        "Default": "1,1,1,1",
+        "Extension": "Rough",
+        "ColorSpace": "Linear",
+        "SrgbRead": true,
+        "CreateInput": "CreateInputTexture2D"
+      },
+      "Identifier": "31",
+      "Position": "-272,48"
+    },
+    {
+      "_class": "TextureTriplanar",
+      "Coords": {
+        "Identifier": "16",
+        "Output": "Result"
+      },
+      "Normal": {
+        "Identifier": "36",
+        "Output": "Result"
+      },
+      "Image": "textures/environment/sand_shells_ao.png",
+      "Sampler": {},
+      "UI": {
+        "Name": "AO",
+        "Default": "1,1,1,1",
+        "Extension": "AO",
+        "ColorSpace": "Linear",
+        "SrgbRead": true,
+        "CreateInput": "CreateInputTexture2D"
+      },
+      "Identifier": "32",
+      "Position": "-272,240"
+    },
+    {
+      "_class": "TextureTriplanar",
+      "Coords": {
+        "Identifier": "16",
+        "Output": "Result"
+      },
+      "Normal": {
+        "Identifier": "36",
+        "Output": "Result"
+      },
+      "Image": "textures/environment/sand_shells_blend.png",
+      "Sampler": {},
+      "UI": {
+        "Name": "Blend Mask",
+        "Default": "0,0,0,1",
+        "Extension": "Mask",
+        "ColorSpace": "Linear",
+        "SrgbRead": true,
+        "CreateInput": "CreateInputTexture2D"
+      },
+      "Identifier": "33",
+      "Position": "-272,-720"
+    },
+    {
+      "_class": "ObjectPosition",
+      "Identifier": "34",
+      "Position": "-1952,320"
+    },
+    {
+      "_class": "ObjectSpaceNormal",
+      "Identifier": "35",
+      "Position": "-1744,720"
+    },
+    {
+      "_class": "Reroute",
+      "Comment": "",
+      "Input": {
+        "Identifier": "35",
+        "Output": "Result"
+      },
+      "Identifier": "36",
+      "Position": "-528,-176"
+    },
+    {
+      "_class": "TransformNormal",
+      "Input": {
+        "Identifier": "21",
+        "Output": "Result"
+      },
+      "InputSpace": "Object",
+      "DecodeNormal": false,
+      "Identifier": "37",
+      "Position": "2496,624"
+    }
+  ]
+}
