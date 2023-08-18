@@ -1,6 +1,6 @@
 ﻿namespace BombSurvival;
 
-public partial class ScoreBubble : ModelEntity
+public partial class ScoreBubble : AnimatedEntity
 {
 	public override void Spawn()
 	{
@@ -12,6 +12,10 @@ public partial class ScoreBubble : ModelEntity
 		Tags.Add( "bubble" );
 
 		BombSurvival.AxisLockedEntities.Add( this );
+
+		UseAnimGraph = false;
+		AnimateOnServer = false;
+		PlaybackRate = 1;
 	}
 
 	protected override void OnDestroy()
@@ -42,5 +46,27 @@ public partial class ScoreBubble : ModelEntity
 
 		if ( other.GetPlayer() is Player player )
 			Award( player );
+	}
+
+	[GameEvent.Tick.Client]
+	void playerInteract()
+	{
+		var timeOffset = Time.Tick + NetworkIdent; // Offset the timer so you don't have visible lag spikes
+
+		if ( timeOffset % 10 == 0 ) // Call this expensive code once every 10 ticks
+		{
+			var nearestPlayer = All.OfType<Player>()
+				.Where( x => !x.IsDead )
+				.OrderBy( x => x.Position.Distance( Position ) )
+				.FirstOrDefault();
+
+			if ( !nearestPlayer.IsValid() || nearestPlayer == null ) return;
+
+			var distance = nearestPlayer.Position.Distance( Position );
+
+			PlaybackRate = Math.Clamp( 5f - distance / 100f, 1f, 5f );
+
+			Model.Materials.Last().Set( "g_vColorTint", nearestPlayer.PlayerColor );
+		}
 	}
 }
