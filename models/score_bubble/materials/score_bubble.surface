@@ -1,0 +1,23 @@
+{
+  "BaseSurface": "surfaces/default.surface",
+  "AudioMaterial": "surfaces/default.audiomat",
+  "Description": "",
+  "Friction": 0.8,
+  "Elasticity": 0.25,
+  "Density": 2000,
+  "Thickness": 0,
+  "Dampening": 0,
+  "BounceThreshold": 40,
+  "ImpactEffects": {},
+  "ScrapeEffects": {
+    "RoughnessFactor": 0.25,
+    "RoughThreshold": 0.5
+  },
+  "Sounds": {
+    "ImpactHard": "models/score_bubble/score_impact.sound",
+    "ImpactSoft": "models/score_bubble/score_impact.sound",
+    "ScrapeRough": "models/score_bubble/score_impact.sound",
+    "ScrapeSmooth": "models/score_bubble/score_impact.sound"
+  },
+  "Breakables": {}
+}

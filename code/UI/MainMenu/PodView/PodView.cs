@@ -44,17 +44,19 @@ public class PodView : Panel
 		scenePanel = Add.ScenePanel( sceneWorld, Vector3.Zero, Rotation.Identity, Game.Preferences.FieldOfView, "scenePanel" );
 		scenePanel.Camera.AmbientLightColor = new Color( 0.3f, 0.3f, 1f ) * 0.1f;
 
-		var roomLight = new SceneSpotLight( sceneWorld, Vector3.Up * 200f, new Color( 1f, 0.4f, 0.4f ) );
-		roomLight.Rotation = Rotation.FromPitch( 90 );
-		roomLight.ConeInner = 60f;
-		roomLight.ConeOuter = 90f;
-		roomLight.Radius = 512f;
+		//var roomLight = new SceneSpotLight( sceneWorld, Vector3.Up * 200f, new Color( 1f, 0.4f, 0.4f ) );
+		//roomLight.ShadowsEnabled = false;
+		//roomLight.Rotation = Rotation.FromPitch( 90 );
+		//roomLight.ConeInner = 60f;
+		//roomLight.ConeOuter = 90f;
+		//roomLight.Radius = 512f;
 
-		var ceilingLight = new SceneSpotLight( sceneWorld, Vector3.Up * 200f, new Color( 1f, 0.4f, 0.4f ) );
-		ceilingLight.Rotation = Rotation.FromPitch( -90 );
-		ceilingLight.ConeInner = 60f;
-		ceilingLight.ConeOuter = 90f;
-		ceilingLight.Radius = 512f;
+		//var ceilingLight = new SceneSpotLight( sceneWorld, Vector3.Up * 200f, new Color( 1f, 0.4f, 0.4f ) );
+		//ceilingLight.ShadowsEnabled = true;
+		//ceilingLight.Rotation = Rotation.FromPitch( -90 );
+		//ceilingLight.ConeInner = 60f;
+		//ceilingLight.ConeOuter = 90f;
+		//ceilingLight.Radius = 512f;
 
 		scenePanel.Camera.Rotation = Rotation.FromPitch( (float)Math.Pow( 4, 2.5 ) );
 		scenePanel.Camera.Position = cameraCenter + scenePanel.Camera.Rotation.Backward * cameraMaximumDistance; // Make it zoom in when first loading :-)

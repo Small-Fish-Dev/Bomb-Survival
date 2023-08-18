@@ -6,7 +6,7 @@ namespace BombSurvival;
 
 public partial class Player
 {
-	private float cameraDistance = 200f;
+	private float cameraDistance = 250f;
 	private TimeSince lastMoved;
 	public bool IsZoomed = false;
 
@@ -18,8 +18,8 @@ public partial class Player
 			.ToList();
 
 		Vector3 centerPoint = this.Position;
-		float maxDistance = 200f; // Default camera distance
-		float minDistance = 150f; // Minimum camera distance
+		float maxDistance = 350f; // Default camera distance
+		float minDistance = 200f; // Minimum camera distance
 
 		if ( nearbyPlayers.Count > 0 )
 		{
@@ -55,5 +55,13 @@ public partial class Player
 
 		Camera.Rotation = Rotation.FromYaw( 90f );
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
+
+		var postProcess = Camera.Main.FindOrCreateHook<Sandbox.Effects.DepthOfField>();
+		postProcess.Enabled = true;
+
+		postProcess.BlurSize = 500;
+		postProcess.FocalDistance = cameraDistance * 1.5f;
+		postProcess.FrontBlur = false;
+		postProcess.BackBlur = true;
 	}
 }

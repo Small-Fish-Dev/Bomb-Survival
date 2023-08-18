@@ -2,7 +2,10 @@
 
 Layer0
 {
-	shader "shaders/complex.shader_c"
+	shader "shaders/complex.shader"
+
+	//---- Animation ----
+	F_MORPH_SUPPORTED 1
 
 	//---- PBR ----
 	F_SELF_ILLUM 1

@@ -3,7 +3,7 @@
 namespace BombSurvival;
 
 [HammerEntity]
-[EditorModel( "models/scoreboard/placeholder.vmdl" )]
+[EditorModel( "models/scoreboard/scoreboard.vmdl" )]
 public partial class Scoreboard : ModelEntity
 {
 	ScorePanel panel;
@@ -12,7 +12,7 @@ public partial class Scoreboard : ModelEntity
 	{
 		base.Spawn();
 
-		SetModel( "models/scoreboard/placeholder.vmdl" );
+		SetModel( "models/scoreboard/scoreboard.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
 	}
 
@@ -31,7 +31,7 @@ public partial class Scoreboard : ModelEntity
 
 		var size = new Vector2( 1200, 950 );
 		panel = new( size, 4 );
-		panel.Position = Position + Vector3.Up * 160f + Vector3.Left * 25f;
+		panel.Position = Position + Vector3.Up * 135f + Vector3.Left * 25f;
 		panel.Rotation = Rotation.FromAxis( Vector3.Up, -90f );
 	}
 }
