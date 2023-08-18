@@ -82,7 +82,7 @@ public partial class Player
 		if ( IsBeingGrabbed )
 		{
 			var delta = Grabber.CollisionTop - CollisionTop;
-			var magnitude = delta.Length;
+			var magnitude = delta.Length * ( Grabber.GroundEntity == null ? 0.5f : 1f );
 			var normal = delta.Normal;
 			var strength = Math.Max( magnitude - CollisionHeight * 1.5f, 0f );
 
