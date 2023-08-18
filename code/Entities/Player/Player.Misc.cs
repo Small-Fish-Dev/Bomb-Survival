@@ -9,7 +9,9 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsKnockedOut { get; private set; } = false;
 
 	internal TimeUntil punchFinish { get; set; } = 0f;
+	[Net, Local, Predicted] public TimeSince LastPunch { get; set; } = 0f;
 	public bool IsPunching => !punchFinish;
+
 
 	[ClientRpc]
 	public void SetCharred( bool charred )
@@ -65,10 +67,11 @@ public partial class Player : AnimatedEntity
 		Release();
 
 		var punchTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 1.5f )
-			.Size( CollisionHeight * 1.5f )
+			.Size( CollisionHeight * 1.2f )
 			.DynamicOnly()
 			.Ignore( this )
 			.Ignore( Collider )
+			.WithoutTags( "terrain" )
 			.Run();
 
 		if ( punchTrace.Entity is ModelEntity punchTarget )
