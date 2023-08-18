@@ -73,7 +73,7 @@ public partial class Player
 			var delta = GrabbingPosition - Position;
 			var magnitude = delta.Length;
 			var normal = delta.Normal;
-			var strength = Math.Max( magnitude - CollisionHeight * 1.5f, 0f );
+			var strength = Math.Clamp( magnitude - CollisionHeight * 1.5f, 0f, 100f );
 
 			Velocity += normal * strength * strength + Vector3.Down * 20f;
 			Velocity /= 1 + Time.Delta * strength / 10f;

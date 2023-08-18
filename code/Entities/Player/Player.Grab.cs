@@ -73,7 +73,14 @@ public partial class Player : AnimatedEntity
 		if ( IsKnockedOut ) return;
 		if ( IsDead ) return;
 		if ( !IsGrabbing ) return;
+
 		if ( Grabbing is Bomb bombTarget && bombTarget.IsExploding )
+		{
+			Release();
+			return;
+		}
+
+		if ( !Grabbing.IsValid() )
 		{
 			Release();
 			return;
@@ -97,6 +104,9 @@ public partial class Player : AnimatedEntity
 				GrabSpring.SpringLinear = new PhysicsSpring( GroundEntity == null ? 1f : 5f, 1.2f );
 			}
 		}
+
+		if ( GrabbingPosition.Distance( CollisionTop ) > 100f )
+			Release();
 
 		//DebugOverlay.Line( GrabSpring.Point1.Transform.Position, GrabSpring.Point2.Transform.Position );
 		//DebugOverlay.Sphere( GrabSpring.Point1.Transform.Position, 5f, Color.Red );
