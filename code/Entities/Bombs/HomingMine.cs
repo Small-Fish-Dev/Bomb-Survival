@@ -1,9 +1,11 @@
-﻿namespace BombSurvival;
+﻿using Sandbox.Component;
+
+namespace BombSurvival;
 
 public partial class HomingMine : Bomb
 {
 	public override string ModelPath { get; } = "models/missile/missile.vmdl";
-	public Player Target { get; set; } = null;
+	[Net] public Player Target { get; set; } = null;
 	TimeUntil enableExplosion = 0.5f;
 
 	public override void Spawn()
@@ -15,6 +17,13 @@ public partial class HomingMine : Bomb
 		Scale = 0.3f;
 
 		PhysicsBody.GravityEnabled = false;
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		this.Glow( true, Color.Gray );
 	}
 
 	[GameEvent.Tick.Server]
@@ -58,6 +67,13 @@ public partial class HomingMine : Bomb
 			PhysicsBody.LinearDamping = 3f;
 			PhysicsBody.ApplyForce( PhysicsBody.Mass * Rotation.Left * Time.Delta * 30000f );
 		}
+	}
+
+	[GameEvent.Tick.Client]
+	void setGlowColor()
+	{
+		if ( Components.TryGet<Glow>( out Glow glow ) )
+			glow.Color = Target?.PlayerColor ?? Color.Gray;
 	}
 
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
