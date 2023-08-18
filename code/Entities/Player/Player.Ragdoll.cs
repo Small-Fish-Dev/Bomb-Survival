@@ -44,6 +44,12 @@ public partial class Player : AnimatedEntity
 		container.DressEntity( Ragdoll );
 	}
 
+	public void DrawRagdoll( bool on )
+	{
+		Ragdoll.EnableDrawing = on;
+		Ragdoll.Glow( on, Color.White );
+	}
+
 	internal void PlaceRagdoll()
 	{
 		if ( !Ragdoll.IsValid() || !Ragdoll.PhysicsBody.IsValid() ) return;

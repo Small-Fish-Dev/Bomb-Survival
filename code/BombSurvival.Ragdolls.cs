@@ -14,6 +14,7 @@ public partial class BombSurvival : GameManager
 				player.SpawnRagdoll();
 				player.PlaceRagdoll();
 				player.DressRagdoll();
+				player.DrawRagdoll( true );
 			}
 
 		Player.MoveRagdolls();

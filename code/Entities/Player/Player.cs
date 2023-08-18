@@ -184,7 +184,7 @@ public partial class Player : AnimatedEntity
 		if ( Ragdoll.IsValid() )
 		{
 			PlaceRagdoll();
-			Ragdoll.EnableDrawing = true;
+			DrawRagdoll( true );
 		}
 	}
 
@@ -207,6 +207,6 @@ public partial class Player : AnimatedEntity
 	void killToClient()
 	{
 		if ( !Ragdoll.IsValid() ) return;
-		Ragdoll.EnableDrawing = false;
+		DrawRagdoll( false );
 	}
 }
