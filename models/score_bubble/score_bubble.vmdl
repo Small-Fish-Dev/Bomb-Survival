@@ -121,7 +121,7 @@
 						source_filename = "models/score_bubble/score_bubble.fbx"
 						start_frame = -1
 						end_frame = -1
-						framerate = -1.0
+						framerate = 12.0
 						take = 0
 						reverse = false
 					},
