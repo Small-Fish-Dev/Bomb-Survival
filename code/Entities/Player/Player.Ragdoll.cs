@@ -47,7 +47,7 @@ public partial class Player : AnimatedEntity
 	public void DrawRagdoll( bool on )
 	{
 		Ragdoll.EnableDrawing = on;
-		Ragdoll.Glow( on, Color.White );
+		Ragdoll.Glow( on, PlayerColor );
 	}
 
 	internal void PlaceRagdoll()

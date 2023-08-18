@@ -1,6 +1,4 @@
-﻿using Sandbox.Physics;
-
-namespace BombSurvival;
+﻿namespace BombSurvival;
 
 public partial class Player : AnimatedEntity
 {
