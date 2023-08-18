@@ -164,22 +164,7 @@ public partial class Player : AnimatedEntity
 	void respawnToClient()
 	{
 		if ( Client == Game.LocalClient )
-		{
-			var spawnPoint = Checkpoint.First();
-
-			spawnPoint.ClientModel.CurrentSequence.Time = 0;
-
-			if ( LivesLeft != 0 )
-			{
-				spawnPoint.ClientModel.SetBodyGroup( "body", 4 - LivesLeft );
-				spawnPoint.ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.White );
-			}
-			else
-			{
-				spawnPoint.ClientModel.SetBodyGroup( "body", 0 );
-				spawnPoint.ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.Red );
-			}
-		}
+			Checkpoint.First().SetLives( LivesLeft );
 
 		if ( Ragdoll.IsValid() )
 		{

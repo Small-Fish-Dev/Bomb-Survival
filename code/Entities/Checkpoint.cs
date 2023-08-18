@@ -1,4 +1,5 @@
 ﻿using Editor;
+using Sandbox;
 
 namespace BombSurvival;
 
@@ -59,4 +60,20 @@ public partial class Checkpoint : AnimatedEntity
 	}
 
 	public static Vector3 FirstPosition() => First().GetBoneTransform( 1 ).Position;
+
+	public void SetLives( int lives )
+	{
+		ClientModel.CurrentSequence.Time = 0;
+
+		if ( lives != 0 )
+		{
+			ClientModel.SetBodyGroup( "body", 4 - lives );
+			ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.White );
+		}
+		else
+		{
+			ClientModel.SetBodyGroup( "body", 0 );
+			ClientModel.Model.Materials.Last().Set( "g_vColorTint", Color.Red );
+		}
+	}
 }
