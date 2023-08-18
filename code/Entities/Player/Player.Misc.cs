@@ -79,7 +79,7 @@ public partial class Player : AnimatedEntity
 			var player = punchTarget.GetPlayer();
 			if ( player != null )
 			{
-				player.KnockOut( CollisionCenter, 500f, 1f );
+				player.KnockOut( CollisionCenter, 400f, 1f );
 				PlaySound( "sounds/punch/punch.sound" );
 			}
 			else
@@ -91,7 +91,7 @@ public partial class Player : AnimatedEntity
 				if ( !targetBody.IsValid() ) return;
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
-				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 300f * targetBody.Mass );
+				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 500f * targetBody.Mass );
 				PlaySound( "sounds/punch/punch.sound" );
 			}
 		}
