@@ -41,7 +41,7 @@ public partial class Player
 	{
 		if ( Input.Down( "launch" ) )
 			if ( !IsKnockedOut )
-				KnockOut( CollisionCenter + InputRotation.Backward * 50f, 400f, 1f );
+				KnockOut( CollisionTop + InputRotation.Backward * 50f, 400f, 1f );
 	}
 
 	void normalMotion()

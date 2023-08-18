@@ -31,15 +31,15 @@ public partial class Player : AnimatedEntity
 	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
 	{
 		if ( IsDead ) return;
-		if ( !Game.IsServer ) return;
 
 		IsKnockedOut = true;
 		knockedOutTimer = amount;
 
-		var direction = ((CollisionCenter - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
+		var direction = ((CollisionTop - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 		Velocity = direction * strength;
 
-		Collider.EnableSolidCollisions = false;
+		if ( Game.IsServer )
+			Collider.EnableSolidCollisions = false;
 
 		Release();
 	}
