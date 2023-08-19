@@ -80,12 +80,12 @@ public partial class Player : AnimatedEntity
 
 		if ( punchTrace.Entity is ModelEntity punchTarget )
 		{
+			PlaySound( "sounds/punch/punch.sound" );
+
 			var player = punchTarget.GetPlayer();
+
 			if ( player != null )
-			{
 				player.KnockOut( CollisionCenter, 400f, 1f );
-				PlaySound( "sounds/punch/punch.sound" );
-			}
 			else
 			{
 				if ( !punchTarget.PhysicsEnabled ) return;
@@ -94,9 +94,10 @@ public partial class Player : AnimatedEntity
 
 				if ( !targetBody.IsValid() ) return;
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
-
-				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 30000f );
-				PlaySound( "sounds/punch/punch.sound" );
+				if ( punchTarget is HomingMine missile )
+					missile.Explode();
+				else
+					targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 30000f );
 			}
 		}
 	}
