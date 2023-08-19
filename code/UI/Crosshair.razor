@@ -55,11 +55,18 @@
     CrosshairState currentState = new CrosshairState(1,1, .15f);
     public override void Tick()
     {
-        var player = Game.LocalPawn as Player;
-        if ( player == null ) return;
+        if (Game.LocalPawn is not Player player) return;
 
-        Style.Left = Length.Fraction( Mouse.Position.x/Screen.Width );
-        Style.Top = Length.Fraction( Mouse.Position.y/Screen.Height );
+        if ( player.IsGrabbing )
+        {
+            Style.Left = Length.Fraction( player.GrabbingPosition.ToScreen().x );
+            Style.Top = Length.Fraction( player.GrabbingPosition.ToScreen().y );
+        }
+        else
+        {
+            Style.Left = Length.Fraction(Mouse.Position.x / Screen.Width);
+            Style.Top = Length.Fraction(Mouse.Position.y / Screen.Height);
+        }
 
         var panelTransform = new PanelTransform();
 
