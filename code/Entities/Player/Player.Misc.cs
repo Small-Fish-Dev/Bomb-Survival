@@ -9,7 +9,7 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsKnockedOut { get; private set; } = false;
 
 	internal TimeUntil punchFinish { get; set; } = 0f;
-	[Net, Local, Predicted] public TimeSince LastPunch { get; set; } = 0f;
+	[Net, Local] public TimeSince LastPunch { get; set; } = 0f;
 	public bool CanPunch => LastPunch >= 0.7f;
 	public bool IsPunching => !punchFinish;
 
@@ -36,11 +36,14 @@ public partial class Player : AnimatedEntity
 		IsKnockedOut = true;
 		knockedOutTimer = amount;
 
-		var direction = ((CollisionTop - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
-		Velocity = direction * strength;
 
 		if ( Game.IsServer )
+		{
+			var direction = ((CollisionTop - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
+			Velocity = direction * strength;
+
 			Collider.EnableSolidCollisions = false;
+		}
 
 		Release();
 	}
