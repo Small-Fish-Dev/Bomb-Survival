@@ -1,0 +1,84 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+
+@namespace BombSurvival
+@inherits Panel
+
+<style>
+	crosshair {
+		width: 64px;
+		height: 64px;
+		margin-left: -32px;
+		margin-top: -32px;
+	}
+	/*image {
+	transition: transform .05s ease-in;
+	}*/
+</style>
+
+@code {
+	private Image CrosshairImage { get; set; }
+	private Vector3 CrosshairRotation = Vector3.Zero;
+	private float CrosshairScale = 1;
+
+	public Crosshair()
+	{
+		CrosshairImage = new Image();
+		CrosshairImage.Parent = this;
+		CrosshairImage.SetTexture("ui/gameplay/crosshair.svg");
+	}
+
+	protected override int BuildHash()
+	{
+		var player = Game.LocalPawn as Player;
+		return player.GetHashCode();
+	}
+
+	public struct CrosshairState
+	{
+		public int rotationFactor;
+		public float scaleTarget;
+		public float smoothDampTime;
+
+		public CrosshairState( int rotationFactor, float scaleTarget, float smoothDampTime )
+		{
+			this.rotationFactor = rotationFactor;
+			this.scaleTarget = scaleTarget;
+			this.smoothDampTime = smoothDampTime;
+		}
+	}
+
+	float velocity;
+	CrosshairState currentState = new CrosshairState(1,1, .15f);
+	public override void Tick()
+	{
+		var player = Game.LocalPawn as Player;
+		if ( player == null ) return;
+		
+		Style.Left = Length.Fraction( Mouse.Position.x/Screen.Width );
+		Style.Top = Length.Fraction( Mouse.Position.y/Screen.Height );
+		
+		var panelTransform = new PanelTransform();
+		
+		if ( player.IsKnockedOut )
+			currentState = new CrosshairState( 0, 0.5f, 0.25f );
+		else if ( player.IsPunching && player.LastPunch < .18f )	
+			currentState = new CrosshairState( -6, 0.35f, 0.15f );
+		else if ( player.WantsToGrab && !player.IsGrabbing)	
+			currentState = new CrosshairState( 3, 0.85f, 0.15f );
+		else if ( player.IsGrabbing )	
+			currentState = new CrosshairState( 8, 0.7f, 0.15f );
+		else
+			currentState = new CrosshairState( 1, 1.0f, 0.15f );
+		
+		CrosshairRotation -= new Vector3( 0, 0, Time.Delta*50*currentState.rotationFactor );
+		CrosshairScale = MathX.SmoothDamp( CrosshairScale, currentState.scaleTarget, ref velocity, currentState.smoothDampTime, Time.Delta );
+		
+		panelTransform.AddRotation( CrosshairRotation );
+		panelTransform.AddScale( CrosshairScale );
+		
+		CrosshairImage.Style.Transform = panelTransform;
+
+		base.Tick();
+	}
+}

@@ -29,8 +29,13 @@ public partial class Player : AnimatedEntity
 	{
 		InputDirection = Input.AnalogMove;
 
-		var lookInput = Input.AnalogLook;
-		var direction = new Vector3( -lookInput.yaw, 0f, -lookInput.pitch ).Normal;
+		var plane = new Plane( Vector3.Right, 0d);
+		var ray = new Ray( Camera.Position,
+			 Screen.GetDirection( Mouse.Position ) );
+		var hitPosition = plane.Trace( ray );
+
+		var direction = (hitPosition.GetValueOrDefault() - CollisionTop ).Normal;
+		var lookInput = direction.EulerAngles;
 
 		if ( IsGrabbing )
 		{
@@ -44,11 +49,6 @@ public partial class Player : AnimatedEntity
 				wishRotation = Rotation.LookAt( direction, Vector3.Left );
 				lastRotation = 0f;
 			}
-			else if ( lastRotation >= 1f )
-				if ( !Velocity.IsNearlyZero( 2 ) )
-					wishRotation = Rotation.LookAt( Velocity, Vector3.Left );
-				else
-					wishRotation = Rotation.LookAt( Vector3.Right, Vector3.Left );
 		}
 
 		InputRotation = Rotation.Slerp( InputRotation, wishRotation, Time.Delta * 5f );
