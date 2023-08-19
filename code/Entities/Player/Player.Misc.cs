@@ -92,7 +92,7 @@ public partial class Player : AnimatedEntity
 				if ( !targetBody.IsValid() ) return;
 				if ( targetBody.BodyType != PhysicsBodyType.Dynamic ) return;
 
-				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 500f * targetBody.Mass );
+				targetBody.ApplyImpulseAt( targetBody.LocalPoint( punchTrace.HitPosition ).LocalPosition, InputRotation.Forward * 30000f );
 				PlaySound( "sounds/punch/punch.sound" );
 			}
 		}
