@@ -11,15 +11,17 @@
 		margin-left: -32px;
 		margin-top: -32px;
     }
-	/*image {
-	transition: transform .05s ease-in;
-	}*/
+	image {
+        background-tint: @PlayerColor.ToString();
+    }
 </style>
 
 @code {
     private Image CrosshairImage { get; set; }
     private Vector3 CrosshairRotation = Vector3.Zero;
     private float CrosshairScale = 1;
+    private Player LocalPlayer;
+    private Color PlayerColor = Color.White;
 
     public Crosshair()
     {
@@ -30,9 +32,9 @@
 
     protected override int BuildHash()
     {
-        var player = Game.LocalPawn as Player;
-        var playerColor = player?.PlayerColor ?? Color.White;
-        return player.GetHashCode() + playerColor.GetHashCode();
+        LocalPlayer = Game.LocalPawn as Player;
+        PlayerColor = LocalPlayer?.PlayerColor ?? Color.White;
+        return LocalPlayer.GetHashCode() + PlayerColor.GetHashCode();
     }
 
     public struct CrosshairState
