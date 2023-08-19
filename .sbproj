@@ -12,7 +12,8 @@
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [
-    "facepunch.libsdf"
+    "facepunch.libsdf",
+    "fish.grid_and_astar"
   ],
   "EditorReferences": null,
   "Metadata": {
@@ -64,7 +65,7 @@
           "GroupName": "Movement"
         },
         {
-          "Name": "Launch",
+          "Name": "Dive",
           "KeyboardCode": "shift",
           "GamepadCode": "LeftJoystickButton",
           "GroupName": "Movement"
