@@ -19,7 +19,7 @@ public partial class Player : AnimatedEntity
 		if ( IsPunching ) return;
 		if ( IsGrabbing ) return;
 
-		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight * 0.8f )
+		var grabTrace = Trace.Ray( CollisionTop, CollisionTop + InputRotation.Forward * CollisionHeight )
 			.Size( CollisionHeight * 0.8f )
 			.Ignore( this )
 			.Ignore( Collider )
@@ -61,8 +61,14 @@ public partial class Player : AnimatedEntity
 				}
 				else
 				{
+					var preciseDirection = (grabTrace.HitPosition - CollisionTop).Normal;
+					var preciseTrace = Trace.Ray( CollisionTop, CollisionTop + preciseDirection * (CollisionHeight * 1.8f) )
+						.Ignore( this )
+						.Ignore( Collider )
+						.Run();
+
 					Grabbing = grabTarget;
-					GrabbingPosition = grabTrace.HitPosition;
+					GrabbingPosition = preciseTrace.Hit ? preciseTrace.HitPosition : grabTrace.HitPosition;
 				}
 			}
 		}
