@@ -17,9 +17,10 @@
 </root>
 	
 @code {
-	private float lerpedScore = 0;
-	private int displayScore => (int)(lerpedScore + 0.5f);
-	private static int score => (Game.LocalPawn as Player)?.Score ?? 0;
+    private float lerpedScore = 0;
+    private int displayScore => (int)(lerpedScore + 0.5f);
+    private static int score => (Game.LocalPawn as Player)?.Score ?? 0;
+    private Color playerColor => (Game.LocalPawn as Player)?.PlayerColor ?? Color.White;
 
 	class WrappedText : Panel
 	{
@@ -117,7 +118,7 @@
 
 	public override void Tick()
 	{
-		lerpedScore = MathX.Lerp( lerpedScore, score, 10f * Time.Delta );
+        lerpedScore = MathX.Lerp(lerpedScore, score, 10f * Time.Delta);
 	}
 
 	protected override int BuildHash()
@@ -153,11 +154,12 @@
 			animation-name: rotate;
 			animation-duration: 6s;
 			animation-timing-function: linear;
+            background-image-tint: @playerColor.Desaturate(0.3f).ToString();
 		}
 
 		.shadow {
 			margin-top: 4px;
-			background-image-tint: darken(white, 50%);
+			background-image-tint: darken(white, 70%);
 		}
 
 		.bubble {
