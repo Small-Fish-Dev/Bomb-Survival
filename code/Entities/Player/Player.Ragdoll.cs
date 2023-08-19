@@ -95,7 +95,7 @@ public partial class Player : AnimatedEntity
 					var force = body.Mass * 30000f;
 
 					body.ApplyForce( direction * force * Time.Delta );
-					body.LinearDamping = 300f * Time.Delta;
+					body.LinearDamping = 1000f * Time.Delta;
 					body.Rotation = boneTransform.Rotation;
 					body.Enabled = true;
 				}
