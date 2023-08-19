@@ -61,7 +61,7 @@ public partial class Player
 		if ( TimeSinceLostFooting > Time.Delta * 5f )
 			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta * 2f;
 
-		if ( Input.Pressed( "punch" ) && !IsPunching && LastPunch >= 0.7f )
+		if ( Input.Pressed( "punch" ) && !IsPunching && CanPunch )
 			using ( LagCompensation() )
 			{
 				Punch();

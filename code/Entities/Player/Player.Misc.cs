@@ -10,6 +10,7 @@ public partial class Player : AnimatedEntity
 
 	internal TimeUntil punchFinish { get; set; } = 0f;
 	[Net, Local, Predicted] public TimeSince LastPunch { get; set; } = 0f;
+	public bool CanPunch => LastPunch >= 0.7f;
 	public bool IsPunching => !punchFinish;
 
 

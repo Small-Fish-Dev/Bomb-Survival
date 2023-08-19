@@ -52,8 +52,6 @@ public partial class Player : AnimatedEntity
 		}
 
 		InputRotation = Rotation.Slerp( InputRotation, wishRotation, Time.Delta * 5f );
-
-		DebugOverlay.Line( CollisionTop, CollisionTop + InputRotation.Forward * 50f );
 	}
 
 	public override void Simulate( IClient cl )
