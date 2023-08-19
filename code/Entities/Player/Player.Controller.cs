@@ -2,16 +2,18 @@
 
 public partial class Player
 {
-	public float WalkSpeed => 140f * ( GroundEntity != null ? Math.Max( 0.5f, CrouchLevel ) : 1f );
+	public static float BaseWalkSpeed => 140f;
+	public float WalkSpeed => BaseWalkSpeed * ( GroundEntity != null ? Math.Max( 0.5f, CrouchLevel ) : 1f );
 	public float AccelerationSpeed => 600f; // Units per second (Ex. 200f means that after 1 second you've reached 200f speed)
-	public float JumpHeight => 250f;
+	public static float JumpHeight => 250f;
+	public static float DiveStrength => 400f;
 	public float WishSpeed { get; private set; } = 0f;
 	public Vector3 Direction { get; set; } = Vector3.Zero;
 
 	public Vector3 WishVelocity => Direction.Normal * WishSpeed;
 	public Rotation WishRotation => Rotation.LookAt( Direction, Vector3.Up );
-	public float StepSize => 12f;
-	public float MaxWalkableAngle => 55f;
+	public static float StepSize => 12f;
+	public static float MaxWalkableAngle => 55f;
 
 	public TimeSince TimeSinceLostFooting = 0f;
 
@@ -23,7 +25,7 @@ public partial class Player
 		{
 			normalMotion();
 			computeGrab();
-			computeLaunch();
+			computeDive();
 		}
 	}
 
@@ -37,11 +39,11 @@ public partial class Player
 			Release();
 	}
 
-	void computeLaunch()
+	void computeDive()
 	{
-		if ( Input.Down( "launch" ) )
+		if ( Input.Down( "dive" ) )
 			if ( !IsKnockedOut )
-				KnockOut( CollisionTop + InputRotation.Backward * 50f, 400f, 1f );
+				KnockOut( CollisionTop + InputRotation.Backward * 50f, DiveStrength, 1f );
 	}
 
 	void normalMotion()

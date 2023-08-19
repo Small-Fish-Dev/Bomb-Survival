@@ -6,8 +6,8 @@ namespace BombSurvival;
 
 public partial class Player : AnimatedEntity
 {
-	public float CollisionHeight => 30f;
-	public float CollisionWidth => 24f;
+	public static float CollisionHeight => 30f;
+	public static float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
 	public Vector3 CollisionCenter => Position + Vector3.Up * CollisionHeight * Scale;
 	public Vector3 CollisionTopLocal => Vector3.Up * CollisionHeight * Scale / 1.5f;
