@@ -75,6 +75,9 @@ public partial class ScoringState : GameState
 
 		foreach ( var player in Entity.All.OfType<Player>() )
 			player.Respawn();
+
+		if ( Game.IsServer )
+			Player.SendScores();
 	}
 }
 

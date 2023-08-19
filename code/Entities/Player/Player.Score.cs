@@ -23,4 +23,12 @@ public partial class Player : AnimatedEntity
 	{
 		Score += points;
 	}
+
+	[ClientRpc]
+	public static void SendScores()
+	{
+		if ( Game.LocalPawn is not Player player ) return;
+
+		Sandbox.Services.Stats.SetValue( Game.LocalClient, "house-points", player.Score );
+	}
 }
