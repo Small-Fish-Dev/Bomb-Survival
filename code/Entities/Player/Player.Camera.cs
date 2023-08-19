@@ -56,12 +56,12 @@ public partial class Player
 		Camera.Rotation = Rotation.FromYaw( 90f );
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 
-		var postProcess = Camera.Main.FindOrCreateHook<Sandbox.Effects.DepthOfField>();
+		/*var postProcess = Camera.Main.FindOrCreateHook<Sandbox.Effects.DepthOfField>();
 		postProcess.Enabled = true;
 
 		postProcess.BlurSize = 500;
 		postProcess.FocalDistance = cameraDistance * 1.5f;
 		postProcess.FrontBlur = false;
-		postProcess.BackBlur = true;
+		postProcess.BackBlur = true;*/
 	}
 }
