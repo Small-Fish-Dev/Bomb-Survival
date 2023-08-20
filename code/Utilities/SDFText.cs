@@ -4,7 +4,7 @@ namespace BombSurvival;
 
 public class SDFText
 {
-	public static SDFText Poppins = new( "Poppins Medium" );
+	public readonly static SDFText Poppins = Game.IsClient ? new( "Poppins Medium" ) : null;
 
 	public struct FontJSON
 	{

@@ -17,7 +17,7 @@ public partial class Player : AnimatedEntity
 	[ClientRpc]
 	public void SetCharred( bool charred )
 	{
-		var colorToApply = charred ? Color.Black : Color.White;
+		var colorToApply = charred && !IsSafe ? Color.Black : Color.White;
 
 		if ( Ragdoll.IsValid() )
 		{
@@ -31,7 +31,7 @@ public partial class Player : AnimatedEntity
 
 	public void KnockOut( Vector3 sourcePosition, float strength, float amount )
 	{
-		if ( IsDead ) return;
+		if ( IsDead || IsSafe ) return;
 
 		IsKnockedOut = true;
 		knockedOutTimer = amount;

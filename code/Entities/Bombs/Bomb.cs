@@ -73,8 +73,8 @@ public abstract partial class Bomb : AnimatedEntity
 
 		var playersToChar = entitiesInChar
 			.Select( x => x.GetPlayer() )
-			.Where( x => x != null )
-			.Where( x => !x.IsDead )
+			.Where( x => x != null 
+				&& !x.IsDead )
 			.Distinct();
 
 		foreach ( var player in playersToChar )

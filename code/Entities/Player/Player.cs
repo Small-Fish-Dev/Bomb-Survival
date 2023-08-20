@@ -6,6 +6,18 @@ namespace BombSurvival;
 
 public partial class Player : AnimatedEntity
 {
+	/// <summary>
+	/// The time that players are safe for after respawn.
+	/// </summary>
+	public const float SAFE_TIME = 2f;
+
+	/// <summary>
+	/// A boolean telling you if we are safe from damage, etc...
+	/// </summary>
+	public bool IsSafe => LastRespawn < SAFE_TIME 
+		&& BombSurvival.Instance?.CurrentState != null
+		&& BombSurvival.Instance?.CurrentState.GetType() == typeof( PlayingState );
+
 	public static float CollisionHeight => 30f;
 	public static float CollisionWidth => 24f;
 	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, 0f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
@@ -15,9 +27,7 @@ public partial class Player : AnimatedEntity
 	[Net] public bool IsDead { get; private set; } = false;
 	[Net] internal TimeUntil respawnTimer { get; private set; } = 0f;
 	[Net, Local] public int LivesLeft { get; private set; } = 4;
-	public TimeSince LastRespawn { get; private set; } = 0f;
-
-
+	[Net] public TimeSince LastRespawn { get; private set; } = 0f;
 	public float CrouchLevel { get; set; } = 1f;
 
 	[ClientInput] public Vector3 InputDirection { get; protected set; }
@@ -72,6 +82,23 @@ public partial class Player : AnimatedEntity
 				PlaceRagdoll();
 
 			return;
+		}
+
+		// Set alpha to half if we are safe.
+		if ( Ragdoll.IsValid() && !IsDead )
+		{
+			Ragdoll.RenderColor = Ragdoll.RenderColor
+				.WithAlpha(
+					IsSafe
+						? 0.4f
+						: 1f
+				);
+
+			Tags.Set( "nocollide", IsSafe );
+
+			foreach ( var child in Ragdoll.Children )
+				if ( child is ModelEntity clothing )
+					clothing.RenderColor = Ragdoll.RenderColor;
 		}
 
 		ComputeAnimations( this );
@@ -171,8 +198,11 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	public void Kill()
+	public void Kill( bool ignoreSafe = false )
 	{
+		if ( IsSafe && !ignoreSafe )
+			return;
+
 		Release();
 		WakeUp();
 

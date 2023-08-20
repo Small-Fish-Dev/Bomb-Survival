@@ -125,7 +125,8 @@
         "puppet": "Collide",
         "player": "Collide",
         "collider": "Collide",
-        "bubble": "Collide"
+        "bubble": "Collide",
+        "nocollide": "Ignore"
       },
       "Pairs": [
         {
