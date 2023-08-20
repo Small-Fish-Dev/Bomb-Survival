@@ -24,9 +24,10 @@ public partial class BombSurvival
 			.WithMaxDropHeight( 9999f )
 			.AddJumpDefinition( LongJump )
 			.AddJumpDefinition( HighJump )
-			.JumpsIgnoreConnections( true );
+			.JumpsIgnoreConnections( true )
+			.JumpsIgnoreLOS( true );
 
-		await builder.Create( 2, printInfo: true );
+		await builder.Create( 1, printInfo: false );
 	}
 
 	[ConCmd.Admin( "bs_grid" )]

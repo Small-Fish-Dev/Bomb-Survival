@@ -39,6 +39,8 @@ public partial class PlayingState : GameState
 	{
 		base.Start();
 
+		BombSurvival.GenerateGrid().Wait();
+
 		foreach ( var player in Entity.All.OfType<Player>() )
 			player.Respawn();
 	}
