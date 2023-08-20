@@ -102,7 +102,7 @@ public partial class BombSurvival
 			{
 				var timeRemoved = CurrentDifficulty * 2f;
 
-				nextWave = Game.Random.Float( 2f, 3f ) - timeRemoved;
+				nextWave = Game.Random.Float( 2.5f, 3.5f ) - timeRemoved;
 				waveEntititesSpawned = 0;
 			}
 		}
