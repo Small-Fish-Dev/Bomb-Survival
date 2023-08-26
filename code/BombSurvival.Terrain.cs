@@ -123,7 +123,7 @@ public partial class BombSurvival
 		CarveCircle( Background, position, size * 0.6f );
 		AddCircle( Background, position, charSize * 0.8f, ScorchLayer );
 
-		Particles.Create( "particles/explosion.vpcf", position )
+		Particles.Create( "particles/bomb_explosion.vpcf", position )
 			.Set( "size", charSize );
 
 		Sound.FromWorld( "sounds/explosion/explosion.sound", position );

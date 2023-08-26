@@ -354,16 +354,16 @@
 	m_Children = 
 	[
 		{
-			m_ChildRef = resource:"particles/explosion_flash.vpcf"
+			m_ChildRef = resource:"particles/bomb_explosion_flash.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/explosion_smoke.vpcf"
+			m_ChildRef = resource:"particles/bomb_explosion_shrapnel_falling.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/explosion_shrapnel_falling.vpcf"
+			m_ChildRef = resource:"particles/bomb_explosion_shrapnel_floating.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/explosion_shrapnel_floating.vpcf"
+			m_ChildRef = resource:"particles/bomb_explosion_smoke.vpcf"
 		},
 	]
 }

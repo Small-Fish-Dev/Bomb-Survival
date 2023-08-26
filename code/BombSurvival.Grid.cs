@@ -29,7 +29,7 @@ public partial class BombSurvival
 			.JumpsIgnoreConnections( true )
 			.JumpsIgnoreLOS( true );
 
-		await builder.Create( 1, printInfo: true );
+		await builder.Create( 1, printInfo: false );
 	}
 
 	[ConCmd.Admin( "bs_grid" )]
