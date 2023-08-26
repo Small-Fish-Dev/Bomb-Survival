@@ -30,7 +30,7 @@ public partial class Player : AnimatedEntity
 	[Net] public TimeSince LastRespawn { get; private set; } = 0f;
 	public float CrouchLevel { get; set; } = 1f;
 
-	[ClientInput] public Vector3 InputDirection { get; protected set; }
+	[ClientInput] public Vector3 InputDirection { get; set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
 	private Rotation wishRotation;
 	TimeSince lastRotation = 0f;

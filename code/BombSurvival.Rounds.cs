@@ -40,6 +40,7 @@ public partial class PlayingState : GameState
 	{
 		base.Start();
 
+		BombSurvivalBot.CancelAllTokens();
 		BombSurvival.GenerateGrid().Wait();
 
 		foreach ( var player in Entity.All.OfType<Player>() )
@@ -68,6 +69,7 @@ public partial class PlayingState : GameState
 
 		if ( nextGridRegen )
 		{
+			BombSurvivalBot.CancelAllTokens();
 			GameTask.RunInThreadAsync( async () => await BombSurvival.GenerateGrid() );
 			nextGridRegen = 2;
 		}
