@@ -34,6 +34,7 @@ public partial class StartingState : GameState
 public partial class PlayingState : GameState
 {
 	TimeUntil assignPoints = 1;
+	TimeUntil nextGridRegen = 1;
 
 	public override void Start()
 	{
@@ -64,6 +65,12 @@ public partial class PlayingState : GameState
 
 		if ( playersAlive.Count() == 0 && playersPlaying.Count() == 0)
 			BombSurvival.SetState<ScoringState>();
+
+		if ( nextGridRegen )
+		{
+			GameTask.RunInThreadAsync( async () => await BombSurvival.GenerateGrid() );
+			nextGridRegen = 2;
+		}
 
 		BombSurvival.ComputeWaves();
 	}

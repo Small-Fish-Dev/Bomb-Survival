@@ -13,6 +13,8 @@ public partial class BombSurvival
 
 	public static async Task GenerateGrid()
 	{
+		GridAStar.Grid.Main?.Delete();
+
 		var builder = new GridAStar.GridBuilder()
 			.WithBounds( Vector3.Zero, WorldBox, Rotation.Identity )
 			.WithCellSize( Player.CollisionWidth )
@@ -27,7 +29,7 @@ public partial class BombSurvival
 			.JumpsIgnoreConnections( true )
 			.JumpsIgnoreLOS( true );
 
-		await builder.Create( 1, printInfo: false );
+		await builder.Create( 1, printInfo: true );
 	}
 
 	[ConCmd.Admin( "bs_grid" )]
