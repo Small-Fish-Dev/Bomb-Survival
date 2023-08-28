@@ -18,7 +18,10 @@ public partial class BombSurvivalBot : Bot
 		if ( !Pawn.IsValid() ) return;
 
 		//Input.SetAction( "Jump", true );
-		Pawn.InputDirection = Vector3.Right;
+		if ( IsFollowingPath )
+			Pawn.InputDirection = MovingLeft ? Vector3.Left : Vector3.Right;
+		else
+			Pawn.InputDirection = Vector3.Zero;
 
 		//TODO Set InputRotation
 	}
@@ -27,13 +30,13 @@ public partial class BombSurvivalBot : Bot
 	{
 		if ( !Pawn.IsValid() ) return;
 
-		if ( Time.Tick % 10  == 0 )
+		ComputeNavigation();
+		if ( Time.Tick % 5  == 0 )
 			Compute();
 	}
 
 	public void Compute()
 	{
-		ComputeNavigation();
 	}
 
 	[ConCmd.Admin( "bs_bot_add" )]

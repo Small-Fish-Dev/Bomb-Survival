@@ -69,8 +69,8 @@ public partial class PlayingState : GameState
 
 		if ( nextGridRegen )
 		{
-			BombSurvivalBot.CancelAllTokens();
-			GameTask.RunInThreadAsync( async () => await BombSurvival.GenerateGrid() );
+			//BombSurvivalBot.CancelAllTokens();
+			//GameTask.RunInThreadAsync( async () => await BombSurvival.GenerateGrid() );
 			nextGridRegen = 2;
 		}
 
