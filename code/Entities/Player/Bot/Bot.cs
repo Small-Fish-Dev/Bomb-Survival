@@ -30,7 +30,7 @@ public partial class BombSurvivalBot : Bot
 
 		if ( closestPlayer != null )
 		{
-			if ( closestPlayer.Position.Distance( Pawn.Position ) <= 100f )
+			if ( closestPlayer.Position.Distance( Pawn.Position ) <= 50f )
 				Pawn.Punch();
 
 			Pawn.InputRotation = Rotation.LookAt( (closestPlayer.Position - Pawn.Position).Normal, Vector3.Right );

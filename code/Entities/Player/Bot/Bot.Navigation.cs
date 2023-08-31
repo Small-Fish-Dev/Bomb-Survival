@@ -37,8 +37,13 @@ public partial class BombSurvivalBot
 	public Vector3 Target => TargetEntity == null ? TargetPosition : TargetEntity.Position;
 	public Cell TargetCell => currentGrid != null ? currentGrid.GetCell( Target ) ?? currentGrid.GetNearestCell( Target ) : null;
 	public Cell CurrentCell => currentGrid != null ? currentGrid.GetCell( Pawn.Position ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
+	float minimumDistanceUntilNext => currentGrid.CellSize / 2f;
+	Vector3 differenceBetweenNext => Pawn.Position - NextPathNode.EndPosition;
+	bool withinDistanceForNext => differenceBetweenNext.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenNext.z ) <= currentGrid.StepSize;
+	Vector3 differenceBetweenCurrent => Pawn.Position - CurrentPathNode.EndPosition;
+	bool withinDistanceForCurrent => differenceBetweenCurrent.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenCurrent.z ) <= currentGrid.StepSize;
 
-	public bool MovingLeft = true;
+	public bool MovingLeft => NextPathNode.EndPosition.x - Pawn.Position.x < 0f;
 
 	public async void ComputeNavigation()
 	{
@@ -49,8 +54,9 @@ public partial class BombSurvivalBot
 
 		if ( nextRetraceCheck )
 		{
-			if ( Target != Vector3.Zero )
-				await NavigateToTarget();
+			if ( TargetCell != LastPathNode.Parent.Current && TargetCell != LastPathNode.Current )
+				if ( Target != Vector3.Zero )
+					await NavigateToTarget();
 
 			nextRetraceCheck = pathRetraceFrequency;
 		}
@@ -61,32 +67,21 @@ public partial class BombSurvivalBot
 			{
 				DebugOverlay.Line( CurrentPath.Nodes[i - 1].EndPosition, CurrentPath.Nodes[i].EndPosition, Time.Delta, false );
 				DebugOverlay.Text( CurrentPath.Nodes[i - 1].MovementTag, CurrentPath.Nodes[i - 1].EndPosition, Time.Delta, 5000f );
-			}*/
-
-			if ( Pawn.GroundEntity != null )
-			{
-				MovingLeft = NextPathNode.EndPosition.x - Pawn.Position.x < 0f;
 			}
 
 			foreach ( var cell in CurrentPath.Nodes )
-				cell.Current.Draw( 0.1f );
+				cell.Current.Draw( 0.1f );*/
 
-			var minimumDistanceUntilNext = BombSurvival.MainGrid.CellSize; // * 1.42f ?
+			if ( withinDistanceForNext )
+				CurrentPath.Nodes.RemoveAt( 0 );
 
-			if ( Pawn.Position.WithZ( 0 ).Distance( NextPathNode.EndPosition.WithZ( 0 ) ) <= minimumDistanceUntilNext ) // Move onto the next cell
-				if ( Math.Abs( Pawn.Position.z - NextPathNode.EndPosition.z ) <= currentGrid.StepSize ) // Make sure it's within the stepsize
-					CurrentPath.Nodes.RemoveAt( 0 );
-
-			if ( IsFollowingPath )
+			if ( withinDistanceForCurrent )
 			{
 				if ( CurrentMovementTag == "longJump" )
 				{
-					var distanceBetweenNodes = CurrentPathNode.EndPosition.Distance( NextPathNode.EndPosition );
-					var distanceBetweenPlayer = Pawn.Position.Distance( NextPathNode.EndPosition );
-
-					if ( Pawn.GroundEntity != null && distanceBetweenNodes >= distanceBetweenPlayer )
+					if ( Pawn.GroundEntity != null )
 					{
-						Pawn.Velocity = ((MovingLeft ? Vector3.Left : Vector3.Right) * Player.BaseWalkSpeed * 1.5f).WithZ( Player.JumpHeight * 1.6f );
+						Pawn.Velocity = ((MovingLeft ? Vector3.Left : Vector3.Right) * Player.BaseWalkSpeed * 1.3f).WithZ( Player.JumpHeight * 1.5f );
 						Pawn.SetAnimParameter( "jump", true );
 						Pawn.GroundEntity = null;
 					}
@@ -94,10 +89,7 @@ public partial class BombSurvivalBot
 
 				if ( CurrentMovementTag == "highJump" )
 				{
-					var distanceBetweenNodes = CurrentPathNode.EndPosition.Distance( NextPathNode.EndPosition );
-					var distanceBetweenPlayer = Pawn.Position.Distance( NextPathNode.EndPosition );
-
-					if ( Pawn.GroundEntity != null && distanceBetweenNodes >= distanceBetweenPlayer )
+					if ( Pawn.GroundEntity != null )
 					{
 						Pawn.Velocity = ((MovingLeft ? Vector3.Left : Vector3.Right) * 60f).WithZ( Player.JumpHeight * 1.5f );
 						Pawn.SetAnimParameter( "jump", true );
@@ -106,7 +98,6 @@ public partial class BombSurvivalBot
 				}
 			}
 		}
-
 	}
 
 	public async Task NavigateToTarget()
