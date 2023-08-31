@@ -6,6 +6,8 @@ namespace BombSurvival;
 
 public partial class BombSurvival
 {
+	public static Grid MainGrid { get; private set; }
+	public static Grid CachedGrid { get; private set; }
 	public static float WorldWidth => 2048f;
 	public static float WorldHeight => 2048f;
 	public static BBox WorldBox => new BBox( new Vector3( -WorldWidth / 2f, -15f, -WorldWidth / 2f ), new Vector3( WorldWidth / 2f, 15f, WorldHeight / 2f ) );
@@ -14,7 +16,8 @@ public partial class BombSurvival
 
 	public static async Task GenerateGrid()
 	{
-		GridAStar.Grid.Main?.Delete();
+		CachedGrid?.Delete();
+		CachedGrid = MainGrid;
 
 		var builder = new GridAStar.GridBuilder()
 			.WithBounds( Vector3.Zero, WorldBox, Rotation.Identity )
@@ -30,7 +33,7 @@ public partial class BombSurvival
 			.JumpsIgnoreConnections( true )
 			.JumpsIgnoreLOS( true );
 
-		await builder.Create( 1, printInfo: false );
+		MainGrid = await builder.Create( 1, printInfo: false );
 	}
 
 	[ConCmd.Admin( "bs_grid" )]

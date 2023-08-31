@@ -16,6 +16,8 @@ public partial class BombSurvivalBot
 			currentPath = value;
 		}
 	}
+	Grid currentGrid => BombSurvival.MainGrid;
+	Grid followedGrid => CurrentPath.Grid;
 	public AStarNode CurrentPathNode => CurrentPath.Nodes[0] ?? null; // The latest cell crossed in the path
 	public AStarNode LastPathNode => CurrentPath.Nodes[^1] ?? null; // The final cell in the path
 	public AStarNode NextPathNode => CurrentPath.Nodes[Math.Min( 1, CurrentPath.Count - 1)] ?? null;
@@ -27,14 +29,32 @@ public partial class BombSurvivalBot
 	float pathRetraceFrequency => 0.5f; // How many seconds before it checks if the path is being followed or the target position changed
 	TimeUntil nextRetraceCheck = 0f;
 	public CancellationTokenSource CurrentPathToken = new();
-	AStarPathBuilder pathBuilder => new AStarPathBuilder( Grid.Main )
+	AStarPathBuilder pathBuilder => new AStarPathBuilder( currentGrid )
 		.WithPathCreator( Pawn );
 
 	public Entity TargetEntity = null;
 	public Vector3 TargetPosition = Vector3.Zero;
 	public Vector3 Target => TargetEntity == null ? TargetPosition : TargetEntity.Position;
-	public Cell TargetCell => Grid.Main.GetCell( Target ) ?? Grid.Main.GetNearestCell( Target );
-	public Cell CurrentCell => Grid.Main.GetCell( Pawn.Position ) ?? Grid.Main.GetNearestCell( Pawn.Position );
+	public Cell TargetCell
+	{
+		get
+		{
+			if ( CurrentPath.IsEmpty )
+				return currentGrid != null ? currentGrid.GetCell( Target ) ?? currentGrid.GetNearestCell( Target ) : null;
+			else
+				return followedGrid != null ? followedGrid.GetCell( Target ) ?? followedGrid.GetNearestCell( Target ) : null;
+		}
+	} 
+	public Cell CurrentCell
+	{
+		get
+		{
+			if ( CurrentPath.IsEmpty )
+				return currentGrid != null ? currentGrid.GetCell( Pawn.Position ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
+			else
+				return followedGrid != null ? followedGrid.GetCell( Pawn.Position ) ?? followedGrid.GetNearestCell( Pawn.Position ) : null;
+		}
+	}
 	public bool MovingLeft = true;
 
 	public void ComputeNavigation()
@@ -68,10 +88,10 @@ public partial class BombSurvivalBot
 			foreach ( var cell in CurrentPath.Nodes )
 				cell.Current.Draw( 0.1f );
 
-			var minimumDistanceUntilNext = Grid.Main.CellSize; // * 1.42f ?
+			var minimumDistanceUntilNext = BombSurvival.MainGrid.CellSize; // * 1.42f ?
 
 			if ( Pawn.Position.WithZ( 0 ).Distance( NextPathNode.EndPosition.WithZ( 0 ) ) <= minimumDistanceUntilNext ) // Move onto the next cell
-				if ( Math.Abs( Pawn.Position.z - NextPathNode.EndPosition.z ) <= Grid.Main.StepSize ) // Make sure it's within the stepsize
+				if ( Math.Abs( Pawn.Position.z - NextPathNode.EndPosition.z ) <= currentGrid.StepSize ) // Make sure it's within the stepsize
 					CurrentPath.Nodes.RemoveAt( 0 );
 
 			if ( IsFollowingPath )
@@ -138,6 +158,7 @@ public partial class BombSurvivalBot
 			var bsBot = bot as BombSurvivalBot;
 			bsBot.CurrentPathToken.Cancel();
 			bsBot.CurrentPathToken = new CancellationTokenSource();
+			bsBot.CurrentPath = AStarPath.Empty();
 		}
 	}
 }
