@@ -23,7 +23,18 @@ public partial class BombSurvivalBot : Bot
 		else
 			Pawn.InputDirection = Vector3.Zero;
 
-		//TODO Set InputRotation
+		var closestPlayer = Entity.All.OfType<Player>()
+			.Where( x => x != Pawn )
+			.OrderBy( x => x.Position.Distance( Pawn.Position ) )
+			.FirstOrDefault();
+
+		if ( closestPlayer != null )
+		{
+			if ( closestPlayer.Position.Distance( Pawn.Position ) <= 100f )
+				Pawn.Punch();
+
+			Pawn.InputRotation = Rotation.LookAt( (closestPlayer.Position - Pawn.Position).Normal, Vector3.Right );
+		}
 	}
 
 	public override void Tick()

@@ -66,6 +66,8 @@ public partial class Player : AnimatedEntity
 
 	public void Punch()
 	{
+		if ( !CanPunch ) return;
+
 		punchFinish = 0.3f;
 
 		Release();
