@@ -6,105 +6,86 @@
     return;
 }
 
-<root style="flex-direction: column;">
+<root>
+	<div class="background">
+		<div class="text">Welcome to the [ESC] Menu.</div>
+		<div class="text">Would you like to return to your pod or to exit Bomb Survival?</div>
 
-    <div class="navbar">
-        <div class="left">
-            <a class="button" href="/"> Home </a>
-            <span class="block">&gt;</span>
-            <span class="block">Current Game</span>
-        </div>
-        <div class="right">
-            
-        </div>
-    </div>
+		<div class="buttons">
+			<div class="mybutton main" onclick=@(() => Game.Menu.Close())>
+				Exit Game
+			</div>
 
-    <section class="inset" style="flex-direction: row;">
-
-        <div style="flex-grow: 1; flex-shrink: 0; flex-direction: column;">
-
-            <h2>Server Information</h2>
-
-            <div style="flex-direction: column; margin: 30px 30px;">
-
-                <div>
-                    Server: @Game.Server.ServerTitle
-                </div>
-
-                <div>
-                    Players: @Game.Clients.Count() / @Game.Server.MaxPlayers
-                </div>
-
-                <div>
-                    Map: @Game.Server.MapIdent
-                </div>
-
-                <div>
-                    Is Listen Server: @Game.IsListenServer
-                </div>
-
-            </div>
-
-            <h2>Current Players</h2>
-
-            <div style="flex-direction: column; margin: 30px 30px;">
-                @foreach ( var player in Game.Clients )
-                {
-                    <div>
-                        @player.Name - @player.SteamId
-                    </div>
-                }
-            </div>
-
-        </div>
-
-        <div style="flex-shrink: 0;">
-            @if (ShowMapOption)
-            {
-                <section class="nogrow">
-                    <h2>Map</h2>
-                    <MapButton MapIdent=@Game.Server.MapIdent OnClicked="@OnMapClicked"></MapButton>
-                </section>
-            }
-        </div>
-
-    </section>
-    
-    <div class="navbar">
-    
-        <div class="left">
-            <span class="button" onclick=@( () => Game.Menu.LeaveServer( "Leaving" ) )>Leave Server</span>
-        </div>
-
-        <div class="right">
-            
-            <span class="button primary" onclick=@ReturnToGame>Return To Game</span>
-        </div>
-
-    </div>
-
+			@*TODO: Make it return to the pod instead.*@
+			<div class="mybutton" onclick=@(() => ReturnToGame())>
+				Return to Pod
+			</div>
+		</div>
+	</div>
 </root>
+
+<style>
+
+	ActivePage {
+		pointer-events: all;
+		width: 100%;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+		font-family: Poppins-Bold;
+		flex-direction: column;
+
+		.background {
+			width: 620px;
+			height: 250px;
+			background-image: url(ui/menu/esc_menu_background.png);
+			background-size: 100%;
+			flex-direction: column;
+			
+			.text {
+				width: 100%;
+				top: 20px;
+				text-align: center;
+				flex-direction: column;
+			}
+
+			.buttons {
+				top: 50px;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: center;
+				
+			}
+
+			.mybutton {
+				height: 50px;
+				padding: 5px 20px 10px 20px;
+				background-size: 100%;
+				background-image: url(ui/menu/rectangle_long_empty.png);
+				text-align: center;
+				margin-left: 50px;
+				right: 25px;
+				background-image-tint: rgba(white, 0.8);
+				transition: all 0.4s ease-in-out;
+
+				&.main {
+					background-image: url(ui/menu/rectangle_long_full.png);
+				}
+
+				&:hover {
+					transform: scale(1.2);
+					background-image-tint: rgba(white, 1);
+				}
+			}
+		}
+	}
+</style>
 
 @code
 {
-    public string Tab { get; set; } = "map";
-
-    bool ShowMapOption = true;
-
-    protected override void OnParametersSet()
-    {
-        ShowMapOption = Game.Menu.Package.MapSelectionMode != Sandbox.DataModel.Game.MapSelect.Hidden;
-        ShowMapOption = ShowMapOption && Game.Menu.Package.MapSelectionMode != Sandbox.DataModel.Game.MapSelect.Empty;
-    }
-
     public void ReturnToGame()
     {
         Game.Menu.HideMenu();
-    }
-
-    protected override int BuildHash()
-    {
-        return HashCode.Combine( Game.Clients.Count(), Game.Server.MapIdent );
     }
 
     public override void Tick()
@@ -118,15 +99,5 @@
         {
             this.Navigate( "/" );
         }
-    }
-
-    void OnMapClicked()
-    {
-        Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
-    }
-
-    void OnMapSelected( Package map )
-    {
-        Game.Menu.ChangeServerMap( map.FullIdent );
     }
 }
