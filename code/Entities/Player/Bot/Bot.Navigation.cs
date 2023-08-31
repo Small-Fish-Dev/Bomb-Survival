@@ -1,5 +1,6 @@
 ﻿using GridAStar;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace BombSurvival;
 
@@ -17,7 +18,6 @@ public partial class BombSurvivalBot
 		}
 	}
 	Grid currentGrid => BombSurvival.MainGrid;
-	Grid followedGrid => CurrentPath.Grid;
 	public AStarNode CurrentPathNode => CurrentPath.Nodes[0] ?? null; // The latest cell crossed in the path
 	public AStarNode LastPathNode => CurrentPath.Nodes[^1] ?? null; // The final cell in the path
 	public AStarNode NextPathNode => CurrentPath.Nodes[Math.Min( 1, CurrentPath.Count - 1)] ?? null;
@@ -35,29 +35,12 @@ public partial class BombSurvivalBot
 	public Entity TargetEntity = null;
 	public Vector3 TargetPosition = Vector3.Zero;
 	public Vector3 Target => TargetEntity == null ? TargetPosition : TargetEntity.Position;
-	public Cell TargetCell
-	{
-		get
-		{
-			if ( CurrentPath.IsEmpty )
-				return currentGrid != null ? currentGrid.GetCell( Target ) ?? currentGrid.GetNearestCell( Target ) : null;
-			else
-				return followedGrid != null ? followedGrid.GetCell( Target ) ?? followedGrid.GetNearestCell( Target ) : null;
-		}
-	} 
-	public Cell CurrentCell
-	{
-		get
-		{
-			if ( CurrentPath.IsEmpty )
-				return currentGrid != null ? currentGrid.GetCell( Pawn.Position ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
-			else
-				return followedGrid != null ? followedGrid.GetCell( Pawn.Position ) ?? followedGrid.GetNearestCell( Pawn.Position ) : null;
-		}
-	}
+	public Cell TargetCell => currentGrid != null ? currentGrid.GetCell( Target ) ?? currentGrid.GetNearestCell( Target ) : null;
+	public Cell CurrentCell => currentGrid != null ? currentGrid.GetCell( Pawn.Position ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
+
 	public bool MovingLeft = true;
 
-	public void ComputeNavigation()
+	public async void ComputeNavigation()
 	{
 		if ( Game.IsClient )
 			return;
@@ -67,7 +50,7 @@ public partial class BombSurvivalBot
 		if ( nextRetraceCheck )
 		{
 			if ( Target != Vector3.Zero )
-				NavigateTo( TargetCell );
+				await NavigateToTarget();
 
 			nextRetraceCheck = pathRetraceFrequency;
 		}
@@ -126,29 +109,27 @@ public partial class BombSurvivalBot
 
 	}
 
-	public void NavigateTo( Cell targetCell )
+	public async Task NavigateToTarget()
 	{
-		GameTask.RunInThreadAsync( async () =>
-		{
-			var startingCell = CurrentCell;
+		var startingCell = CurrentCell;
+		var endingCell = TargetCell;
 
-			if ( startingCell == null || targetCell == null || startingCell == targetCell ) return;
+		if ( startingCell == null || endingCell == null || startingCell == endingCell ) return;
 
-			CurrentPathToken.Cancel();
-			CurrentPathToken = new CancellationTokenSource();
+		CurrentPathToken.Cancel();
+		CurrentPathToken = new CancellationTokenSource();
 
-			var computedPath = await pathBuilder.RunAsync( startingCell, targetCell, CurrentPathToken.Token );
+		var computedPath = await pathBuilder.RunAsync( startingCell, endingCell, CurrentPathToken.Token );
 
-			if ( computedPath.IsEmpty || computedPath.Length < 1 )
-				return;
+		if ( computedPath.IsEmpty || computedPath.Length < 1 )
+			return;
 
-			//computedPath.Simplify();
+		//computedPath.Simplify();
 
-			/*foreach ( var node  in computedPath.Nodes )
-				node.Current.Draw( 2f, false );*/
+		/*foreach ( var node  in computedPath.Nodes )
+			node.Current.Draw( 2f, false );*/
 
-			CurrentPath = computedPath;
-		} );
+		CurrentPath = computedPath;
 	}
 
 	public static void CancelAllTokens()
@@ -160,5 +141,20 @@ public partial class BombSurvivalBot
 			bsBot.CurrentPathToken = new CancellationTokenSource();
 			bsBot.CurrentPath = AStarPath.Empty();
 		}
+	}
+	public static async Task RecalculateAllPaths()
+	{
+		List<Task> tasks = new();
+
+		foreach ( var bot in All )
+		{
+			tasks.Add( GameTask.RunInThreadAsync( async () =>
+			{
+				var bsBot = bot as BombSurvivalBot;
+				await bsBot.NavigateToTarget();
+			} ) );
+		}
+
+		await GameTask.WhenAll( tasks );
 	}
 }

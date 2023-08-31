@@ -34,6 +34,9 @@ public partial class BombSurvival
 			.JumpsIgnoreLOS( true );
 
 		MainGrid = await builder.Create( 1, printInfo: false );
+
+		await BombSurvivalBot.RecalculateAllPaths();
+		CachedGrid?.Delete();
 	}
 
 	[ConCmd.Admin( "bs_grid" )]
