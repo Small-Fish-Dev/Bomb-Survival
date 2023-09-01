@@ -54,7 +54,7 @@ public partial class BombSurvivalBot
 
 		if ( nextRetraceCheck )
 		{
-			if ( TargetCell != LastPathNode.Parent.Current && TargetCell != LastPathNode.Current )
+			if ( TargetCell != LastPathNode.Parent.Current && TargetCell != LastPathNode.Current || differenceBetweenCurrent.Length >= minimumDistanceUntilNext * 2f && Pawn.GroundEntity != null )
 				if ( Target != Vector3.Zero )
 					await NavigateToTarget();
 
@@ -67,10 +67,10 @@ public partial class BombSurvivalBot
 			{
 				DebugOverlay.Line( CurrentPath.Nodes[i - 1].EndPosition, CurrentPath.Nodes[i].EndPosition, Time.Delta, false );
 				DebugOverlay.Text( CurrentPath.Nodes[i - 1].MovementTag, CurrentPath.Nodes[i - 1].EndPosition, Time.Delta, 5000f );
-			}
+			}*/
 
 			foreach ( var cell in CurrentPath.Nodes )
-				cell.Current.Draw( 0.1f );*/
+				cell.Current.Draw( 0.1f );
 
 			if ( withinDistanceForNext )
 				CurrentPath.Nodes.RemoveAt( 0 );
@@ -89,9 +89,12 @@ public partial class BombSurvivalBot
 							var horizontalSpeed = jumpDefinition.HorizontalSpeed;
 							var verticalSpeed = Math.Min( jumpDefinition.VerticalSpeed, Player.JumpHeight * 1.35f );
 							var scaledDirection = (direction * horizontalSpeed + jumpDefinition.VerticalSpeed).Normal.WithZ( 0 );
-							Pawn.Velocity = (scaledDirection * horizontalSpeed).WithZ( verticalSpeed );
-							Pawn.SetAnimParameter( "jump", true );
+
+							// TODO: Currently walking in a direction and jumping keeps the walking speed, find a way to negate it and only keep the horizonal velocity of the jump
+
 							Pawn.GroundEntity = null;
+							Pawn.Velocity = (scaledDirection * horizontalSpeed).WithZ( verticalSpeed ) * 1.1f;
+							Pawn.SetAnimParameter( "jump", true );
 
 							if ( jumpDefinition.VerticalSpeed > verticalSpeed )
 							{

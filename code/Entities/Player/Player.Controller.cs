@@ -53,11 +53,11 @@ public partial class Player
 		var wishDirection = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
 		if ( wishDirection != Vector3.Zero )
-			Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+			Direction = wishDirection;
 		else
 		{
 			if ( GroundEntity != null ) 
-				Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+				Direction = wishDirection;
 		}
 
 		if ( Direction != Vector3.Zero )
