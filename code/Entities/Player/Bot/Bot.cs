@@ -18,7 +18,7 @@ public partial class BombSurvivalBot : Bot
 		if ( !Pawn.IsValid() ) return;
 
 		//Input.SetAction( "Jump", true );
-		if ( IsFollowingPath )
+		if ( IsFollowingPath && Pawn.GroundEntity != null )
 			Pawn.InputDirection = MovingLeft ? Vector3.Left : Vector3.Right;
 		else
 			Pawn.InputDirection = Vector3.Zero;

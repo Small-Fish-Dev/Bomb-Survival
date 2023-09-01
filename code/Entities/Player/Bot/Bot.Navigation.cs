@@ -75,25 +75,30 @@ public partial class BombSurvivalBot
 			if ( withinDistanceForNext )
 				CurrentPath.Nodes.RemoveAt( 0 );
 
-			if ( withinDistanceForCurrent )
+			if ( CurrentMovementTag != null || CurrentMovementTag != String.Empty )
 			{
-				if ( CurrentMovementTag == "longJump" )
+				if ( withinDistanceForCurrent )
 				{
 					if ( Pawn.GroundEntity != null )
 					{
-						Pawn.Velocity = ((MovingLeft ? Vector3.Left : Vector3.Right) * Player.BaseWalkSpeed * 1.3f).WithZ( Player.JumpHeight * 1.5f );
-						Pawn.SetAnimParameter( "jump", true );
-						Pawn.GroundEntity = null;
-					}
-				}
+						if ( BombSurvival.JumpDictionary.ContainsKey( CurrentMovementTag ) )
+						{
 
-				if ( CurrentMovementTag == "highJump" )
-				{
-					if ( Pawn.GroundEntity != null )
-					{
-						Pawn.Velocity = ((MovingLeft ? Vector3.Left : Vector3.Right) * 60f).WithZ( Player.JumpHeight * 1.5f );
-						Pawn.SetAnimParameter( "jump", true );
-						Pawn.GroundEntity = null;
+							var jumpDefinition = BombSurvival.JumpDictionary[CurrentMovementTag];
+							var direction = MovingLeft ? Vector3.Left : Vector3.Right;
+							var horizontalSpeed = jumpDefinition.HorizontalSpeed;
+							var verticalSpeed = Math.Min( jumpDefinition.VerticalSpeed, Player.JumpHeight * 1.35f );
+							var scaledDirection = (direction * horizontalSpeed + jumpDefinition.VerticalSpeed).Normal.WithZ( 0 );
+							Pawn.Velocity = (scaledDirection * horizontalSpeed).WithZ( verticalSpeed );
+							Pawn.SetAnimParameter( "jump", true );
+							Pawn.GroundEntity = null;
+
+							if ( jumpDefinition.VerticalSpeed > verticalSpeed )
+							{
+								await GameTask.Delay( 300 );
+								//Pawn.KnockOut( Pawn.Velocity.Normal, Player.DiveStrength, 1f );
+							}
+						}
 					}
 				}
 			}
