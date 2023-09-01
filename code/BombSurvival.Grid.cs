@@ -13,13 +13,14 @@ public partial class BombSurvival
 	public static BBox WorldBox => new BBox( new Vector3( -WorldWidth / 2f, -15f, -WorldWidth / 2f ), new Vector3( WorldWidth / 2f, 15f, WorldHeight / 2f ) );
 	public static JumpDefinition LongJump => new JumpDefinition( "longJump", Player.BaseWalkSpeed, Player.JumpHeight * 1.35f, 2, maxPerCell: 1 );
 	public static JumpDefinition HighJump => new JumpDefinition( "highJump", 60f, Player.JumpHeight * 1.35f, 2, maxPerCell: 1 );
+	static int gridId = 0;
 
 	public static async Task GenerateGrid()
 	{
 		CachedGrid?.Delete();
 		CachedGrid = MainGrid;
 
-		var builder = new GridAStar.GridBuilder()
+		var builder = new GridAStar.GridBuilder( $"Grid{gridId}" )
 			.WithBounds( Vector3.Zero, WorldBox, Rotation.Identity )
 			.WithCellSize( Player.CollisionWidth )
 			.WithHeightClearance( Player.CollisionHeight )
@@ -37,6 +38,8 @@ public partial class BombSurvival
 
 		await BombSurvivalBot.RecalculateAllPaths();
 		CachedGrid?.Delete();
+
+		gridId++;
 	}
 
 	[ConCmd.Admin( "bs_grid" )]
