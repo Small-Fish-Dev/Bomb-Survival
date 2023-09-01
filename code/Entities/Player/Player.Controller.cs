@@ -50,12 +50,23 @@ public partial class Player
 	{
 		var animationHelper = new CitizenAnimationHelper( this );
 
-		Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+		var wishDirection = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+
+		if ( wishDirection != Vector3.Zero )
+			Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+		else
+		{
+			if ( GroundEntity != null ) 
+				Direction = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+		}
 
 		if ( Direction != Vector3.Zero )
 			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, WalkSpeed );
 		else
-			WishSpeed = 0f;
+		{
+			if ( GroundEntity != null )
+				WishSpeed = 0f;
+		}
 
 		Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
 			.WithZ( Velocity.z ); // Don't smooth vertical movement
