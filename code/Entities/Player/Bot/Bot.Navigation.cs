@@ -88,7 +88,7 @@ public partial class BombSurvivalBot
 							var direction = MovingLeft ? Vector3.Left : Vector3.Right;
 							var horizontalSpeed = jumpDefinition.HorizontalSpeed;
 							var verticalSpeed = Math.Min( jumpDefinition.VerticalSpeed, Player.JumpHeight * 1.35f );
-							var scaledDirection = (direction * horizontalSpeed + jumpDefinition.VerticalSpeed).Normal.WithZ( 0 );
+							var scaledDirection = (direction * horizontalSpeed + Vector3.Up * jumpDefinition.VerticalSpeed).Normal.WithZ( 0 );
 
 							// TODO: Currently walking in a direction and jumping keeps the walking speed, find a way to negate it and only keep the horizonal velocity of the jump
 

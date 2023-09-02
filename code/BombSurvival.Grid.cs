@@ -15,7 +15,7 @@ public partial class BombSurvival
 	{
 		{ "longJump", new JumpDefinition("longJump", Player.BaseWalkSpeed, Player.JumpHeight * 1.35f, 2, maxPerCell: 1) },
 		{ "highJump", new JumpDefinition("highJump", 60f, Player.JumpHeight * 1.35f, 2, maxPerCell: 1) },
-		{ "highDiveJump", new JumpDefinition("highDiveJump", 60f, Player.JumpHeight * 2f, 2, maxPerCell: 1) }
+		{ "highDiveJump", new JumpDefinition("highDiveJump", 60f, Player.JumpHeight * 1.95f, 2, maxPerCell: 1) }
 	};
 	static int gridId = 0;
 
