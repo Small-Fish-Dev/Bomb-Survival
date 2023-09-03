@@ -3,12 +3,11 @@
 namespace BombSurvival;
 
 public abstract partial class GameState : Entity // BaseNetworkable sucks
-{
+{ 
 	[Net] public TimeSince SinceStarted { get; set; } = 0f;
 
 	[GameEvent.Tick.Server]
 	public virtual void Compute() { }
-
 	public virtual void Start() { }
 	public virtual void End() { }
 }
@@ -65,7 +64,7 @@ public partial class PlayingState : GameState
 			}
 		}
 
-		if ( playersAlive.Count() == 0 && playersPlaying.Count() == 0 )
+		if ( playersAlive.Count() == 0 && playersPlaying.Count() == 0)
 			BombSurvival.SetState<ScoringState>();
 
 		if ( nextGridRegen )
@@ -108,17 +107,12 @@ public partial class BombSurvival
 
 	public void OnCurrentStateChanged()
 	{
+
 	}
 
-	[GameEvent.Client.Frame]
-	static void frame()
-	{
-		DebugOverlay.ScreenText( $"{Instance.CurrentState} state" );
-	}
-	
 	[GameEvent.Entity.PostSpawn]
 	static void startStates()
 	{
-		SetState<PodState>();
+		SetState<StartingState>();
 	}
 }
