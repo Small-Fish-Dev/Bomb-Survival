@@ -20,7 +20,7 @@ public class PodView : Panel
 	float cameraDistance;
 	float cameraStartDistance = 400f;
 	float cameraMinimumDistance => 250f;
-	float cameraMaximumDistance => 1000f;
+	float cameraMaximumDistance => 3000f;
 	Vector3 cameraCenter => new Vector3( 200f, 0f, 125f );
 	Vector3 cameraShake = Vector3.Zero;
 	TimeUntil transitionTime = 3f;
@@ -83,7 +83,7 @@ public class PodView : Panel
 		var deltaCameraDistance = (currentDistance - cameraMinimumDistance ) / ( cameraMaximumDistance - cameraMinimumDistance );
 
 		var oldRotation = scenePanel.Camera.Rotation;
-		var newRotation = Rotation.FromPitch( (float)Math.Pow( deltaCameraDistance * 4, 2.5 ) );
+		var newRotation = Rotation.FromPitch( (float)Math.Pow( deltaCameraDistance * 4.7f, 2.5 ) );
 
 		var oldPosition = scenePanel.Camera.Position;
 		var newPosition = cameraCenter + newRotation.Backward * currentDistance;
@@ -122,6 +122,8 @@ public class PodView : Panel
 
 		foreach ( var clothing in scenePlayerClothing )
 			clothing.Update( Time.Delta );
+
+		scenePanel.Camera.ZFar = 10000f;
 		
 	}
 }
