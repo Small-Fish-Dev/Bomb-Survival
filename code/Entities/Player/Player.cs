@@ -150,7 +150,7 @@ public partial class Player : AnimatedEntity
 		SpawnCollider();
 	}
 
-	public void Respawn( bool initial = false )
+	public void Respawn()
 	{
 		Position = Checkpoint.FirstPosition();
 		Velocity = Vector3.Zero;

@@ -27,7 +27,7 @@ public partial class BombSurvival : GameManager
 		client.Pawn = pawn;
 		pawn.Clothing = client.GetClientData( "avatar" );
 		pawn.PlayerColor = Player.FirstAvailableColor();
-		pawn.Respawn( true );
+		pawn.Respawn();
 	}
 
 	public override void ClientSpawn()
