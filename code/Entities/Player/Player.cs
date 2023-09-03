@@ -14,13 +14,16 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// A boolean telling you if we are safe from damage, etc...
 	/// </summary>
-	public bool IsSafe => LastRespawn < SAFE_TIME 
-		&& BombSurvival.Instance?.CurrentState != null
-		&& BombSurvival.Instance?.CurrentState.GetType() == typeof( PlayingState );
+	public bool IsSafe => LastRespawn < SAFE_TIME
+	                      && BombSurvival.Instance?.CurrentState != null
+	                      && BombSurvival.Instance?.CurrentState.GetType() == typeof(PlayingState);
 
 	public static float CollisionHeight => 30f;
 	public static float CollisionWidth => 24f;
-	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, -5f ) * Scale, new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
+
+	public BBox CollisionBox => new BBox( new Vector3( -CollisionWidth / 2f, -CollisionWidth / 2f, -5f ) * Scale,
+		new Vector3( CollisionWidth / 2f, CollisionWidth / 2f, CollisionHeight ) * Scale );
+
 	public Vector3 CollisionCenter => Position + Vector3.Up * CollisionHeight * Scale;
 	public Vector3 CollisionTopLocal => Vector3.Up * CollisionHeight * Scale / 1.5f;
 	public Vector3 CollisionTop => Position + CollisionTopLocal;
@@ -39,12 +42,12 @@ public partial class Player : AnimatedEntity
 	{
 		InputDirection = Input.AnalogMove;
 
-		var plane = new Plane( Vector3.Right, 0d);
+		var plane = new Plane( Vector3.Right, 0d );
 		var ray = new Ray( Camera.Position,
-			 Screen.GetDirection( Mouse.Position ) );
+			Screen.GetDirection( Mouse.Position ) );
 		var hitPosition = plane.Trace( ray );
 
-		var direction = (hitPosition.GetValueOrDefault() - CollisionTop ).Normal;
+		var direction = (hitPosition.GetValueOrDefault() - CollisionTop).Normal;
 		var lookInput = direction.EulerAngles;
 
 		if ( IsGrabbing )
@@ -113,7 +116,8 @@ public partial class Player : AnimatedEntity
 		if ( IsKnockedOut )
 			SimulateKnockedOut();
 
-		var capsule = new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * (CollisionHeight + CollisionWidth / 4f), CollisionWidth / 2f );
+		var capsule = new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * (CollisionHeight + CollisionWidth / 4f),
+			CollisionWidth / 2f );
 		var crouchTrace = Trace.Capsule( capsule, Position, CollisionTop )
 			.Ignore( this )
 			.WithoutTags( "puppet", "collider" )
@@ -152,7 +156,15 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn( bool initial = false )
 	{
-		Position = Checkpoint.FirstPosition();
+		if ( BombSurvival.Instance.CurrentState is PodState )
+		{
+			Position = PodSpawn.Get().Position;
+		}
+		else
+		{
+			Position = Checkpoint.FirstPosition();
+		}
+
 		Velocity = Vector3.Zero;
 
 		EnableAllCollisions = true;
