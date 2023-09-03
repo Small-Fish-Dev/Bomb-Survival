@@ -1,0 +1,15 @@
+{
+  "UI": false,
+  "Volume": "0.70,0.80,1",
+  "Pitch": "0.98,1.02,1",
+  "Decibels": 90,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sounds/gibberish/cartoony/cartoony_gibberish_1.vsnd",
+    "sounds/gibberish/cartoony/cartoony_gibberish_2.vsnd",
+    "sounds/gibberish/cartoony/cartoony_gibberish_3.vsnd",
+    "sounds/gibberish/cartoony/cartoony_gibberish_4.vsnd"
+  ],
+  "MaximumDistance": 1870.0942,
+  "MinimumDistance": 93.504715
+}
