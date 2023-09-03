@@ -12,7 +12,7 @@ public partial class Player : AnimatedEntity
 	[Net, Local] public TimeSince LastPunch { get; set; } = 0f;
 	public bool CanPunch => LastPunch >= 0.7f;
 	public bool IsPunching => !punchFinish;
-
+	public const int PunchCost = 10;
 
 	[ClientRpc]
 	public void SetCharred( bool charred )
@@ -87,7 +87,17 @@ public partial class Player : AnimatedEntity
 			var player = punchTarget.GetPlayer();
 
 			if ( player != null )
+			{
 				player.KnockOut( CollisionCenter, 400f, 1f );
+
+				if ( BombSurvival.Instance?.CurrentState is PlayingState && !IsSafe && !player.IsSafe )
+				{
+					// Take points from this player and give the victim
+					// the same amount of points.
+					AssignPoints( -PunchCost );
+					player.AssignPoints( PunchCost );
+				}
+			}
 			else
 			{
 				if ( !punchTarget.PhysicsEnabled ) return;

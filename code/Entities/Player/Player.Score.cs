@@ -21,7 +21,7 @@ public partial class Player : AnimatedEntity
 
 	public void AssignPoints( int points )
 	{
-		Score += points;
+		Score = Math.Clamp( score + points, 0, int.MaxValue );
 	}
 
 	[ClientRpc]
