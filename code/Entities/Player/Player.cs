@@ -152,7 +152,12 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn()
 	{
-		Position = Checkpoint.FirstPosition();
+		if ( BombSurvival.Instance.CurrentState is PlayingState || BombSurvival.Instance.CurrentState is ScoringState )
+			Position = Checkpoint.FirstPosition();
+		else
+			Position = Entity.All.OfType<SpawnPoint>()
+				.FirstOrDefault().Position;
+
 		Velocity = Vector3.Zero;
 
 		EnableAllCollisions = true;
