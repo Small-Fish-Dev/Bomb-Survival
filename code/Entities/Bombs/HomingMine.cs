@@ -7,6 +7,7 @@ public partial class HomingMine : Bomb
 	public override string ModelPath { get; } = "models/missile/missile.vmdl";
 	[Net] public Player Target { get; set; } = null;
 	TimeUntil enableExplosion = 0.5f;
+	const float minSpeed = 30000f;
 
 	public override void Spawn()
 	{
@@ -65,7 +66,9 @@ public partial class HomingMine : Bomb
 		if ( PhysicsBody.IsValid() )
 		{
 			PhysicsBody.LinearDamping = 3f;
-			PhysicsBody.ApplyForce( PhysicsBody.Mass * Rotation.Left * Time.Delta * 30000f );
+			var moveSpeed = Target is null ? minSpeed :
+				MathHelpers.Map( Position.Distance( Target.Position ), 0, 1000, minSpeed, minSpeed * 6 );
+			PhysicsBody.ApplyForce( PhysicsBody.Mass * Rotation.Left * Time.Delta * moveSpeed );
 		}
 	}
 
