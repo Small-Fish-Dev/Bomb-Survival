@@ -54,8 +54,8 @@
 				children = 
 				[
 					{
-						_class = "MorphFrame"
-						name = "middle"
+						_class = "AnimFile"
+						name = "left_wave"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -68,17 +68,16 @@
 						anim_markup_ordered = false
 						disable_compression = false
 						enable_scale = false
-						morph_weights = 
-						[
-							{
-								morph = "middle"
-								weight = 1.0
-							},
-						]
+						source_filename = "models/mouth/animations/left_wave.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
 					},
 					{
-						_class = "MorphFrame"
-						name = "left"
+						_class = "AnimFile"
+						name = "right_wave"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -91,17 +90,16 @@
 						anim_markup_ordered = false
 						disable_compression = false
 						enable_scale = false
-						morph_weights = 
-						[
-							{
-								morph = "left"
-								weight = 1.0
-							},
-						]
+						source_filename = "models/mouth/animations/left_wave.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = true
 					},
 					{
-						_class = "MorphFrame"
-						name = "right"
+						_class = "AnimFile"
+						name = "left_wave_slight"
 						activity_name = ""
 						activity_weight = 1
 						weight_list_name = ""
@@ -114,13 +112,56 @@
 						anim_markup_ordered = false
 						disable_compression = false
 						enable_scale = false
-						morph_weights = 
-						[
-							{
-								morph = "right"
-								weight = 1.0
-							},
-						]
+						source_filename = "models/mouth/animations/left_wave_slight.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "right_wave_slight"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						enable_scale = false
+						source_filename = "models/mouth/animations/left_wave_slight.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = true
+					},
+					{
+						_class = "AnimFile"
+						name = "center"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						enable_scale = false
+						source_filename = "models/mouth/animations/center.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
 					},
 				]
 				default_root_bone_name = ""
@@ -128,7 +169,7 @@
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = ""
+		anim_graph_name = "models/mouth/mouth.vanmgrph"
 		base_model_name = ""
 	}
 }
