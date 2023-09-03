@@ -43,10 +43,87 @@
 							exception_list = 
 							[
 								"mouth_001",
+								"mouth",
 							]
 						}
 					},
 				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "MorphFrame"
+						name = "middle"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						enable_scale = false
+						morph_weights = 
+						[
+							{
+								morph = "middle"
+								weight = 1.0
+							},
+						]
+					},
+					{
+						_class = "MorphFrame"
+						name = "left"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						enable_scale = false
+						morph_weights = 
+						[
+							{
+								morph = "left"
+								weight = 1.0
+							},
+						]
+					},
+					{
+						_class = "MorphFrame"
+						name = "right"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						enable_scale = false
+						morph_weights = 
+						[
+							{
+								morph = "right"
+								weight = 1.0
+							},
+						]
+					},
+				]
+				default_root_bone_name = ""
 			},
 		]
 		model_archetype = ""
