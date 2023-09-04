@@ -41,7 +41,9 @@ public partial class BombSurvivalBot : Bot
 	{
 		if ( !Pawn.IsValid() ) return;
 
-		ComputeNavigation();
+		if ( BombSurvival.Instance.CurrentState is PlayingState )
+			ComputeNavigation();
+
 		if ( Time.Tick % 5  == 0 )
 			Compute();
 	}

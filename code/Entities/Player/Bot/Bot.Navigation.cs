@@ -47,8 +47,8 @@ public partial class BombSurvivalBot
 
 	public async void ComputeNavigation()
 	{
-		if ( Game.IsClient )
-			return;
+		if ( Game.IsClient ) return;
+		if ( currentGrid == null ) return;
 
 		TargetEntity = Game.Clients.First().Pawn as Entity;
 
