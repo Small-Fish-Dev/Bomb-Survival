@@ -52,12 +52,14 @@ public partial class Player
 
 		var wishDirection = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
 
-		if ( wishDirection != Vector3.Zero )
+		if ( InputDirection != Vector3.Zero )
 			Direction = wishDirection;
 		else
 		{
-			if ( GroundEntity != null ) 
+			if ( GroundEntity != null )
 				Direction = wishDirection;
+			else
+				Direction = Vector3.Zero;
 		}
 
 		if ( Direction != Vector3.Zero )
@@ -68,8 +70,9 @@ public partial class Player
 				WishSpeed = 0f;
 		}
 
-		Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
-			.WithZ( Velocity.z ); // Don't smooth vertical movement
+		if ( Direction != Vector3.Zero || GroundEntity != null )
+			Velocity = Vector3.Lerp( Velocity, WishVelocity, 15f * Time.Delta ) // Smooth horizontal movement
+				.WithZ( Velocity.z ); // Don't smooth vertical movement
 
 		if ( TimeSinceLostFooting > Time.Delta * 5f )
 			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta * 2f;

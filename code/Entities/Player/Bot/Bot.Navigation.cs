@@ -35,8 +35,8 @@ public partial class BombSurvivalBot
 	public Entity TargetEntity = null;
 	public Vector3 TargetPosition = Vector3.Zero;
 	public Vector3 Target => TargetEntity == null ? TargetPosition : TargetEntity.Position;
-	public Cell TargetCell => currentGrid != null ? currentGrid.GetCell( Target ) ?? currentGrid.GetNearestCell( Target ) : null;
-	public Cell CurrentCell => currentGrid != null ? currentGrid.GetCell( Pawn.Position ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
+	public Cell TargetCell => currentGrid != null ? currentGrid.GetCellInArea( Target, Player.CollisionWidth ) ?? currentGrid.GetNearestCell( Target ) : null;
+	public Cell CurrentCell => currentGrid != null ? currentGrid.GetCellInArea( Pawn.Position, Player.CollisionWidth ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
 	float minimumDistanceUntilNext => currentGrid.CellSize / 2f;
 	Vector3 differenceBetweenNext => Pawn.Position - NextPathNode.EndPosition;
 	bool withinDistanceForNext => differenceBetweenNext.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenNext.z ) <= currentGrid.StepSize;
@@ -61,7 +61,7 @@ public partial class BombSurvivalBot
 			nextRetraceCheck = pathRetraceFrequency;
 		}
 
-		if ( IsFollowingPath )
+		if ( IsFollowingPath && !Pawn.IsKnockedOut )
 		{
 			/*for ( var i = 1; i < CurrentPath.Count; i++ )
 			{
@@ -85,21 +85,21 @@ public partial class BombSurvivalBot
 						{
 
 							var jumpDefinition = BombSurvival.JumpDictionary[CurrentMovementTag];
-							var direction = MovingLeft ? Vector3.Left : Vector3.Right;
+							var direction = MovingLeft ? Vector3.Backward : Vector3.Forward;
 							var horizontalSpeed = jumpDefinition.HorizontalSpeed;
 							var verticalSpeed = Math.Min( jumpDefinition.VerticalSpeed, Player.JumpHeight * 1.35f );
-							var scaledDirection = (direction * horizontalSpeed + Vector3.Up * jumpDefinition.VerticalSpeed).Normal.WithZ( 0 );
-
-							// TODO: Currently walking in a direction and jumping keeps the walking speed, find a way to negate it and only keep the horizonal velocity of the jump
+							var scaledDirection = (direction * horizontalSpeed + Vector3.Up * ( jumpDefinition.VerticalSpeed - verticalSpeed)).Normal.WithZ( 0 );
+							var wishVelocity = (scaledDirection * horizontalSpeed).WithZ( verticalSpeed ) * 1.1f;
+							var middleDirection = (direction + wishVelocity.Normal).Normal;
 
 							Pawn.GroundEntity = null;
-							Pawn.Velocity = (scaledDirection * horizontalSpeed).WithZ( verticalSpeed ) * 1.1f;
+							Pawn.Velocity = wishVelocity;
 							Pawn.SetAnimParameter( "jump", true );
 
-							if ( jumpDefinition.VerticalSpeed > verticalSpeed )
+							if ( jumpDefinition.VerticalSpeed > verticalSpeed && !Pawn.IsKnockedOut )
 							{
-								await GameTask.Delay( 300 );
-								//Pawn.KnockOut( Pawn.Velocity.Normal, Player.DiveStrength, 1f );
+								await GameTask.Delay( 500 );
+								Pawn.KnockOut( Pawn.Position - middleDirection * 10f, Player.DiveStrength, 1f );
 							}
 						}
 					}
