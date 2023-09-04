@@ -18,11 +18,11 @@ public partial class BombSurvivalBot
 		}
 	}
 	Grid currentGrid => BombSurvival.MainGrid;
-	public AStarNode CurrentPathNode => CurrentPath.Nodes[0] ?? null; // The latest cell crossed in the path
-	public AStarNode LastPathNode => CurrentPath.Nodes[^1] ?? null; // The final cell in the path
-	public AStarNode NextPathNode => CurrentPath.Nodes[Math.Min( 1, CurrentPath.Count - 1)] ?? null;
-	public string NextMovementTag => NextPathNode.MovementTag ?? string.Empty;
-	public string CurrentMovementTag => CurrentPathNode.MovementTag ?? string.Empty;
+	public AStarNode CurrentPathNode => IsFollowingPath ? CurrentPath.Nodes[0] ?? null : null; // The latest cell crossed in the path
+	public AStarNode LastPathNode => IsFollowingPath ? CurrentPath.Nodes[^1] ?? null : null; // The final cell in the path
+	public AStarNode NextPathNode => IsFollowingPath ? CurrentPath.Nodes[Math.Min( 1, CurrentPath.Count - 1)] ?? null : null;
+	public string NextMovementTag => IsFollowingPath ? NextPathNode?.MovementTag ?? string.Empty : null;
+	public string CurrentMovementTag => IsFollowingPath ? CurrentPathNode?.MovementTag ?? string.Empty : null;
 	public bool IsFollowingPath => CurrentPath.Count > 0; // Is the entity following a path
 	public bool IsFollowingSomeone => IsFollowingPath && TargetEntity != null; // Is the entity following a moving target
 
@@ -40,7 +40,7 @@ public partial class BombSurvivalBot
 	float minimumDistanceUntilNext => currentGrid.CellSize / 2f;
 	Vector3 differenceBetweenNext => Pawn.Position - NextPathNode.EndPosition;
 	bool withinDistanceForNext => differenceBetweenNext.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenNext.z ) <= currentGrid.StepSize;
-	Vector3 differenceBetweenCurrent => Pawn.Position - CurrentPathNode.EndPosition;
+	Vector3 differenceBetweenCurrent => CurrentPathNode != null ? Pawn.Position - CurrentPathNode.EndPosition : Vector3.Zero;
 	bool withinDistanceForCurrent => differenceBetweenCurrent.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenCurrent.z ) <= currentGrid.StepSize;
 
 	public bool MovingLeft => NextPathNode.EndPosition.x - Pawn.Position.x < 0f;
@@ -54,8 +54,14 @@ public partial class BombSurvivalBot
 
 		if ( nextRetraceCheck )
 		{
-			if ( TargetCell != LastPathNode.Parent.Current && TargetCell != LastPathNode.Current || differenceBetweenCurrent.Length >= minimumDistanceUntilNext * 2f && Pawn.GroundEntity != null )
-				if ( Target != Vector3.Zero )
+			if ( IsFollowingPath )
+			{
+				if ( TargetCell != LastPathNode.Parent.Current && TargetCell != LastPathNode.Current || differenceBetweenCurrent.Length >= minimumDistanceUntilNext * 2f && Pawn.GroundEntity != null )
+					if ( Target != Vector3.Zero )
+						await NavigateToTarget();
+			}
+			else
+				if ( TargetCell != CurrentCell )
 					await NavigateToTarget();
 
 			nextRetraceCheck = pathRetraceFrequency;
