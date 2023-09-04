@@ -60,6 +60,28 @@
 			{
 				key = 
 				{
+					m_id = 719849803
+				}
+				value = 
+				{
+					_class = "CSequenceAnimNode"
+					m_sName = "pause"
+					m_vecPosition = [ -608.0, 288.0 ]
+					m_nNodeID = 
+					{
+						m_id = 719849803
+					}
+					m_networkMode = "ServerAuthoritative"
+					m_sNote = ""
+					m_tagSpans = [  ]
+					m_sequenceName = "pause"
+					m_playbackSpeed = 1.0
+					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 924195002
 				}
 				value = 
@@ -167,6 +189,22 @@
 								m_nodeID = 
 								{
 									m_id = 1185413168
+								}
+								m_outputID = 
+								{
+									m_id = 4294967295
+								}
+							}
+							m_name = ""
+							m_weight = 1.0
+							m_blendTime = 0.2
+						},
+						{
+							m_inputConnection = 
+							{
+								m_nodeID = 
+								{
+									m_id = 719849803
 								}
 								m_outputID = 
 								{
