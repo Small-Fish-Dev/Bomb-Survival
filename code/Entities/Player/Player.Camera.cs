@@ -23,7 +23,8 @@ public partial class Player
 
 		if ( nearbyPlayers.Count > 0 )
 		{
-			Vector3 othersCenter = nearbyPlayers.Aggregate( Vector3.Zero, ( sum, player ) => sum + player.Position ) / nearbyPlayers.Count;
+			Vector3 othersCenter = nearbyPlayers.Aggregate( Vector3.Zero, ( sum, player ) => sum + player.Position ) /
+			                       nearbyPlayers.Count;
 			maxDistance = nearbyPlayers.Max( player => Vector3.DistanceBetween( centerPoint, player.Position ) );
 
 			// Adjust centerPoint to be a weighted average between player's position (70% weight) and othersCenter (30% weight)
@@ -35,7 +36,7 @@ public partial class Player
 
 		if ( lastMoved > 2.5f )
 		{
-			centerPoint = this.Position;  // focus on the current player
+			centerPoint = this.Position; // focus on the current player
 			cameraDistance = cameraDistance.LerpTo( 100f, Time.Delta * lastMoved );
 			IsZoomed = true;
 		}
@@ -45,12 +46,16 @@ public partial class Player
 			IsZoomed = false;
 		}
 
+		if ( Camera.Position == Vector3.Zero && BombSurvival.Instance.CurrentState is PodState )
+			Camera.Position = centerPoint + Vector3.Right * cameraDistance + Vector3.Up * 64f;
+
 		if ( Camera.Position == Vector3.Zero )
 			Camera.Position = Checkpoint.FirstPosition();
 		else
 		{
 			var wishPosition = centerPoint;
-			Camera.Position = Vector3.Lerp( Camera.Position, wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
+			Camera.Position = Vector3.Lerp( Camera.Position,
+				wishPosition + Vector3.Right * cameraDistance + Vector3.Up * 64f, Time.Delta * 5f );
 		}
 
 		Camera.Rotation = Rotation.FromYaw( 90f );
