@@ -3,11 +3,13 @@
 namespace BombSurvival;
 
 public abstract partial class GameState : Entity // BaseNetworkable sucks
-{ 
+{
+	public GameState() => Transmit = TransmitType.Always;
 	[Net] public TimeSince SinceStarted { get; set; } = 0f;
 
 	[GameEvent.Tick.Server]
 	public virtual void Compute() { }
+
 	public virtual void Start() { }
 	public virtual void End() { }
 }
@@ -27,7 +29,6 @@ public partial class BombSurvival
 
 	public void OnCurrentStateChanged()
 	{
-
 	}
 
 	[GameEvent.Entity.PostSpawn]
