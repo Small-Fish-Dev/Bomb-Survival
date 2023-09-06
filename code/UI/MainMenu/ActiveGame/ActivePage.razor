@@ -2,8 +2,8 @@
 
 @if ( !Game.InGame )
 {
-    <div>No game. Error. We shouldn't be here.</div>
-    return;
+	<div>No game. Error. We shouldn't be here.</div>
+	return;
 }
 
 <root>
@@ -12,12 +12,12 @@
 		<div class="text">Would you like to return to your pod or to exit Bomb Survival?</div>
 
 		<div class="buttons">
-			<div class="mybutton main" onclick=@(() => Game.Menu.Close())>
+			<div class="mybutton main" onclick=@( () => Game.Menu.Close() )>
 				Exit Game
 			</div>
 
 			@*TODO: Make it return to the pod instead.*@
-			<div class="mybutton" onclick=@(() => ReturnToGame())>
+			<div class="mybutton" onclick=@( () => ReturnToGame() )>
 				Return to Pod
 			</div>
 		</div>
@@ -66,7 +66,7 @@
 				margin-left: 50px;
 				right: 25px;
 				background-image-tint: rgba(white, 0.8);
-				transition: all 0.4s ease-in-out;
+				transition: all 0.2s ease-in-out;
 
 				&.main {
 					background-image: url(ui/menu/rectangle_long_full.png);
@@ -83,21 +83,21 @@
 
 @code
 {
-    public void ReturnToGame()
-    {
-        Game.Menu.HideMenu();
-    }
+	public void ReturnToGame()
+	{
+		Game.Menu.HideMenu();
+	}
 
-    public override void Tick()
-    {
-        base.Tick();
+	public override void Tick()
+	{
+		base.Tick();
 
-        if (!IsVisible)
-            return;
+		if ( !IsVisible )
+			return;
 
-        if ( !Game.InGame )
-        {
-            this.Navigate( "/" );
-        }
-    }
+		if ( !Game.InGame )
+		{
+			this.Navigate( "/" );
+		}
+	}
 }
