@@ -31,4 +31,6 @@ public partial class Player : AnimatedEntity
 
 		Sandbox.Services.Stats.SetValue( Game.LocalClient, "house-points", player.Score );
 	}
+
+	public void ResetScore() => AssignPoints( -Score );
 }

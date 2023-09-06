@@ -15,7 +15,11 @@ public partial class PlayingState : GameState
 		BombSurvival.GenerateGrid().Wait();
 
 		foreach ( var player in Entity.All.OfType<Player>() )
+		{
 			player.Respawn();
+			player.ResetScore();
+			player.ResetLives();
+		}
 	}
 
 	public override void Compute()

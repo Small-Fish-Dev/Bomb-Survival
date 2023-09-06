@@ -152,7 +152,7 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn()
 	{
-		if ( BombSurvival.Instance.CurrentState is PlayingState || BombSurvival.Instance.CurrentState is ScoringState )
+		if ( BombSurvival.Instance.CurrentState is PlayingState || BombSurvival.Instance.CurrentState is ScoringState || BombSurvival.Instance.CurrentState is StartingState )
 			Position = Checkpoint.FirstPosition();
 		else
 			Position = Entity.All.OfType<SpawnPoint>()
@@ -175,6 +175,8 @@ public partial class Player : AnimatedEntity
 
 		respawnToClient();
 	}
+
+	public void ResetLives() => LivesLeft = 4;
 
 	public static Player GetLongestLiving()
 	{

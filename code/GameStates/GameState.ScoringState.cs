@@ -14,4 +14,12 @@ public partial class ScoringState : GameState
 		if ( Game.IsServer )
 			Player.SendScores();
 	}
+
+	public override void Compute()
+	{
+		base.Compute();
+
+		if ( SinceStarted >= 10f )
+			BombSurvival.SetState<PlayingState>();
+	}
 }
