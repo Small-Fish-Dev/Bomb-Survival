@@ -30,7 +30,8 @@ public partial class BombSurvivalBot
 	TimeUntil nextRetraceCheck = 0f;
 	public CancellationTokenSource CurrentPathToken = new();
 	AStarPathBuilder pathBuilder => new AStarPathBuilder( currentGrid )
-		.WithPathCreator( Pawn );
+		.WithPathCreator( Pawn )
+		.WithPartialEnabled();
 
 	public Entity TargetEntity = null;
 	public Vector3 TargetPosition = Vector3.Zero;
@@ -87,23 +88,31 @@ public partial class BombSurvivalBot
 				{
 					if ( Pawn.GroundEntity != null )
 					{
-						if ( BombSurvival.JumpDictionary.ContainsKey( CurrentMovementTag ) )
+						if ( CurrentMovementTag != null && BombSurvival.JumpDictionary.ContainsKey( CurrentMovementTag ) )
 						{
 
 							var jumpDefinition = BombSurvival.JumpDictionary[CurrentMovementTag];
 							var direction = MovingLeft ? Vector3.Backward : Vector3.Forward;
-							var horizontalSpeed = jumpDefinition.HorizontalSpeed;
+							var horizontalSpeed = Math.Min( jumpDefinition.HorizontalSpeed, Player.BaseWalkSpeed );
 							var verticalSpeed = Math.Min( jumpDefinition.VerticalSpeed, Player.JumpHeight * 1.35f );
-							var scaledDirection = (direction * horizontalSpeed + Vector3.Up * ( jumpDefinition.VerticalSpeed - verticalSpeed)).Normal.WithZ( 0 );
-							var wishVelocity = (scaledDirection * horizontalSpeed).WithZ( verticalSpeed ) * 1.1f;
+							var wishVelocity = (direction * horizontalSpeed).WithZ( verticalSpeed ) * 1.1f;
 							var middleDirection = (direction + wishVelocity.Normal).Normal;
 
 							Pawn.GroundEntity = null;
-							Pawn.Velocity = wishVelocity;
 							Pawn.SetAnimParameter( "jump", true );
+
+							if ( jumpDefinition.HorizontalSpeed > horizontalSpeed && !Pawn.IsKnockedOut )
+							{
+								Pawn.Velocity = wishVelocity;
+
+								await GameTask.Delay( 700 );
+								Pawn.KnockOut( Pawn.Position - middleDirection * 10f + Vector3.Up * 10f, Player.DiveStrength * 1.1f, 1f );
+							}
 
 							if ( jumpDefinition.VerticalSpeed > verticalSpeed && !Pawn.IsKnockedOut )
 							{
+								Pawn.Velocity = Vector3.Up * verticalSpeed;
+
 								await GameTask.Delay( 500 );
 								Pawn.KnockOut( Pawn.Position - middleDirection * 10f, Player.DiveStrength, 1f );
 							}
