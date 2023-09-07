@@ -10,7 +10,7 @@ public abstract partial class BotBehaviour
 	public virtual void Start() { }
 	public virtual void End() { }
 	public virtual void OnPunch( Player puncher ) { }
-	public virtual void OnKnockout( Entity source ) { }
+	public virtual void OnKnockout() { }
 	public virtual void OnGrab( Player grabber ) { }
 	public virtual void OnRespawn() { }
 }

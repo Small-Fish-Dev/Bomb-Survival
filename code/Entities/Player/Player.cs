@@ -29,6 +29,7 @@ public partial class Player : AnimatedEntity
 	[Net, Local] public int LivesLeft { get; private set; } = 4;
 	[Net] public TimeSince LastRespawn { get; private set; } = 0f;
 	public float CrouchLevel { get; set; } = 1f;
+	public BombSurvivalBot Bot => Client.IsBot ? BombSurvivalBot.All.OfType<BombSurvivalBot>().Where( x => x.Pawn == this ).FirstOrDefault() : null;
 
 	[ClientInput] public Vector3 InputDirection { get; set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
@@ -172,6 +173,9 @@ public partial class Player : AnimatedEntity
 			PlaceCollider();
 			Collider.EnableAllCollisions = true;
 		}
+
+		if ( Bot != null )
+			Bot.CurrentBehaviour.OnRespawn();
 
 		respawnToClient();
 	}

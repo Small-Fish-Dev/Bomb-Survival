@@ -36,13 +36,15 @@ public partial class Player : AnimatedEntity
 		IsKnockedOut = true;
 		knockedOutTimer = amount;
 
-
 		if ( Game.IsServer )
 		{
 			var direction = ((CollisionTop - sourcePosition).WithY( 0 ).Normal + Vector3.Up * 0.5f).Normal;
 			Velocity = direction * strength;
 
 			Collider.EnableSolidCollisions = false;
+
+			if ( Bot != null )
+				Bot.CurrentBehaviour.OnKnockout();
 		}
 
 		Release();
@@ -97,6 +99,9 @@ public partial class Player : AnimatedEntity
 					AssignPoints( -PunchCost );
 					player.AssignPoints( PunchCost );
 				}
+
+				if ( player.Bot != null )
+					player.Bot.CurrentBehaviour.OnPunch( this );
 			}
 			else
 			{
