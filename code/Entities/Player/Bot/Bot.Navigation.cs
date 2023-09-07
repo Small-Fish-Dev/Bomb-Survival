@@ -116,6 +116,9 @@ public partial class BombSurvivalBot
 								await GameTask.Delay( 500 );
 								Pawn.KnockOut( Pawn.Position - middleDirection * 10f, Player.DiveStrength, 1f );
 							}
+
+							if ( !Pawn.IsKnockedOut )
+								Pawn.Velocity = wishVelocity;
 						}
 					}
 				}
