@@ -16,12 +16,12 @@ public partial class PlayingState : GameState
 
 		foreach ( var player in Entity.All.OfType<Player>() )
 		{
+			if ( player.Bot != null )
+				player.Bot.SetBehaviour<FollowingBehaviour>();
+
 			player.Respawn();
 			player.ResetScore();
 			player.ResetLives();
-
-			if ( player.Bot != null )
-				player.Bot.SetBehaviour<FollowingBehaviour>();
 		}
 	}
 
