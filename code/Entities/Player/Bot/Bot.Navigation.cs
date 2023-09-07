@@ -51,8 +51,6 @@ public partial class BombSurvivalBot
 		if ( Game.IsClient ) return;
 		if ( currentGrid == null ) return;
 
-		TargetEntity = Game.Clients.First().Pawn as Entity;
-
 		if ( nextRetraceCheck )
 		{
 			if ( IsFollowingPath )

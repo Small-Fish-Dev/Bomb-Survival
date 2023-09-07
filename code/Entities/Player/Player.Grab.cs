@@ -36,7 +36,7 @@ public partial class Player : AnimatedEntity
 				player.Grabber = this;
 
 				if ( player.Bot != null )
-					player.Bot.CurrentBehaviour.OnGrab( this );
+					player.Bot.CurrentBehaviour?.OnGrab( this );
 			}
 			else
 			{

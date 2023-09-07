@@ -19,6 +19,9 @@ public partial class PlayingState : GameState
 			player.Respawn();
 			player.ResetScore();
 			player.ResetLives();
+
+			if ( player.Bot != null )
+				player.Bot.SetBehaviour<FollowingBehaviour>();
 		}
 	}
 

@@ -175,7 +175,7 @@ public partial class Player : AnimatedEntity
 		}
 
 		if ( Bot != null )
-			Bot.CurrentBehaviour.OnRespawn();
+			Bot.CurrentBehaviour?.OnRespawn();
 
 		respawnToClient();
 	}
