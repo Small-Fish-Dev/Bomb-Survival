@@ -4,7 +4,7 @@ namespace BombSurvival;
 
 public partial class BombSurvivalBot : Bot
 {
-	Random RNG;
+	public Random RNG;
 	public Player Pawn => Client.Pawn as Player;
 
 	public BombSurvivalBot()
@@ -21,19 +21,6 @@ public partial class BombSurvivalBot : Bot
 			Pawn.InputDirection = MovingLeft ? Vector3.Left : Vector3.Right;
 		else
 			Pawn.InputDirection = Vector3.Zero;
-
-		var closestPlayer = Entity.All.OfType<Player>()
-			.Where( x => x != Pawn )
-			.OrderBy( x => x.Position.Distance( Pawn.Position ) )
-			.FirstOrDefault();
-
-		if ( closestPlayer != null )
-		{
-			//if ( closestPlayer.Position.Distance( Pawn.Position ) <= 50f )
-			//	Pawn.Punch();
-
-			Pawn.InputRotation = Rotation.LookAt( (closestPlayer.Position - Pawn.Position).Normal, Vector3.Right );
-		}
 	}
 
 	public override void Tick()
