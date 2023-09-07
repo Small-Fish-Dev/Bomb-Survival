@@ -49,6 +49,7 @@ public partial class BombSurvivalBot : Bot
 
 	public void Compute()
 	{
+		CurrentBehaviour?.Compute();
 	}
 
 	[ConCmd.Admin( "bs_bot_add" )]

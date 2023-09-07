@@ -76,8 +76,8 @@ public partial class BombSurvivalBot
 				DebugOverlay.Text( CurrentPath.Nodes[i - 1].MovementTag, CurrentPath.Nodes[i - 1].EndPosition, Time.Delta, 5000f );
 			}*/
 
-			foreach ( var cell in CurrentPath.Nodes )
-				cell.Current.Draw( 0.1f );
+			//foreach ( var cell in CurrentPath.Nodes )
+			//	cell.Current.Draw( 0.1f );
 
 			if ( withinDistanceForNext )
 				CurrentPath.Nodes.RemoveAt( 0 );
