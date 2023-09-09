@@ -66,7 +66,20 @@ public abstract partial class BotBehaviour
 
 public partial class WanderingBehaviour : BotBehaviour
 {
+	TimeUntil nextTargetPosition = 0f;
 
+	public override void Compute()
+	{
+		base.Compute();
+
+		if ( nextTargetPosition )
+		{
+			var randomCell = Bot.RNG.FromList( BombSurvival.MainGrid.AllCells.ToList() );
+			Bot.TargetPosition = randomCell.Position;
+
+			nextTargetPosition = Bot.RNG.Float( 5f, 10f );
+		}
+	}
 }
 
 public partial class FollowingBehaviour : BotBehaviour
