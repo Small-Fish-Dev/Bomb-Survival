@@ -14,7 +14,7 @@ Layer0
 
 	//---- Color ----
 	g_flModelTintAmount "1.000"
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_vColorTint "[0.890196 0.725490 0.541176 1.000000]"
 	TextureColor "materials/cardboard_hotspot/cardboard_hotspot_color_menu.png"
 
 	//---- Fade ----
