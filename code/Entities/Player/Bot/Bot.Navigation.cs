@@ -39,9 +39,9 @@ public partial class BombSurvivalBot
 	public Cell TargetCell => currentGrid != null ? currentGrid.GetCellInArea( Target, Player.CollisionWidth ) ?? currentGrid.GetNearestCell( Target ) : null;
 	public Cell CurrentCell => currentGrid != null ? currentGrid.GetCellInArea( Pawn.Position, Player.CollisionWidth ) ?? currentGrid.GetNearestCell( Pawn.Position ) : null;
 	float minimumDistanceUntilNext => currentGrid.CellSize / 2f;
-	Vector3 differenceBetweenNext => Pawn.Position - NextPathNode.EndPosition;
+	Vector3 differenceBetweenNext => Pawn.Position.WithY(0) - NextPathNode.EndPosition.WithY( 0 );
 	bool withinDistanceForNext => differenceBetweenNext.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenNext.z ) <= currentGrid.StepSize;
-	Vector3 differenceBetweenCurrent => CurrentPathNode != null ? Pawn.Position - CurrentPathNode.EndPosition : Vector3.Zero;
+	Vector3 differenceBetweenCurrent => CurrentPathNode != null ? Pawn.Position.WithY( 0 ) - CurrentPathNode.EndPosition.WithY( 0 ) : Vector3.Zero;
 	bool withinDistanceForCurrent => differenceBetweenCurrent.Length <= minimumDistanceUntilNext && Math.Abs( differenceBetweenCurrent.z ) <= currentGrid.StepSize;
 
 	public bool MovingLeft => NextPathNode.EndPosition.x - Pawn.Position.x < 0f;

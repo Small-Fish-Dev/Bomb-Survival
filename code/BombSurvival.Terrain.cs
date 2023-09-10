@@ -83,7 +83,7 @@ public partial class BombSurvival
 					if ( !clearanceTrace.StartedSolid && !clearanceTrace.Hit )
 					{
 						var bomb = new InertBomb();
-						bomb.Position = spawnPos.WithY( -5f );
+						bomb.Position = spawnPos;
 						bomb.Scale = 0.75f;
 						bomb.Rotation = Rotation.FromYaw( -90f );
 						bomb.PhysicsBody.Sleeping = true;

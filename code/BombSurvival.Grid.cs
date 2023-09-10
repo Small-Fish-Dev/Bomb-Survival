@@ -10,7 +10,7 @@ public partial class BombSurvival
 	public static Grid CachedGrid { get; private set; }
 	public static float WorldWidth => 2048f;
 	public static float WorldHeight => 2048f;
-	public static BBox WorldBox => new BBox( new Vector3( -WorldWidth / 2f, -25f, -WorldWidth / 2f + 10f), new Vector3( WorldWidth / 2f, 5f, WorldHeight / 2f ) ); // Shift the grid towards the camera so it doesn't generate cells inside of terrain since it will collide with the walls
+	public static BBox WorldBox => new BBox( new Vector3( -WorldWidth / 2f, -30f, -WorldWidth / 2f + 10f), new Vector3( WorldWidth / 2f, 0f, WorldHeight / 2f ) ); // Shift the grid towards the camera so it doesn't generate cells inside of terrain since it will collide with the walls
 	public static Dictionary<string, JumpDefinition> JumpDictionary => new Dictionary<string, JumpDefinition>
 	{
 		{ "longJump", new JumpDefinition("longJump", Player.BaseWalkSpeed, Player.JumpHeight * 1.35f, 2, maxPerCell: 1) },
@@ -32,7 +32,7 @@ public partial class BombSurvival
 			.WithStaticOnly( false )
 			.WithCellSize( Player.CollisionWidth )
 			.WithHeightClearance( Player.CollisionHeight )
-			.WithWidthClearance( Player.CollisionWidth + 15f )
+			.WithWidthClearance( Player.CollisionWidth )
 			.WithEdgeNeighbourCount( 2 )
 			.WithStepSize( Player.StepSize )
 			.WithStandableAngle( Player.MaxWalkableAngle )
