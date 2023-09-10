@@ -111,7 +111,7 @@ public partial class Player
 
 		moveHelper.Trace = moveHelper.Trace
 			.Size( CollisionBox.Mins, CollisionBox.Maxs )
-			.WithoutTags( "puppet", "collider" )
+			.WithoutTags( "puppet", "collider", "player" )
 			.Ignore( this );
 
 		if ( GroundEntity == null )

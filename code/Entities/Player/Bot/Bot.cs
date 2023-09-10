@@ -43,6 +43,8 @@ public partial class BombSurvivalBot : Bot
 	internal static void SpawnCustomBot()
 	{
 		Sandbox.Game.AssertServer();
-		new BombSurvivalBot();
+		var bot = new BombSurvivalBot();
+
+		bot.SetBehaviour<WanderingBehaviour>();
 	}
 }

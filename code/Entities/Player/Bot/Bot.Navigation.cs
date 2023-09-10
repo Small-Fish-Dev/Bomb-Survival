@@ -56,8 +56,7 @@ public partial class BombSurvivalBot
 			if ( IsFollowingPath )
 			{
 				if ( TargetCell != LastPathNode.Parent.Current && TargetCell != LastPathNode.Current || differenceBetweenCurrent.Length >= minimumDistanceUntilNext * 2f && Pawn.GroundEntity != null )
-					if ( Target != Vector3.Zero )
-						await NavigateToTarget();
+					await NavigateToTarget();
 			}
 			else
 				if ( TargetCell != CurrentCell )
@@ -74,8 +73,8 @@ public partial class BombSurvivalBot
 				DebugOverlay.Text( CurrentPath.Nodes[i - 1].MovementTag, CurrentPath.Nodes[i - 1].EndPosition, Time.Delta, 5000f );
 			}*/
 
-			foreach ( var cell in CurrentPath.Nodes )
-				cell.Current.Draw( 0.1f );
+			/*foreach ( var cell in CurrentPath.Nodes )
+				cell.Current.Draw( 0.1f );*/
 
 			if ( withinDistanceForNext )
 				CurrentPath.Nodes.RemoveAt( 0 );
@@ -143,6 +142,8 @@ public partial class BombSurvivalBot
 
 		/*foreach ( var node  in computedPath.Nodes )
 			node.Current.Draw( 2f, false );*/
+
+		TargetPosition = computedPath.Nodes.Last().EndPosition;
 
 		CurrentPath = computedPath;
 	}
