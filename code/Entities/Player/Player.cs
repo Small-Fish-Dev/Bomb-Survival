@@ -115,9 +115,15 @@ public partial class Player : AnimatedEntity
 			SimulateKnockedOut();
 
 		var capsule = new Capsule( Vector3.Up * CollisionWidth, Vector3.Up * (CollisionHeight + CollisionWidth / 4f), CollisionWidth / 2f );
+
+		var noTags = new string[4] { "puppet", "collider", "bot", "" };
+
+		if ( Client.IsBot )
+			noTags[3] = "player";
+
 		var crouchTrace = Trace.Capsule( capsule, Position, CollisionTop )
 			.Ignore( this )
-			.WithoutTags( "puppet", "collider" )
+			.WithoutTags( noTags )
 			.Run();
 
 		CrouchLevel = crouchTrace.Distance / (CollisionHeight * Scale / 1.5f);
@@ -146,6 +152,7 @@ public partial class Player : AnimatedEntity
 		Tags.Add( "player" );
 
 		EnableDrawing = false;
+		EnableTouch = true;
 		Transmit = TransmitType.Always;
 
 		SpawnCollider();
@@ -178,6 +185,27 @@ public partial class Player : AnimatedEntity
 			Bot.CurrentBehaviour?.OnRespawn();
 
 		respawnToClient();
+	}
+
+	internal List<Player> touchingPlayers = new();
+
+	public override void StartTouch( Entity other )
+	{
+		base.Touch( other );
+
+		if ( !Game.IsServer ) return;
+		if ( other is Player toucher )
+			touchingPlayers.Add( toucher );
+	}
+
+	public override void EndTouch( Entity other )
+	{
+		base.Touch( other );
+
+		if ( !Game.IsServer ) return;
+
+		if ( other is Player toucher && touchingPlayers.Contains( toucher ) )
+			touchingPlayers.Remove( toucher );
 	}
 
 	public void ResetLives() => LivesLeft = 4;

@@ -1,4 +1,5 @@
 ﻿using Sandbox.Utility;
+using System.Diagnostics;
 
 namespace BombSurvival;
 
@@ -26,6 +27,12 @@ public partial class BombSurvivalBot : Bot
 	public override void Tick()
 	{
 		if ( !Pawn.IsValid() ) return;
+
+		if ( Pawn.Tags.Has( "player" ) )
+		{
+			Pawn.Tags.Remove( "player" );
+			Pawn.Tags.Add( "bot" );
+		}
 
 		if ( BombSurvival.Instance.CurrentState is PlayingState )
 			ComputeNavigation();

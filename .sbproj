@@ -126,7 +126,8 @@
         "player": "Collide",
         "collider": "Collide",
         "bubble": "Collide",
-        "nocollide": "Ignore"
+        "nocollide": "Ignore",
+        "bot": "Collide"
       },
       "Pairs": [
         {
@@ -206,6 +207,26 @@
         {
           "a": "solid",
           "b": "puppet"
+        },
+        {
+          "a": "bot",
+          "b": "bot",
+          "r": "Trigger"
+        },
+        {
+          "a": "collider",
+          "b": "bot",
+          "r": "Collide"
+        },
+        {
+          "a": "player",
+          "b": "bot",
+          "r": "Trigger"
+        },
+        {
+          "a": "puppet",
+          "b": "bot",
+          "r": "Ignore"
         }
       ]
     },

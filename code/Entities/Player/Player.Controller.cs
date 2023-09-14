@@ -106,12 +106,30 @@ public partial class Player
 			Velocity /= 1 + Time.Delta * strength / 10f;
 		}
 
+		foreach ( var toucher in touchingPlayers )
+		{
+			if ( toucher is not { IsValid: true } )
+				continue;
+
+			var direction = (Position - toucher.Position).WithZ( 0 ).Normal;
+			var distance = Position.DistanceSquared( toucher.Position );
+			var maxDistance = 500f;
+
+			var pushOffset = direction * Math.Max( maxDistance - distance, 0f ) * Time.Delta * 3f;
+			Velocity += pushOffset;
+		}
+
 		var moveHelper = new MoveHelper( Position, Velocity );
 		moveHelper.MaxStandableAngle = MaxWalkableAngle;
 
+		var noTags = new string[4] { "puppet", "collider", "bot", "" };
+
+		if ( Client.IsBot )
+			noTags[3] = "player";
+
 		moveHelper.Trace = moveHelper.Trace
 			.Size( CollisionBox.Mins, CollisionBox.Maxs )
-			.WithoutTags( "puppet", "collider", "player" )
+			.WithoutTags( noTags )
 			.Ignore( this );
 
 		if ( GroundEntity == null )
