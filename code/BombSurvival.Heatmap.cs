@@ -19,8 +19,6 @@ public partial class BombSurvival
 		var maximumX = (int)Math.Ceiling( WorldWidth / HeatBlockSize );
 		var maximumY = (int)Math.Ceiling( WorldHeight / HeatBlockSize );
 
-		var allBombs = Entity.All.OfType<Bomb>();
-
 		for ( int x = -maximumX / 2; x <= maximumX / 2; x++ )
 			for ( int y = -maximumY / 2; y <= maximumY / 2; y++ )
 				HeatMap.Add( new IntVector2( x, y ), 0f );
