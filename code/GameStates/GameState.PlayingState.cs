@@ -11,6 +11,8 @@ public partial class PlayingState : GameState
 	{
 		base.Start();
 
+		BombSurvival.InitializeHeatMap();
+
 		BombSurvivalBot.CancelAllTokens();
 		BombSurvival.GenerateGrid().Wait();
 
