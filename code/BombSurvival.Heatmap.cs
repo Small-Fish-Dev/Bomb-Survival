@@ -49,13 +49,13 @@ public partial class BombSurvival
 
 					foreach ( var bomb in allBombs )
 						if ( bbox.Contains( bomb.Position ) )
-							currentHeat++;
+							currentHeat += bomb.ExplosionSize / 150f;
 
 					updateHeat( new IntVector2( x, y ), currentHeat );
 				}
 
 			nextHeatUpdate = HeatUpdateFrequency;
-			iterateHeat( 2 );
+			iterateHeat( 1 );
 		}
 	}
 
@@ -74,7 +74,7 @@ public partial class BombSurvival
 
 			foreach ( var tile in validTiles )
 			{
-				var additionalValue = tile.Value / 2f - 0.3f;
+				var additionalValue = tile.Value / 2f - 0.2f;
 
 				if ( additionalValue > 0 )
 					for ( int x = -1; x <= 1; x++ )
