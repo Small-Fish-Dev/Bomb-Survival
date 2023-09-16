@@ -14,7 +14,7 @@ public partial class BombSurvival : GameManager
 		foreach ( var entity in AxisLockedEntities.Where( entity => entity.PhysicsBody.IsValid() )
 			         .Where( entity => !entity.PhysicsBody.Sleeping ) )
 		{
-			entity.Position = entity.Position;
+			entity.Position = entity.Position.WithY( 0f );
 			entity.Rotation = Rotation.FromAxis( Vector3.Right, entity.Rotation.Roll() )
 				.RotateAroundAxis( Vector3.Up, -90f );
 			entity.AngularVelocity = entity.AngularVelocity.WithRoll( 0 );
