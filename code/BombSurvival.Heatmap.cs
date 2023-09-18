@@ -55,11 +55,11 @@ public partial class BombSurvival
 				}
 
 			nextHeatUpdate = HeatUpdateFrequency;
-			iterateHeat( 1 );
+			iterateHeat();
 		}
 	}
 
-	void iterateHeat( int iterations = 1 )
+	void iterateHeat( int iterations = 5, float exponentialDecay = 0.6f, float flatDecay = 0.1f )
 	{
 		if ( !initialized ) return;
 
@@ -74,7 +74,7 @@ public partial class BombSurvival
 
 			foreach ( var tile in validTiles )
 			{
-				var additionalValue = tile.Value / 2f - 0.2f;
+				var additionalValue = exponentialDecay * MathF.Pow( exponentialDecay, tile.Value ) - flatDecay;
 
 				if ( additionalValue > 0 )
 					for ( int x = -1; x <= 1; x++ )
@@ -113,7 +113,7 @@ public partial class BombSurvival
 			var color = new ColorHsv( 45f - heatTile.Value * 5f, 1f, 1f, heatTile.Value > 0 ? 1f : 0f );
 			
 			DebugOverlay.Box( position - HeatBlockSize / 2f, position + HeatBlockSize / 2f, color );
-			//DebugOverlay.Text( MathF.Round( heatTile.Value, 1 ).ToString(), position + new Vector3( 0f, -HeatBlockSize / 2f, 0f ), time, 3000f );
+			DebugOverlay.Text( MathF.Round( heatTile.Value, 1 ).ToString(), position + new Vector3( 0f, -HeatBlockSize / 2f, 0f ) );
 		}
 	}
 }
