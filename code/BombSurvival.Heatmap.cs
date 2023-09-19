@@ -113,7 +113,7 @@ public partial class BombSurvival
 			var color = new ColorHsv( 45f - heatTile.Value * 5f, 1f, 1f, heatTile.Value > 0 ? 1f : 0f );
 			
 			DebugOverlay.Box( position - HeatBlockSize / 2f, position + HeatBlockSize / 2f, color );
-			DebugOverlay.Text( MathF.Round( heatTile.Value, 1 ).ToString(), position + new Vector3( 0f, -HeatBlockSize / 2f, 0f ) );
+			DebugOverlay.Text( MathF.Round( heatTile.Value, 1 ).ToString(), position + new Vector3( 0f, -HeatBlockSize / 2f, 0f ), maxDistance: 800f );
 		}
 	}
 }

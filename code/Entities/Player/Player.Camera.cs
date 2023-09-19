@@ -50,7 +50,7 @@ public partial class Player
 			Camera.Position = centerPoint + Vector3.Right * cameraDistance + Vector3.Up * 64f;
 
 		if ( Camera.Position == Vector3.Zero )
-			Camera.Position = Checkpoint.FirstPosition();
+			Camera.Position = Checkpoint.First().RespawnPosition;
 		else
 		{
 			var wishPosition = centerPoint;

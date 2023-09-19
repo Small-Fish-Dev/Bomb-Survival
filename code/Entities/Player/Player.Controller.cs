@@ -124,7 +124,7 @@ public partial class Player
 
 		var noTags = new string[4] { "puppet", "collider", "bot", "" };
 
-		if ( Client.IsBot )
+		if ( Client.IsBot || IsSafe )
 			noTags[3] = "player";
 
 		moveHelper.Trace = moveHelper.Trace

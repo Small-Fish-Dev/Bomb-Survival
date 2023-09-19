@@ -3,13 +3,24 @@ using Sandbox;
 
 namespace BombSurvival;
 
+public enum CheckpointType
+{
+	None,
+	Pod,
+	Scoreboard,
+	Play,
+	Tutorial
+}
+
 [HammerEntity]
 [EditorModel( "models/checkpoint/checkpoint.vmdl" )]
 public partial class Checkpoint : AnimatedEntity
 {
 	public AnimatedEntity ClientModel { get; set; }
-	[Property( Title = "Is Scoreboard Checkpoint" ), Net]
-	public bool IsScoreboardCheckpoint { get; set; } = false;
+	[Property( Title = "Type of checkpoint" ), Net]
+	public CheckpointType Type { get; set; } = CheckpointType.None;
+	public Vector3 RespawnPosition => GetBoneTransform( 1 ).Position;
+	Vector3 lastPosition = Vector3.Zero;
 
 	public override void Spawn()
 	{
@@ -31,35 +42,55 @@ public partial class Checkpoint : AnimatedEntity
 		ClientModel.SetParent( this, true );
 	}
 
-	Vector3 lastPosition = Vector3.Zero;
-
 	[GameEvent.Tick]
 	void compute()
 	{
-		if ( IsScoreboardCheckpoint )
+		if ( Type == CheckpointType.Pod )
+		{
+			CurrentSequence.Time = 0f;
+			EnableDrawing = false;
+
+			if ( ClientModel.IsValid() )
+				ClientModel.EnableDrawing = false;
+		}
+		if ( Type == CheckpointType.Scoreboard )
 			CurrentSequence.Time = ( (float)Math.Sin( (double)Time.Now ) + 1 ) / 4;
-		else
+		if ( Type == CheckpointType.Play )
 			CurrentSequence.Time = Time.Now / 5f % CurrentSequence.Duration;
+		if ( Type == CheckpointType.Tutorial )
+			CurrentSequence.Time = 0.5f;
 
 		if ( Game.IsServer )
 		{
-			var currentPosition = GetBoneTransform( 1 ).Position;
-
 			if ( lastPosition != Vector3.Zero )
-				Velocity = currentPosition - lastPosition;
+				Velocity = RespawnPosition - lastPosition;
 
-			lastPosition = currentPosition;
+			lastPosition = RespawnPosition;
 		}
+	}
+
+	public static Checkpoint First( CheckpointType type )
+	{
+		return Entity.All.OfType<Checkpoint>()
+			.Where( x => x.Type == type )
+			.FirstOrDefault();
 	}
 
 	public static Checkpoint First()
 	{
-		return Entity.All.OfType<Checkpoint>()
-			.Where( x => x.IsScoreboardCheckpoint != (BombSurvival.Instance.CurrentState is PlayingState) )
-			.FirstOrDefault();
-	}
+		var currentState = BombSurvival.Instance.CurrentState;
 
-	public static Vector3 FirstPosition() => First().GetBoneTransform( 1 ).Position;
+		if ( currentState is PodState )
+			return First( CheckpointType.Pod );
+		if ( currentState is ScoringState )
+			return First( CheckpointType.Scoreboard );
+		if ( currentState is PlayingState )
+			return First( CheckpointType.Play );
+		if ( currentState is TutorialState )
+			return First( CheckpointType.Tutorial );
+
+		return First( CheckpointType.Pod );
+	}
 
 	public void SetLives( int lives )
 	{

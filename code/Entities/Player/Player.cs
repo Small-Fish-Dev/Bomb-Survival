@@ -73,7 +73,7 @@ public partial class Player : AnimatedEntity
 		{
 			if ( Game.IsServer )
 			{
-				Position = Checkpoint.FirstPosition();
+				Position = Checkpoint.First().RespawnPosition;
 
 				if ( LivesLeft >= 0 )
 					if ( respawnTimer )
@@ -160,12 +160,7 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn()
 	{
-		if ( BombSurvival.Instance.CurrentState is PlayingState || BombSurvival.Instance.CurrentState is ScoringState || BombSurvival.Instance.CurrentState is StartingState )
-			Position = Checkpoint.FirstPosition();
-		else
-			Position = Entity.All.OfType<SpawnPoint>()
-				.FirstOrDefault().Position;
-
+		Position = Checkpoint.First().RespawnPosition;
 		Velocity = Vector3.Zero;
 
 		EnableAllCollisions = true;
