@@ -23,11 +23,11 @@ public class PodView : Panel
 		sceneWorld = new SceneWorld();
 		new SceneMap( sceneWorld, "maps/pod" );
 
-		scenePanel = Add.ScenePanel( sceneWorld, Vector3.Zero, Rotation.Identity, Game.Preferences.FieldOfView, "scenePanel" );
+		/*scenePanel = Add.ScenePanel( sceneWorld, Vector3.Zero, Rotation.Identity, Game.Preferences.FieldOfView, "scenePanel" );
 		scenePanel.Camera.AmbientLightColor = new Color( 0.3f, 0.3f, 1f ) * 0.1f;
 
 		scenePanel.Camera.Rotation = Rotation.FromPitch( 45f );
-		scenePanel.Camera.Position = scenePanel.Camera.Rotation.Backward * 3000f;
+		scenePanel.Camera.Position = scenePanel.Camera.Rotation.Backward * 3000f;*/
 	}
 
 	public override void Tick()
