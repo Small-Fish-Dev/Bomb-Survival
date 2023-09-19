@@ -3,7 +3,6 @@ global using Sandbox.Sdf;
 global using System;
 global using System.Linq;
 global using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BombSurvival;
 
