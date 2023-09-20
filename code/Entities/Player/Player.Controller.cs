@@ -115,8 +115,8 @@ public partial class Player
 			var distance = Position.DistanceSquared( toucher.Position );
 			var maxDistance = 500f;
 
-			var pushOffset = direction * Math.Max( maxDistance - distance, 0f ) * Time.Delta * 3f;
-			Velocity += pushOffset;
+			var pushOffset = direction * Math.Max( maxDistance - distance, 0f ) * Time.Delta * 1.8f;
+			Velocity += pushOffset.WithY( 0 );
 		}
 
 		var moveHelper = new MoveHelper( Position, Velocity );
