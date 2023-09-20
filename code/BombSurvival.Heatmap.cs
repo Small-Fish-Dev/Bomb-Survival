@@ -26,6 +26,22 @@ public partial class BombSurvival
 		initialized = true;
 	}
 
+	public static IntVector2 GetHeatPosition( Vector3 point )
+	{
+		var localPosition = Foreground?.Transform.PointToLocal( point ) ?? point;
+		return new IntVector2( (int)Math.Round( localPosition.x / HeatBlockSize ), (int)Math.Round( localPosition.y / HeatBlockSize ) );
+	}
+
+	public static float GetHeat( IntVector2 coordinates )
+	{
+		if ( HeatMap.TryGetValue( coordinates, out var heat ) )
+			return heat;
+		else
+			return 0f;
+	}
+
+	public static float GetHeat( Vector3 point ) => GetHeat( GetHeatPosition( point ) );
+
 	[GameEvent.Tick.Server]
 	void calculateHeat()
 	{
