@@ -74,7 +74,7 @@ public partial class WanderingBehaviour : BotBehaviour
 
 		if ( nextTargetPosition )
 		{
-			var randomCell = Bot.RNG.FromList( BombSurvival.MainGrid.AllCells.ToList() );
+			var randomCell = BombSurvival.GetRandomSafeCell( Bot.RNG );
 			Bot.TargetPosition = randomCell.Position;
 
 			nextTargetPosition = Bot.RNG.Float( 6f, 8f );

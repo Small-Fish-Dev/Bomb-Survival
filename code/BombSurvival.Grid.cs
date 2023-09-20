@@ -49,6 +49,8 @@ public partial class BombSurvival
 		CachedGrid?.Delete();
 
 		gridId++;
+
+		Event.Run( "UpdateSafeCells" );
 	}
 
 	[ConCmd.Admin( "bs_grid" )]

@@ -9,6 +9,9 @@ public partial class BombSurvival
 	public const float HeatBlockSize = 100f;
 	public static float HeatUpdateFrequency => 0.5f;
 	public static float HeatTenPercentile = 0f;
+	public static List<GridAStar.Cell> SafeCells { get; private set; } = new();
+
+
 	TimeUntil nextHeatUpdate = 0f;
 	static bool initialized = false;
 
@@ -84,8 +87,21 @@ public partial class BombSurvival
 			var tenthPlace = (int)Math.Round( totalCount / 10f );
 
 			HeatTenPercentile = sortedHeatMap[tenthPlace].Value;
+
+			Event.Run( "UpdateSafeCells" );
 		}
 	}
+
+	[Event("UpdateSafeCells")]
+	public static void UpdateSafeCells()
+	{
+		var allCells = BombSurvival.MainGrid.AllCells;
+
+		SafeCells = allCells.Where( x => GetHeat( x.Position ) <= HeatTenPercentile )
+			.ToList();
+	}
+
+	public static Cell GetRandomSafeCell( Random RNG ) => RNG.FromList( SafeCells );
 
 	void iterateHeat( int iterations = 5, float linearDecay = 8f, float flatDecay = 0.2f )
 	{
