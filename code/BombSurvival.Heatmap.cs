@@ -8,6 +8,7 @@ public partial class BombSurvival
 	public static Dictionary<IntVector2, float> HeatMap { get; private set; } = new Dictionary<IntVector2, float>();
 	public const float HeatBlockSize = 100f;
 	public static float HeatUpdateFrequency => 0.5f;
+	public static float HeatTenPercentile = 0f;
 	TimeUntil nextHeatUpdate = 0f;
 	static bool initialized = false;
 
@@ -77,6 +78,12 @@ public partial class BombSurvival
 
 			nextHeatUpdate = HeatUpdateFrequency;
 			iterateHeat();
+
+			var sortedHeatMap = HeatMap.OrderBy( x => x.Value ).ToArray();
+			var totalCount = HeatMap.Count();
+			var tenthPlace = (int)Math.Round( totalCount / 10f );
+
+			HeatTenPercentile = sortedHeatMap[tenthPlace].Value;
 		}
 	}
 
