@@ -53,6 +53,7 @@ public partial class BombSurvival
 			var maximumY = (int)Math.Ceiling( WorldHeight / HeatBlockSize );
 
 			var allBombs = Entity.All.OfType<Bomb>();
+			var highestPoints = GetHighestPoints().Take( 5 );
 
 			for ( int x = -maximumX / 2; x <= maximumX / 2; x++ )
 				for ( int y = -maximumY / 2; y <= maximumY / 2; y++ )
@@ -67,6 +68,10 @@ public partial class BombSurvival
 						if ( bbox.Contains( bomb.Position ) )
 							currentHeat += bomb.ExplosionSize / 150f;
 
+					foreach ( var point in highestPoints )
+						if ( bbox.Contains( point ) )
+							currentHeat += 0.5f; // Gotta remember we drop mines on top of the highest place
+
 					updateHeat( new IntVector2( x, y ), currentHeat );
 				}
 
@@ -75,7 +80,7 @@ public partial class BombSurvival
 		}
 	}
 
-	void iterateHeat( int iterations = 5, float exponentialDecay = 0.6f, float flatDecay = 0.1f )
+	void iterateHeat( int iterations = 5, float linearDecay = 8f, float flatDecay = 0.2f )
 	{
 		if ( !initialized ) return;
 
@@ -90,7 +95,7 @@ public partial class BombSurvival
 
 			foreach ( var tile in validTiles )
 			{
-				var additionalValue = exponentialDecay * MathF.Pow( exponentialDecay, tile.Value ) - flatDecay;
+				var additionalValue = tile.Value / linearDecay - flatDecay;
 
 				if ( additionalValue > 0 )
 					for ( int x = -1; x <= 1; x++ )
