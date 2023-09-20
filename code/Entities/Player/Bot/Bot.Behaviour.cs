@@ -74,10 +74,14 @@ public partial class WanderingBehaviour : BotBehaviour
 
 		if ( nextTargetPosition )
 		{
-			var randomCell = BombSurvival.GetRandomSafeCell( Bot.RNG );
-			Bot.TargetPosition = randomCell.Position;
+			if ( BombSurvival.GetHeat( Bot.Pawn.Position ) > BombSurvival.HeatTenPercentile ) // If the bot is currently in an unsafe position
+				if ( !Bot.IsFollowingPath || BombSurvival.GetHeat( Bot.TargetPosition ) > BombSurvival.HeatTenPercentile ) // And it's not following a path OR the destination isn't safe anymore
+				{
+					var randomSafeCell = BombSurvival.GetRandomSafeCell( Bot.RNG );
+					Bot.TargetPosition = randomSafeCell.Position; // Find a new safe destination
+				}
 
-			nextTargetPosition = Bot.RNG.Float( 6f, 8f );
+			nextTargetPosition = Bot.RNG.Float( 1f, 1.5f );
 		}
 	}
 }
