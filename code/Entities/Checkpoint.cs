@@ -19,7 +19,7 @@ public partial class Checkpoint : AnimatedEntity
 	public AnimatedEntity ClientModel { get; set; }
 	[Property( Title = "Type of checkpoint" ), Net]
 	public CheckpointType Type { get; set; } = CheckpointType.None;
-	public Vector3 RespawnPosition => GetBoneTransform( 1 ).Position;
+	public Vector3 RespawnPosition => Type == CheckpointType.Pod ? Position : GetBoneTransform( 1 ).Position;
 	Vector3 lastPosition = Vector3.Zero;
 
 	public override void Spawn()
@@ -82,10 +82,12 @@ public partial class Checkpoint : AnimatedEntity
 
 		if ( currentState is PodState )
 			return First( CheckpointType.Pod );
-		if ( currentState is ScoringState )
+		if ( currentState is StartingState )
 			return First( CheckpointType.Scoreboard );
 		if ( currentState is PlayingState )
 			return First( CheckpointType.Play );
+		if ( currentState is ScoringState )
+			return First( CheckpointType.Scoreboard );
 		if ( currentState is TutorialState )
 			return First( CheckpointType.Tutorial );
 
