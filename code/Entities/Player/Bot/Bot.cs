@@ -43,7 +43,8 @@ public partial class BombSurvivalBot : Bot
 
 	public void Compute()
 	{
-		CurrentBehaviour?.Compute();
+		ComputeRevenge();
+		ComputeMoveToSafeLocation();
 	}
 
 	[ConCmd.Admin( "bs_bot_add" )]
@@ -51,7 +52,5 @@ public partial class BombSurvivalBot : Bot
 	{
 		Sandbox.Game.AssertServer();
 		var bot = new BombSurvivalBot();
-
-		bot.SetBehaviour<WanderingBehaviour>();
 	}
 }

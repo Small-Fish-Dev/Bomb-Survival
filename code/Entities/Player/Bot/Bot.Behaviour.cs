@@ -2,11 +2,8 @@
 
 namespace BombSurvival;
 
-public abstract partial class BotBehaviour
+public partial class BombSurvivalBot : Bot
 {
-	public TimeSince SinceStarted { get; set; } = 0f;
-	public Player Pawn { get; internal set; }
-	public BombSurvivalBot Bot { get; internal set; }
 	public Player ClosestPlayer { get; internal set; }
 
 	public Dictionary<Player, float> PunchKarma { get; internal set; } = new Dictionary<Player, float>();
@@ -14,7 +11,7 @@ public abstract partial class BotBehaviour
 	public Dictionary<Player, float> GrabKarma { get; internal set; } = new Dictionary<Player, float>();
 	TimeSince lastGrabCheck = 0f;
 
-	public virtual void Compute()
+	public virtual void ComputeRevenge()
 	{
 		var ClosestPlayer = Entity.All.OfType<Player>()
 			.Where( x => x != Pawn )
@@ -28,7 +25,7 @@ public abstract partial class BotBehaviour
 				{
 					if ( PunchKarma.TryGetValue( ClosestPlayer, out var punchKarma ) )
 					{
-						var randomRoll = Bot.RNG.Float();
+						var randomRoll = RNG.Float();
 						if ( randomRoll < punchKarma )
 						{
 							Pawn.InputRotation = Rotation.LookAt( (ClosestPlayer.Position - Pawn.Position).Normal, Vector3.Right );
@@ -40,10 +37,28 @@ public abstract partial class BotBehaviour
 				}
 		}
 	}
-	public virtual void Start() { }
-	public virtual void End() { }
+
+	TimeUntil nextSafePositionCheck = 0f;
+
+	public virtual void ComputeMoveToSafeLocation()
+	{
+		if ( nextSafePositionCheck )
+		{
+			if ( BombSurvival.GetHeat( Pawn.Position ) > BombSurvival.HeatTenPercentile ) // If the bot is currently in an unsafe position
+				if ( !IsFollowingPath || BombSurvival.GetHeat( TargetPosition ) > BombSurvival.HeatTenPercentile ) // And it's not following a path OR the destination isn't safe anymore
+				{
+					var randomSafeCell = BombSurvival.GetRandomSafeCell( RNG );
+					TargetPosition = randomSafeCell.Position; // Find a new safe destination
+				}
+
+			nextSafePositionCheck = RNG.Float( 0.5f, 0.7f );
+		}
+	}
+
 	public virtual void OnRespawn() { }
+
 	public virtual void OnKnockout() { }
+
 	public virtual void OnPunch( Player puncher )
 	{
 		var karmaAdded = 0.1f;
@@ -53,7 +68,8 @@ public abstract partial class BotBehaviour
 		else
 			PunchKarma.Add( puncher, karmaAdded );
 	}
-	public virtual void OnGrab( Player grabber ) 
+
+	public virtual void OnGrab( Player grabber )
 	{
 		var karmaAdded = 0.1f;
 
@@ -61,51 +77,5 @@ public abstract partial class BotBehaviour
 			GrabKarma[grabber] = Math.Clamp( GrabKarma[grabber] + karmaAdded, 0f, 1f );
 		else
 			GrabKarma.Add( grabber, karmaAdded );
-	}
-}
-
-public partial class WanderingBehaviour : BotBehaviour
-{
-	TimeUntil nextTargetPosition = 0f;
-
-	public override void Compute()
-	{
-		base.Compute();
-
-		if ( nextTargetPosition )
-		{
-			if ( BombSurvival.GetHeat( Bot.Pawn.Position ) > BombSurvival.HeatTenPercentile ) // If the bot is currently in an unsafe position
-				if ( !Bot.IsFollowingPath || BombSurvival.GetHeat( Bot.TargetPosition ) > BombSurvival.HeatTenPercentile ) // And it's not following a path OR the destination isn't safe anymore
-				{
-					var randomSafeCell = BombSurvival.GetRandomSafeCell( Bot.RNG );
-					Bot.TargetPosition = randomSafeCell.Position; // Find a new safe destination
-				}
-
-			nextTargetPosition = Bot.RNG.Float( 1f, 1.5f );
-		}
-	}
-}
-
-public partial class FollowingBehaviour : BotBehaviour
-{
-	public override void Compute()
-	{
-		base.Compute();
-
-		Bot.TargetEntity = Game.Clients.First().Pawn as Entity;
-	}
-}
-
-public partial class BombSurvivalBot : Bot
-{
-	public BotBehaviour CurrentBehaviour { get; private set; }
-
-	public void SetBehaviour<T>() where T : BotBehaviour
-	{
-		CurrentBehaviour?.End();
-		CurrentBehaviour = Activator.CreateInstance<T>();
-		CurrentBehaviour.Bot = this;
-		CurrentBehaviour.Pawn = Pawn;
-		CurrentBehaviour.Start();
 	}
 }

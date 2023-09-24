@@ -44,7 +44,7 @@ public partial class Player : AnimatedEntity
 			Collider.EnableSolidCollisions = false;
 
 			if ( Bot != null )
-				Bot.CurrentBehaviour?.OnKnockout();
+				Bot.OnKnockout();
 		}
 
 		Release();
@@ -101,7 +101,7 @@ public partial class Player : AnimatedEntity
 				}
 
 				if ( player.Bot != null )
-					player.Bot.CurrentBehaviour?.OnPunch( this );
+					player.Bot.OnPunch( this );
 			}
 			else
 			{
