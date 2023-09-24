@@ -6,10 +6,8 @@ public partial class BombSurvivalBot : Bot
 {
 	public float StartingKarma = 0f;
 
-	public Dictionary<Player, float> PunchKarma { get; internal set; } = new Dictionary<Player, float>();
+	public Dictionary<Player, float> Karma { get; internal set; } = new Dictionary<Player, float>();
 	TimeSince lastPunchCheck = 0f;
-	public Dictionary<Player, float> GrabKarma { get; internal set; } = new Dictionary<Player, float>();
-	TimeSince lastGrabCheck = 0f;
 
 	public virtual void ComputeRevenge()
 	{
@@ -23,7 +21,7 @@ public partial class BombSurvivalBot : Bot
 			if ( closestPlayer.CollisionTop.Distance( Pawn.CollisionTop ) <= 50f )
 				if ( lastPunchCheck > 1f )
 				{
-					if ( PunchKarma.TryGetValue( closestPlayer, out var punchKarma ) )
+					if ( Karma.TryGetValue( closestPlayer, out var punchKarma ) )
 					{
 						var randomRoll = RNG.Float();
 						if ( randomRoll < punchKarma )
@@ -78,19 +76,19 @@ public partial class BombSurvivalBot : Bot
 	{
 		var karmaAdded = 0.1f;
 
-		if ( PunchKarma.ContainsKey( puncher ) )
-			PunchKarma[puncher] = Math.Clamp( PunchKarma[puncher] + karmaAdded, 0f, 1f );
+		if ( Karma.ContainsKey( puncher ) )
+			Karma[puncher] = Math.Clamp( Karma[puncher] + karmaAdded, 0f, 1f );
 		else
-			PunchKarma.Add( puncher, StartingKarma + karmaAdded );
+			Karma.Add( puncher, StartingKarma + karmaAdded );
 	}
 
 	public virtual void OnGrab( Player grabber )
 	{
 		var karmaAdded = 0.1f;
 
-		if ( GrabKarma.ContainsKey( grabber ) )
-			GrabKarma[grabber] = Math.Clamp( GrabKarma[grabber] + karmaAdded, 0f, 1f );
+		if ( Karma.ContainsKey( grabber ) )
+			Karma[grabber] = Math.Clamp( Karma[grabber] + karmaAdded, 0f, 1f );
 		else
-			GrabKarma.Add( grabber, StartingKarma + karmaAdded );
+			Karma.Add( grabber, StartingKarma + karmaAdded );
 	}
 }

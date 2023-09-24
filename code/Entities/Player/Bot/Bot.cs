@@ -17,10 +17,8 @@ public partial class BombSurvivalBot : Bot
 
 		foreach ( var player in Entity.All.OfType<Player>() )
 		{
-			if ( !GrabKarma.ContainsKey( player ) )
-				GrabKarma.Add( player, StartingKarma );
-			if ( !PunchKarma.ContainsKey( player ) )
-				PunchKarma.Add( player, StartingKarma );
+			if ( !Karma.ContainsKey( player ) )
+				Karma.Add( player, StartingKarma );
 		}
 	}
 

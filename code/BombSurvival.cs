@@ -33,11 +33,8 @@ public partial class BombSurvival : GameManager
 		foreach ( var bot in Bot.All )
 		{
 			var bsBot = bot as BombSurvivalBot;
-
-			if ( !bsBot.GrabKarma.ContainsKey( pawn ) )
-				bsBot.GrabKarma.Add( pawn, bsBot.StartingKarma );
-			if ( !bsBot.PunchKarma.ContainsKey( pawn ) )
-				bsBot.PunchKarma.Add( pawn, bsBot.StartingKarma );
+			if ( !bsBot.Karma.ContainsKey( pawn ) )
+				bsBot.Karma.Add( pawn, bsBot.StartingKarma );
 		}
 	}
 
