@@ -4,7 +4,6 @@ namespace BombSurvival;
 
 public partial class BombSurvivalBot : Bot
 {
-	public Player ClosestPlayer { get; internal set; }
 	public float StartingKarma = 0f;
 
 	public Dictionary<Player, float> PunchKarma { get; internal set; } = new Dictionary<Player, float>();
@@ -14,22 +13,22 @@ public partial class BombSurvivalBot : Bot
 
 	public virtual void ComputeRevenge()
 	{
-		var ClosestPlayer = Entity.All.OfType<Player>()
+		var closestPlayer = Entity.All.OfType<Player>()
 			.Where( x => x != Pawn )
-			.OrderBy( x => x.Position.Distance( Pawn.Position ) )
+			.OrderBy( x => x.CollisionTop.Distance( Pawn.CollisionTop ) )
 			.FirstOrDefault();
 
-		if ( ClosestPlayer.IsValid() )
+		if ( closestPlayer.IsValid() )
 		{
-			if ( ClosestPlayer.Position.Distance( Pawn.Position ) <= 50f )
+			if ( closestPlayer.CollisionTop.Distance( Pawn.CollisionTop ) <= 50f )
 				if ( lastPunchCheck > 1f )
 				{
-					if ( PunchKarma.TryGetValue( ClosestPlayer, out var punchKarma ) )
+					if ( PunchKarma.TryGetValue( closestPlayer, out var punchKarma ) )
 					{
 						var randomRoll = RNG.Float();
 						if ( randomRoll < punchKarma )
 						{
-							Pawn.InputRotation = Rotation.LookAt( (ClosestPlayer.Position - Pawn.Position).Normal, Vector3.Right );
+							Pawn.InputRotation = Rotation.LookAt( (closestPlayer.CollisionTop - Pawn.CollisionTop).Normal, Vector3.Right );
 							Pawn.Punch();
 						}
 					}
@@ -54,6 +53,21 @@ public partial class BombSurvivalBot : Bot
 
 			nextSafePositionCheck = RNG.Float( 0.5f, 0.7f );
 		}
+	}
+
+	public virtual void ComputeHomingMine()
+	{
+		var closestMissile = Entity.All.OfType<HomingMine>()
+			.Where( x => x.Target == Pawn )
+			.OrderBy( x => x.Position.Distance( Pawn.CollisionTop ) )
+			.FirstOrDefault();
+
+		if ( closestMissile.IsValid() )
+			if ( closestMissile.Position.Distance( Pawn.CollisionTop ) <= 70f )
+			{
+				Pawn.InputRotation = Rotation.LookAt( (closestMissile.Position - Pawn.CollisionTop).Normal, Vector3.Right );
+				Pawn.Punch();
+			}
 	}
 
 	public virtual void OnRespawn() { }

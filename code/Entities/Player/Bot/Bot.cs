@@ -54,6 +54,7 @@ public partial class BombSurvivalBot : Bot
 	{
 		ComputeRevenge();
 		ComputeMoveToSafeLocation();
+		ComputeHomingMine();
 	}
 
 	[ConCmd.Admin( "bs_bot_add" )]
