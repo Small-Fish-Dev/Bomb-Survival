@@ -51,9 +51,9 @@ public partial class BombSurvival
 		var woodBackground = new TextureSdf( WoodBackgroundTexture, 4, LevelSize );
 		var dirtBackground = new TextureSdf( DirtBackgroundTexture, 4, LevelSize );
 
-		Background?.AddAsync( grassBackground, GrassBackground );
-		Background?.AddAsync( woodBackground, WoodBackground );
-		Background?.AddAsync( dirtBackground, DirtBackground );
+		await Background?.AddAsync( grassBackground, GrassBackground );
+		await Background?.AddAsync( woodBackground, WoodBackground );
+		await Background?.AddAsync( dirtBackground, DirtBackground );
 
 		await GameTask.Delay( 100 );
 		Event.Run( "TerrainLoaded" );
@@ -130,14 +130,6 @@ public partial class BombSurvival
 	}
 	public static void Explosion( Vector2 position, float size = 75f ) => Explosion( PointToWorld( position ), size );
 
-	public override void PostLevelLoaded()
-	{
-		base.PostLevelLoaded();
-
-		if ( Game.IsClient ) return;
-
-		GenerateLevel();
-	}
 
 	[ConCmd.Admin( "testexplosion" )]
 	public static void TestExplosion()

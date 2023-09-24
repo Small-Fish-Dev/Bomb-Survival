@@ -7,21 +7,21 @@ public partial class PlayingState : GameState
 	TimeUntil assignPoints = 1;
 	TimeUntil nextGridRegen = 1;
 
-	public override void Start()
+	public async override void Start()
 	{
 		base.Start();
 
-		BombSurvival.InitializeHeatMap();
-
-		BombSurvivalBot.CancelAllTokens();
-		BombSurvival.GenerateGrid().Wait();
+		await BombSurvival.GenerateLevel();	// First we generate the terrain
+		BombSurvivalBot.CancelAllTokens();	// Cancel any leftover navigation tokens (Shouldn't be any but just to be safe)
+		await BombSurvival.GenerateGrid();	// Generate the initial grid
+		BombSurvival.InitializeHeatMap();	// Initialize heatmap (Including safe cells, which is why we do it after the grid)
 
 		foreach ( var player in Entity.All.OfType<Player>() )
 		{
 			player.Respawn();
 			player.ResetScore();
 			player.ResetLives();
-		}
+		}	
 	}
 
 	public override void Compute()
