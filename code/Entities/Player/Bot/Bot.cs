@@ -5,13 +5,14 @@ namespace BombSurvival;
 
 public partial class BombSurvivalBot : Bot
 {
+	public double Seed = 0f;
 	public Random RNG;
 	public Player Pawn => Client.Pawn as Player;
 
 	public BombSurvivalBot()
 	{
-		var timeSeed = RealTime.GlobalNow + Time.Now + All.OfType<Player>().Count() + All.OfType<BombSurvivalBot>().Count() + BombSurvival.CurrentLevel.Length;
-		RNG = new Random( (int)(timeSeed % int.MaxValue) );
+		Seed = RealTime.GlobalNow + Time.Now + All.OfType<Player>().Count() + All.OfType<BombSurvivalBot>().Count() + BombSurvival.CurrentLevel.Length;
+		RNG = new Random( (int)(Seed % int.MaxValue) );
 		StartingKarma = RNG.Float( 0.05f, 0.2f );
 
 		foreach ( var player in Entity.All.OfType<Player>() )
@@ -23,28 +24,29 @@ public partial class BombSurvivalBot : Bot
 		}
 	}
 
+	public Vector3 MoveDirection { get; set; } = Vector3.Zero;
+
 	public override void BuildInput()
 	{
 		if ( !Pawn.IsValid() ) return;
 
-		if ( IsFollowingPath && Pawn.GroundEntity != null )
-			Pawn.InputDirection = MovingLeft ? Vector3.Left : Vector3.Right;
-		else
-			Pawn.InputDirection = Vector3.Zero;
+		Pawn.InputDirection = MoveDirection;
 	}
 
 	public override void Tick()
 	{
 		if ( !Pawn.IsValid() ) return;
 
-		if ( Pawn.Tags.Has( "player" ) )
+		if ( Pawn.Tags.Has( "player" ) ) // Not sure if I can put this in the constructor
 		{
 			Pawn.Tags.Remove( "player" );
 			Pawn.Tags.Add( "bot" );
 		}
 
 		if ( BombSurvival.Instance.CurrentState is PlayingState )
-			ComputeNavigation();
+			ComputeSurvivalNavigation();
+		else
+			ComputeFunnyRandomMovement();
 
 		if ( Time.Tick % 5  == 0 )
 			Compute();
@@ -52,9 +54,13 @@ public partial class BombSurvivalBot : Bot
 
 	public void Compute()
 	{
+		if ( BombSurvival.Instance.CurrentState is PlayingState )
+		{
+			ComputeMoveToSafeLocation();
+			ComputeHomingMine();
+		}
+
 		ComputeRevenge();
-		ComputeMoveToSafeLocation();
-		ComputeHomingMine();
 	}
 
 	[ConCmd.Admin( "bs_bot_add" )]

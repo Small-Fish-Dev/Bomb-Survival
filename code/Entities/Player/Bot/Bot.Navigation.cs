@@ -1,4 +1,5 @@
 ﻿using GridAStar;
+using Sandbox.Utility;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,7 +47,7 @@ public partial class BombSurvivalBot
 
 	public bool MovingLeft => NextPathNode.EndPosition.x - Pawn.Position.x < 0f;
 
-	public async void ComputeNavigation()
+	public async void ComputeSurvivalNavigation()
 	{
 		if ( Game.IsClient ) return;
 		if ( currentGrid == null ) return;
@@ -120,7 +121,29 @@ public partial class BombSurvivalBot
 					}
 				}
 			}
+
+			if ( Pawn.GroundEntity != null )
+				MoveDirection = MovingLeft ? Vector3.Left : Vector3.Right;
 		}
+
+		Pawn.Jumping = false;
+	}
+
+	public void ComputeFunnyRandomMovement()
+	{
+		if ( Game.IsClient ) return;
+
+		var walkNoise = Noise.Perlin( Time.Now * 50f, (float)Seed );
+		MoveDirection = Rotation.FromYaw( walkNoise * 360f ).Forward;
+
+		var lookNoise = Noise.Perlin( Time.Now * 20f, (float)Seed / 2 );
+		Pawn.InputRotation = Rotation.FromPitch( lookNoise * 720f - 360f );
+
+		var jumpNoise = Noise.Perlin( Time.Now * 40f, (float)Seed / 4 );
+		if ( jumpNoise <= 0.4f )
+			Pawn.Jumping = true;
+		else
+			Pawn.Jumping = false;
 	}
 
 	public async Task NavigateToTarget()
