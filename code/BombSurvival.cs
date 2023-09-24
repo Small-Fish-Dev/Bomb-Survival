@@ -3,6 +3,8 @@ global using Sandbox.Sdf;
 global using System;
 global using System.Linq;
 global using System.Collections.Generic;
+using GridAStar;
+using System.Threading;
 
 namespace BombSurvival;
 
@@ -27,6 +29,16 @@ public partial class BombSurvival : GameManager
 		pawn.Clothing = client.GetClientData( "avatar" );
 		pawn.PlayerColor = Player.FirstAvailableColor();
 		pawn.Respawn();
+
+		foreach ( var bot in Bot.All )
+		{
+			var bsBot = bot as BombSurvivalBot;
+
+			if ( !bsBot.GrabKarma.ContainsKey( pawn ) )
+				bsBot.GrabKarma.Add( pawn, bsBot.StartingKarma );
+			if ( !bsBot.PunchKarma.ContainsKey( pawn ) )
+				bsBot.PunchKarma.Add( pawn, bsBot.StartingKarma );
+		}
 	}
 
 	public override void ClientSpawn()

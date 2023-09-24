@@ -5,6 +5,7 @@ namespace BombSurvival;
 public partial class BombSurvivalBot : Bot
 {
 	public Player ClosestPlayer { get; internal set; }
+	public float StartingKarma = 0f;
 
 	public Dictionary<Player, float> PunchKarma { get; internal set; } = new Dictionary<Player, float>();
 	TimeSince lastPunchCheck = 0f;
@@ -66,7 +67,7 @@ public partial class BombSurvivalBot : Bot
 		if ( PunchKarma.ContainsKey( puncher ) )
 			PunchKarma[puncher] = Math.Clamp( PunchKarma[puncher] + karmaAdded, 0f, 1f );
 		else
-			PunchKarma.Add( puncher, karmaAdded );
+			PunchKarma.Add( puncher, StartingKarma + karmaAdded );
 	}
 
 	public virtual void OnGrab( Player grabber )
@@ -76,6 +77,6 @@ public partial class BombSurvivalBot : Bot
 		if ( GrabKarma.ContainsKey( grabber ) )
 			GrabKarma[grabber] = Math.Clamp( GrabKarma[grabber] + karmaAdded, 0f, 1f );
 		else
-			GrabKarma.Add( grabber, karmaAdded );
+			GrabKarma.Add( grabber, StartingKarma + karmaAdded );
 	}
 }

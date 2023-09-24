@@ -12,6 +12,15 @@ public partial class BombSurvivalBot : Bot
 	{
 		var timeSeed = RealTime.GlobalNow + Time.Now + All.OfType<Player>().Count() + All.OfType<BombSurvivalBot>().Count() + BombSurvival.CurrentLevel.Length;
 		RNG = new Random( (int)(timeSeed % int.MaxValue) );
+		StartingKarma = RNG.Float( 0.05f, 0.2f );
+
+		foreach ( var player in Entity.All.OfType<Player>() )
+		{
+			if ( !GrabKarma.ContainsKey( player ) )
+				GrabKarma.Add( player, StartingKarma );
+			if ( !PunchKarma.ContainsKey( player ) )
+				PunchKarma.Add( player, StartingKarma );
+		}
 	}
 
 	public override void BuildInput()
