@@ -33,6 +33,7 @@ public partial class Player : AnimatedEntity
 
 	[ClientInput] public Vector3 InputDirection { get; set; }
 	[ClientInput] public Rotation InputRotation { get; set; }
+	[ClientInput] public bool Jumping { get; set; }
 	private Rotation wishRotation;
 	TimeSince lastRotation = 0f;
 
@@ -63,6 +64,7 @@ public partial class Player : AnimatedEntity
 		}
 
 		InputRotation = Rotation.Slerp( InputRotation, wishRotation, Time.Delta * 5f );
+		Jumping = Input.Down( "jump" );
 	}
 
 	public override void Simulate( IClient cl )

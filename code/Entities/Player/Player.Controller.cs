@@ -161,7 +161,7 @@ public partial class Player
 			Velocity += Vector3.Down * -Game.PhysicsWorld.Gravity * Time.Delta;
 		}
 
-		if ( Input.Down( "jump" ) )
+		if ( Jumping )
 		{
 			if ( GroundEntity != null && !IsKnockedOut )
 			{
