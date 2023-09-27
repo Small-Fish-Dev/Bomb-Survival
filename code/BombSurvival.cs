@@ -42,6 +42,6 @@ public partial class BombSurvival : GameManager
 	{
 		base.ClientSpawn();
 
-		Sound.FromScreen( "sounds/music/fifth_of_beethoven.sound" );
+		//Sound.FromScreen( "sounds/music/fifth_of_beethoven.sound" );
 	}
 }
