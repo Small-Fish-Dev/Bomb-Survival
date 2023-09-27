@@ -53,4 +53,14 @@ public partial class PlayingState : GameState
 
 		BombSurvival.ComputeWaves();
 	}
+
+	public async override void End()
+	{
+		await BombSurvival.DeleteLevel();
+
+		foreach ( var bubble in Entity.All.OfType<ScoreBubble>() )
+			bubble.Delete();
+		foreach ( var bomb in Entity.All.OfType<Bomb>() )
+			bomb.Delete();
+	}
 }

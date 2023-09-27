@@ -27,7 +27,9 @@ public partial class BombSurvival
 	[ConCmd.Admin( "regenerate_terrain" )]
 	public async static Task GenerateLevel()
 	{
-		await Foreground?.ClearAsync();
+		if ( Foreground != null )
+			await Foreground?.ClearAsync();
+
 		Foreground ??= new Sdf2DWorld
 		{
 			LocalRotation = Rotation.FromRoll( 90f )
@@ -41,7 +43,9 @@ public partial class BombSurvival
 		await Foreground?.AddAsync( woodForeground, WoodForeground );
 		await Foreground?.AddAsync( dirtForeground, DirtForeground );
 
-		await Background?.ClearAsync();
+		if ( Background != null )
+			await Background?.ClearAsync();
+
 		Background ??= new Sdf2DWorld
 		{
 			LocalRotation = Rotation.FromRoll( 90f )
