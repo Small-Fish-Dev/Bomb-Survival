@@ -58,7 +58,7 @@ public partial class Checkpoint : AnimatedEntity
 		if ( Type == CheckpointType.Play )
 			CurrentSequence.Time = Time.Now / 5f % CurrentSequence.Duration;
 		if ( Type == CheckpointType.Tutorial )
-			CurrentSequence.Time = 0.5f;
+			CurrentSequence.Time = 0f;
 
 		if ( Game.IsServer )
 		{
