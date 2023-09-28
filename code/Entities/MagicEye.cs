@@ -6,19 +6,26 @@ namespace BombSurvival;
 [EditorModel( "models/eye/eye.vmdl" )]
 public partial class MagicEye : AnimatedEntity
 {
+	[Net, Property]
+	public Color EyeColor { get; set; } = Color.White;
+	[Net, Property]
+	public float Range { get; set; } = 200f;
+
 	public override void Spawn()
 	{
 		base.Spawn();
 
 		SetModel( "models/eye/eye.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
+
+		RenderColor = EyeColor;
 	}
 
 	[GameEvent.Tick.Server]
 	public void LookingTest()
 	{
 		var nearestPlayer = All.OfType<Player>()
-			.Where( x => x.Position.Distance( Position ) <= 200f )
+			.Where( x => x.Position.Distance( Position ) <= Range )
 			.OrderBy( x => x.Position.Distance( Position ) )
 			.FirstOrDefault();
 
