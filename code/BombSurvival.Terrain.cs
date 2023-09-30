@@ -65,6 +65,17 @@ public partial class BombSurvival
 		PlaceBombs();
 	}
 
+	public async static Task GenerateTutorial()
+	{
+		if ( Foreground != null )
+			await Foreground?.ClearAsync();
+
+		Foreground ??= new Sdf2DWorld
+		{
+			LocalRotation = Rotation.FromRoll( 90f )
+		};
+	}
+
 	public async static Task DeleteLevel()
 	{
 		await Foreground?.ClearAsync();
