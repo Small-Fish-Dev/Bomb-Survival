@@ -60,50 +60,6 @@
 			{
 				key = 
 				{
-					m_id = 719849803
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "pause"
-					m_vecPosition = [ -608.0, 288.0 ]
-					m_nNodeID = 
-					{
-						m_id = 719849803
-					}
-					m_networkMode = "ServerAuthoritative"
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "pause"
-					m_playbackSpeed = 1.0
-					m_bLoop = false
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 924195002
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ -608.0, 192.0 ]
-					m_nNodeID = 
-					{
-						m_id = 924195002
-					}
-					m_networkMode = "ServerAuthoritative"
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "right_wave_slight"
-					m_playbackSpeed = 1.0
-					m_bLoop = false
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 985300221
 				}
 				value = 
@@ -132,7 +88,7 @@
 								}
 							}
 							m_name = ""
-							m_weight = 1.0
+							m_weight = 2.0
 							m_blendTime = 0.2
 						},
 						{
@@ -167,85 +123,15 @@
 							m_weight = 1.0
 							m_blendTime = 0.2
 						},
-						{
-							m_inputConnection = 
-							{
-								m_nodeID = 
-								{
-									m_id = 924195002
-								}
-								m_outputID = 
-								{
-									m_id = 4294967295
-								}
-							}
-							m_name = ""
-							m_weight = 1.0
-							m_blendTime = 0.2
-						},
-						{
-							m_inputConnection = 
-							{
-								m_nodeID = 
-								{
-									m_id = 1185413168
-								}
-								m_outputID = 
-								{
-									m_id = 4294967295
-								}
-							}
-							m_name = ""
-							m_weight = 1.0
-							m_blendTime = 0.2
-						},
-						{
-							m_inputConnection = 
-							{
-								m_nodeID = 
-								{
-									m_id = 719849803
-								}
-								m_outputID = 
-								{
-									m_id = 4294967295
-								}
-							}
-							m_name = ""
-							m_weight = 1.0
-							m_blendTime = 0.2
-						},
 					]
 					m_seed = 1287573198
-					m_choiceMethod = "WeightedRandom"
+					m_choiceMethod = "WeightedRandomNoRepeat"
 					m_choiceChangeMethod = "OnReset"
 					m_blendMethod = "SingleBlendTime"
 					m_blendTime = 0.2
 					m_bCrossFade = false
 					m_bResetChosen = true
 					m_bDontResetSameSelection = false
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 1185413168
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ -608.0, 240.0 ]
-					m_nNodeID = 
-					{
-						m_id = 1185413168
-					}
-					m_networkMode = "ServerAuthoritative"
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "left_wave_slight"
-					m_playbackSpeed = 1.0
-					m_bLoop = false
 				}
 			},
 			{
