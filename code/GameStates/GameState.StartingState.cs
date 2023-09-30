@@ -4,12 +4,14 @@ namespace BombSurvival;
 
 public partial class StartingState : GameState
 {
-	public override void Start()
+	public async override Task Start()
 	{
-		base.Start();
+		await base.Start();
 
 		foreach ( var player in Entity.All.OfType<Player>() )
 			player.Respawn();
+
+		return;
 	}
 
 	public override void Compute()

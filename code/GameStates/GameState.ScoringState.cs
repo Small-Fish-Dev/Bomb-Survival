@@ -4,15 +4,17 @@ namespace BombSurvival;
 
 public partial class ScoringState : GameState
 {
-	public async override void Start()
+	public async override Task Start()
 	{
-		base.Start();
+		await base.Start();
 
 		foreach ( var player in Entity.All.OfType<Player>() )
 			player.Respawn();
 
 		if ( Game.IsServer )
 			Player.SendScores();
+
+		return;
 	}
 
 	public override void Compute()

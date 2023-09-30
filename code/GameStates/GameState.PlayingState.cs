@@ -7,9 +7,9 @@ public partial class PlayingState : GameState
 	TimeUntil assignPoints = 1;
 	TimeUntil nextGridRegen = 1;
 
-	public async override void Start()
+	public async override Task Start()
 	{
-		base.Start();
+		await base.Start();
 
 		await BombSurvival.GenerateLevel();	// First we generate the terrain
 		BombSurvivalBot.CancelAllTokens();	// Cancel any leftover navigation tokens (Shouldn't be any but just to be safe)
@@ -21,7 +21,9 @@ public partial class PlayingState : GameState
 			player.Respawn();
 			player.ResetScore();
 			player.ResetLives();
-		}	
+		}
+
+		return;
 	}
 
 	public override void Compute()
@@ -54,13 +56,17 @@ public partial class PlayingState : GameState
 		BombSurvival.ComputeWaves();
 	}
 
-	public async override void End()
+	public async override Task End()
 	{
+		await base.End();
+
 		await BombSurvival.DeleteLevel();
 
 		foreach ( var bubble in Entity.All.OfType<ScoreBubble>() )
 			bubble.Delete();
 		foreach ( var bomb in Entity.All.OfType<Bomb>() )
 			bomb.Delete();
+
+		return;
 	}
 }

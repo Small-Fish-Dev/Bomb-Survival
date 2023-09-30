@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BombSurvival;
+﻿namespace BombSurvival;
 
 public abstract partial class GameState : Entity // BaseNetworkable sucks
 {
@@ -10,21 +8,32 @@ public abstract partial class GameState : Entity // BaseNetworkable sucks
 	[GameEvent.Tick.Server]
 	public virtual void Compute() { }
 
-	public virtual void Start() { }
-	public virtual void End() { }
+	public virtual async Task Start()
+	{
+		await GameTask.NextPhysicsFrame();
+		return;
+	}
+	public virtual async Task End()
+	{
+		await GameTask.NextPhysicsFrame();
+		return;
+	}
 }
 
 public partial class BombSurvival
 {
 	[Net, Change] public GameState CurrentState { get; set; }
 
-	public static void SetState<T>() where T : GameState
+	public static async void SetState<T>() where T : GameState
 	{
-		Instance.CurrentState?.End();
-		Instance.CurrentState?.Delete();
+		if ( Instance.CurrentState != null )
+		{
+			await Instance.CurrentState?.End();
+			Instance.CurrentState?.Delete();
+		}
 
 		Instance.CurrentState = Activator.CreateInstance<T>();
-		Instance.CurrentState.Start();
+		await Instance.CurrentState.Start();
 	}
 
 	public void OnCurrentStateChanged()
