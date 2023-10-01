@@ -160,6 +160,13 @@ public partial class Player : AnimatedEntity
 		SpawnCollider();
 	}
 
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+		Collider?.Delete();
+		Ragdoll?.Delete();
+	}
+
 	public void Respawn()
 	{
 		if ( Client == null ) return; // For the tutorial bots
