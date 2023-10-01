@@ -21,8 +21,6 @@ public partial class BombSurvival
 	public static Texture GrassBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_background.png" );
 	public static Texture WoodBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_background.png" );
 	public static Texture DirtBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_background.png" );
-	public static Texture HamsterFurTexture => Texture.Load( FileSystem.Mounted, $"textures/hamster_fur_sdf.png" );
-	public static Texture HamsterSkinTexture => Texture.Load( FileSystem.Mounted, $"textures/hamster_skin_sdf.png" );
 	public static Texture BombsTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/bombs.png" );
 
 	public static float LevelSize = 2048f;
@@ -76,23 +74,6 @@ public partial class BombSurvival
 
 		if ( Background != null )
 			await Background?.ClearAsync();
-	}
-
-	public async static void PlaceHamster( Vector2 position )
-	{
-		var hamsterFur = new TextureSdf( HamsterFurTexture, 4, 512f )
-			.Transform( position );
-		var hamsterSkin = new TextureSdf( HamsterSkinTexture, 4, 512f )
-			.Transform( position );
-		await Background?.AddAsync( hamsterFur, GrassBackground );
-		await Background?.AddAsync( hamsterSkin, WoodBackground );
-	}
-
-	[ConCmd.Admin( "testhamster" )]
-	public static void TestHamster()
-	{
-		if ( ConsoleSystem.Caller.Pawn is not Player player ) return;
-		PlaceHamster( PointToLocal( player.Position ) );
 	}
 
 	public static void PlaceBombs()

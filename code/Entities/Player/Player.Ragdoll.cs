@@ -42,7 +42,7 @@ public partial class Player : AnimatedEntity
 		if ( Client.IsBot )
 		{
 			var animatedModel = new AnimatedEntity();
-			animatedModel.Model = Cloud.Model( "shadb.terryrobot" );
+			animatedModel.Model = Cloud.Model( "shadb.terryrobot" ); // Shout out ShadowBrain!
 
 			for ( int bodyGroup = 0; bodyGroup <= 4; bodyGroup++ )
 				Ragdoll.SetBodyGroup( bodyGroup, 1 );
