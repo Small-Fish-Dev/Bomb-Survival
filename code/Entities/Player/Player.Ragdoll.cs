@@ -44,7 +44,7 @@ public partial class Player : AnimatedEntity
 			var animatedModel = new AnimatedEntity();
 			animatedModel.Model = Cloud.Model( "shadb.terryrobot" );
 
-			for ( int bodyGroup = 0; bodyGroup < 4; bodyGroup++ )
+			for ( int bodyGroup = 0; bodyGroup <= 4; bodyGroup++ )
 				Ragdoll.SetBodyGroup( bodyGroup, 1 );
 
 			animatedModel.SetParent( Ragdoll, true );
