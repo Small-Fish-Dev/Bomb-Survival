@@ -6,6 +6,8 @@ public partial class TutorialState : GameState
 	bool enteredDeathRange = false;
 	int deathBombSpawned = 0;
 	TimeUntil nextDeathBomb = 0f;
+	bool finished = false;
+	TimeUntil nextState;
 
 	public async override Task Start()
 	{
@@ -74,9 +76,14 @@ public partial class TutorialState : GameState
 					{
 						new TimedBomb().Position = new Vector3( 3250f, 0f, 4000f );
 						deathBombSpawned++;
+						finished = true;
+						nextState = 12f;
 					}
 			}
 		}
+
+		if ( finished && nextState )
+			BombSurvival.SetState<PodState>();
 	}
 
 	public async override Task End()
@@ -97,6 +104,7 @@ public partial class TutorialState : GameState
 		timedBombSpawned = false;
 		enteredDeathRange = false;
 		deathBombSpawned = 0;
+		finished = false;
 	}
 
 	void spawnHamsters()
