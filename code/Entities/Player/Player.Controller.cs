@@ -200,7 +200,7 @@ public partial class Player
 		moveHelper.MaxStandableAngle = MaxWalkableAngle;
 
 		moveHelper.Trace = moveHelper.Trace
-			.Size( CollisionBox.Mins, CollisionBox.Maxs )
+			.Size( CollisionBox.Mins + Vector3.Up * 5f, CollisionBox.Maxs )
 			.WithoutTags( "puppet", "collider" )
 			.Ignore( this );
 

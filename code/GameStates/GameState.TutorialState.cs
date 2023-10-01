@@ -110,5 +110,6 @@ public partial class TutorialState : GameState
 	void spawnBot()
 	{
 		new Player().Position = new Vector3( 2010f, 0f, 3845f );
+		Log.Info( Game.IsServer );
 	}
 }

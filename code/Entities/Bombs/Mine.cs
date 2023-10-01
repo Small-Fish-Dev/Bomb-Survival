@@ -14,9 +14,11 @@ public partial class Mine : Bomb
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
 	{
 		base.OnPhysicsCollision( eventData );
-		
-		if ( enableExplosion )
-			if ( eventData.Velocity.Length > 10f || eventData.Other.Entity.GetPlayer() != null )
-				Explode();
+
+		if ( Game.IsServer )
+			if ( enableExplosion )
+				if ( eventData.Velocity.Length > 10f || eventData.Other.Entity.GetPlayer() != null || eventData.Other.Entity is Player )
+					Explode();
+
 	}
 }
