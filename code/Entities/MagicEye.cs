@@ -17,8 +17,6 @@ public partial class MagicEye : AnimatedEntity, IBlowable, ICharrable
 
 		SetModel( "models/eye/eye.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
-
-		RenderColor = EyeColor;
 	}
 
 	[GameEvent.Tick.Server]
@@ -38,6 +36,8 @@ public partial class MagicEye : AnimatedEntity, IBlowable, ICharrable
 		}
 		else
 			SetAnimParameter( "lookat", false );
+
+		RenderColor = EyeColor;
 	}
 
 	public void Blow() => Delete();
