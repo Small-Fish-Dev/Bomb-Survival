@@ -16,6 +16,7 @@ public partial class Mine : Bomb
 		base.OnPhysicsCollision( eventData );
 		
 		if ( enableExplosion )
-			Explode();
+			if ( eventData.Velocity.Length > 10f || eventData.Other.Entity.GetPlayer() != null )
+				Explode();
 	}
 }
