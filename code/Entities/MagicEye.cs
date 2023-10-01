@@ -23,7 +23,7 @@ public partial class MagicEye : AnimatedEntity, IBlowable, ICharrable
 	public void LookingTest()
 	{
 		var nearestPlayer = All.OfType<Player>()
-			.Where( x => x.Position.Distance( Position ) <= Range )
+			.Where( x => x.Position.Distance( Position ) <= Range && x.Client != null && !x.Client.IsBot )
 			.OrderBy( x => x.Position.Distance( Position ) )
 			.FirstOrDefault();
 
