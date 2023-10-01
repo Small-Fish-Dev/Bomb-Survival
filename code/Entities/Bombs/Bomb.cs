@@ -41,7 +41,7 @@ public abstract partial class Bomb : AnimatedEntity
 		var entitiesInExplosion = Entity.FindInSphere( Position, ExplosionSize );
 		var entitiesInChar = Entity.FindInSphere( Position, CharSize );
 
-		BombSurvival.Explosion( Position, ExplosionSize, CharSize );
+		BombSurvival.Explosion( Position, ExplosionSize, CharSize ); // TODO: Await this before doing the rest
 
 		var bombsToExplode = entitiesInExplosion
 			.OfType<Bomb>()
@@ -75,7 +75,15 @@ public abstract partial class Bomb : AnimatedEntity
 			.Distinct();
 
 		foreach ( var player in playersToKill )
-			player.Kill();
+		{
+			var traceCheck = Trace.Ray( Position, player.CollisionTop )
+				.WithAnyTags( "terrain", "solid" )
+				.WithoutTags( "player" )
+				.Run();
+
+			if ( !traceCheck.Hit )
+				player.Kill();
+		}
 
 		var playersToChar = entitiesInChar
 			.Select( x => x.GetPlayer() )
@@ -86,7 +94,8 @@ public abstract partial class Bomb : AnimatedEntity
 		foreach ( var player in playersToChar )
 		{
 			var traceCheck = Trace.Ray( Position, player.CollisionTop )
-				.WithTag( "terrain" )
+				.WithAnyTags( "terrain", "solid" )
+				.WithoutTags( "player" )
 				.Run();
 
 			if ( !traceCheck.Hit )
