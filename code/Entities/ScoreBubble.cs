@@ -27,7 +27,7 @@ public partial class ScoreBubble : AnimatedEntity, IBlowable, ICharrable
 	}
 
 	public void Blow() => Break();
-	public void Char() => RenderColor = Color.Black;
+	public void Char() => SetMaterialOverride( ICharrable.CharMaterial );
 
 	public void Break()
 	{

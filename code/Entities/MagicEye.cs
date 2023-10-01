@@ -41,5 +41,5 @@ public partial class MagicEye : AnimatedEntity, IBlowable, ICharrable
 	}
 
 	public void Blow() => Delete();
-	public void Char() => RenderColor = Color.Black;
+	public void Char() => SetMaterialOverride( ICharrable.CharMaterial );
 }
