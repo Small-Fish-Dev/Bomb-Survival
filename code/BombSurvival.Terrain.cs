@@ -21,7 +21,8 @@ public partial class BombSurvival
 	public static Texture GrassBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_background.png" );
 	public static Texture WoodBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_background.png" );
 	public static Texture DirtBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_background.png" );
-	public static Texture HamsterTexture => Texture.Load( FileSystem.Mounted, $"textures/hamster.png" );
+	public static Texture HamsterFurTexture => Texture.Load( FileSystem.Mounted, $"textures/hamster_fur_sdf.png" );
+	public static Texture HamsterSkinTexture => Texture.Load( FileSystem.Mounted, $"textures/hamster_skin_sdf.png" );
 	public static Texture BombsTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/bombs.png" );
 
 	public static float LevelSize = 2048f;
@@ -29,13 +30,7 @@ public partial class BombSurvival
 	[ConCmd.Admin( "regenerate_terrain" )]
 	public async static Task GenerateLevel()
 	{
-		if ( Foreground != null )
-			await Foreground?.ClearAsync();
-
-		Foreground ??= new Sdf2DWorld
-		{
-			LocalRotation = Rotation.FromRoll( 90f )
-		};
+		await GenerateEmptyLevel();
 
 		var grassForeground = new TextureSdf( GrassForegroundTexture, 4, LevelSize );
 		var woodForeground = new TextureSdf( WoodForegroundTexture, 4, LevelSize );
@@ -44,14 +39,6 @@ public partial class BombSurvival
 		await Foreground?.AddAsync( grassForeground, GrassForeground );
 		await Foreground?.AddAsync( woodForeground, WoodForeground );
 		await Foreground?.AddAsync( dirtForeground, DirtForeground );
-
-		if ( Background != null )
-			await Background?.ClearAsync();
-
-		Background ??= new Sdf2DWorld
-		{
-			LocalRotation = Rotation.FromRoll( 90f )
-		};
 
 		var grassBackground = new TextureSdf( GrassBackgroundTexture, 4, LevelSize );
 		var woodBackground = new TextureSdf( WoodBackgroundTexture, 4, LevelSize );
@@ -67,28 +54,38 @@ public partial class BombSurvival
 		PlaceBombs();
 	}
 
-	public async static Task GenerateTutorial()
+	public async static Task GenerateEmptyLevel()
 	{
-		if ( Foreground != null )
-			await Foreground?.ClearAsync();
+		await ClearLevel();
 
 		Foreground ??= new Sdf2DWorld
 		{
 			LocalRotation = Rotation.FromRoll( 90f )
 		};
+
+		Background ??= new Sdf2DWorld
+		{
+			LocalRotation = Rotation.FromRoll( 90f )
+		};
 	}
 
-	public async static Task DeleteLevel()
+	public async static Task ClearLevel()
 	{
-		await Foreground?.ClearAsync();
-		await Background?.ClearAsync();
+		if ( Foreground != null )
+			await Foreground?.ClearAsync();
+
+		if ( Background != null )
+			await Background?.ClearAsync();
 	}
 
 	public async static void PlaceHamster( Vector2 position )
 	{
-		var hamsterTexture = new TextureSdf( HamsterTexture, 4, 512f )
+		var hamsterFur = new TextureSdf( HamsterFurTexture, 4, 512f )
 			.Transform( position );
-		await Foreground?.AddAsync( hamsterTexture, WoodForeground );
+		var hamsterSkin = new TextureSdf( HamsterSkinTexture, 4, 512f )
+			.Transform( position );
+		await Background?.AddAsync( hamsterFur, GrassBackground );
+		await Background?.AddAsync( hamsterSkin, WoodBackground );
 	}
 
 	[ConCmd.Admin( "testhamster" )]

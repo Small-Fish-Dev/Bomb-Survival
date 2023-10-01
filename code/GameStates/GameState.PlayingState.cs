@@ -60,7 +60,7 @@ public partial class PlayingState : GameState
 	{
 		await base.End();
 
-		await BombSurvival.DeleteLevel();
+		await BombSurvival.ClearLevel();
 
 		foreach ( var bubble in Entity.All.OfType<ScoreBubble>() )
 			bubble.Delete();
