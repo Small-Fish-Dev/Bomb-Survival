@@ -1,0 +1,24 @@
+{
+  "Depth": 64,
+  "Offset": -64,
+  "TexCoordSize": 256,
+  "FrontFaceMaterial": "materials/wood/wood.vmat",
+  "BackFaceMaterial": "materials/wood/wood.vmat",
+  "CutFaceMaterial": "materials/wood/wood.vmat",
+  "EdgeStyle": "Round",
+  "MaxSmoothAngle": 180,
+  "EdgeRadius": 4.5,
+  "EdgeFaces": 3,
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "",
+  "QualityLevel": "Custom",
+  "ChunkResolution": 128,
+  "ChunkSize": 256,
+  "MaxDistance": 8,
+  "ReferencedTextures": [
+    {
+      "TargetAttribute": "ScorchLayer",
+      "Source": "sdflayers/scorch.sdflayer"
+    }
+  ]
+}
