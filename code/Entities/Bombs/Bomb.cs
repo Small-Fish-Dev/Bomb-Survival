@@ -58,10 +58,15 @@ public abstract partial class Bomb : AnimatedEntity
 			bomb.PhysicsGroup.ApplyImpulse( direction * 2000f * bomb.PhysicsBody.Mass * Scale );
 		}
 
-		var bubblesToBreak = entitiesInExplosion
-			.OfType<ScoreBubble>();
-		foreach ( var bubble in bubblesToBreak )
-			bubble.Break();
+		var blowableEntities = entitiesInExplosion
+			.OfType<IBlowable>();
+		foreach ( var abouttaBlow in blowableEntities )
+			abouttaBlow.Blow();
+
+		var charrableEntities = entitiesInChar
+			.OfType<ICharrable>();
+		foreach ( var abouttaChar in charrableEntities )
+			abouttaChar.Char();
 
 		var playersToKill = entitiesInExplosion
 			.Select( x => x.GetPlayer() )

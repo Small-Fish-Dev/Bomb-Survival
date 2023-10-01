@@ -5,7 +5,7 @@ namespace BombSurvival;
 
 [HammerEntity]
 [EditorModel( "models/mouth/mouth.vmdl" )]
-public partial class MagicMouth : AnimatedEntity
+public partial class MagicMouth : AnimatedEntity, IBlowable, ICharrable
 {
 	[Net, Property]
 	public string Dialogue { get; set; } = "Hello I am a talking mouth";
@@ -45,4 +45,6 @@ public partial class MagicMouth : AnimatedEntity
 				voice.Stop();
 		}
 	}
+	public void Blow() => Delete();
+	public void Char() => RenderColor = Color.Black;
 }

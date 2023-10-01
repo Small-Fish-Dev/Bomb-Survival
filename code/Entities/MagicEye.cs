@@ -4,7 +4,7 @@ namespace BombSurvival;
 
 [HammerEntity]
 [EditorModel( "models/eye/eye.vmdl" )]
-public partial class MagicEye : AnimatedEntity
+public partial class MagicEye : AnimatedEntity, IBlowable, ICharrable
 {
 	[Net, Property]
 	public Color EyeColor { get; set; } = Color.White;
@@ -39,4 +39,7 @@ public partial class MagicEye : AnimatedEntity
 		else
 			SetAnimParameter( "lookat", false );
 	}
+
+	public void Blow() => Delete();
+	public void Char() => RenderColor = Color.Black;
 }

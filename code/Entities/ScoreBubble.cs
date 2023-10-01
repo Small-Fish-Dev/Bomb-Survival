@@ -1,6 +1,6 @@
 ﻿namespace BombSurvival;
 
-public partial class ScoreBubble : AnimatedEntity
+public partial class ScoreBubble : AnimatedEntity, IBlowable, ICharrable
 {
 	Player nearestPlayer = null;
 
@@ -25,6 +25,9 @@ public partial class ScoreBubble : AnimatedEntity
 		BombSurvival.AxisLockedEntities.Remove( this );
 		base.OnDestroy();
 	}
+
+	public void Blow() => Break();
+	public void Char() => RenderColor = Color.Black;
 
 	public void Break()
 	{
