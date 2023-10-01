@@ -39,7 +39,13 @@ public partial class Player : AnimatedEntity
 
 	public void DressRagdoll()
 	{
-		if ( Client.IsBot )
+		if ( Client != null && !Client.IsBot )
+		{
+			var container = new ClothingContainer();
+			container.Deserialize( Clothing );
+			container.DressEntity( Ragdoll );
+		}
+		else
 		{
 			var animatedModel = new AnimatedEntity();
 			animatedModel.Model = Cloud.Model( "shadb.terryrobot" ); // Shout out ShadowBrain!
@@ -48,12 +54,6 @@ public partial class Player : AnimatedEntity
 				Ragdoll.SetBodyGroup( bodyGroup, 1 );
 
 			animatedModel.SetParent( Ragdoll, true );
-		}
-		else
-		{
-			var container = new ClothingContainer();
-			container.Deserialize( Clothing );
-			container.DressEntity( Ragdoll );
 		}
 	}
 

@@ -17,6 +17,16 @@ public partial class Player
 
 	public TimeSince TimeSinceLostFooting = 0f;
 
+	[GameEvent.Tick.Server]
+	void noClientController()
+	{
+		if ( Client == null )
+			if ( IsKnockedOut )
+				knockedOutMotion();
+			else
+				normalMotion();
+	}
+
 	public void ComputeController()
 	{
 		if ( IsKnockedOut )
@@ -50,24 +60,27 @@ public partial class Player
 	{
 		var animationHelper = new CitizenAnimationHelper( this );
 
-		var wishDirection = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
-
-		if ( InputDirection != Vector3.Zero )
-			Direction = wishDirection;
-		else
+		if ( Client != null )
 		{
-			if ( GroundEntity != null )
+			var wishDirection = InputDirection.RotateAround( Vector3.Up, Rotation.FromYaw( 90f ) ).WithY( 0f );
+
+			if ( InputDirection != Vector3.Zero )
 				Direction = wishDirection;
 			else
-				Direction = Vector3.Zero;
-		}
+			{
+				if ( GroundEntity != null )
+					Direction = wishDirection;
+				else
+					Direction = Vector3.Zero;
+			}
 
-		if ( Direction != Vector3.Zero )
-			WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, WalkSpeed );
-		else
-		{
-			if ( GroundEntity != null )
-				WishSpeed = 0f;
+			if ( Direction != Vector3.Zero )
+				WishSpeed = Math.Clamp( WishSpeed + AccelerationSpeed * Time.Delta, 0f, WalkSpeed );
+			else
+			{
+				if ( GroundEntity != null )
+					WishSpeed = 0f;
+			}
 		}
 
 		if ( Direction != Vector3.Zero || GroundEntity != null )
@@ -77,33 +90,36 @@ public partial class Player
 		if ( TimeSinceLostFooting > Time.Delta * 5f )
 			Velocity -= Vector3.Down * (TimeSinceLostFooting + 1f) * Game.PhysicsWorld.Gravity * Time.Delta * 2f;
 
-		if ( Input.Pressed( "punch" ) && !IsPunching && CanPunch )
-			using ( LagCompensation() )
+		if ( Client != null )
+		{
+			if ( Input.Pressed( "punch" ) && !IsPunching && CanPunch )
+				using ( LagCompensation() )
+				{
+					Punch();
+					LastPunch = 0f;
+				}
+
+			if ( IsGrabbing )
 			{
-				Punch();
-				LastPunch = 0f;
+				var delta = GrabbingPosition - Position;
+				var magnitude = delta.Length;
+				var normal = delta.Normal;
+				var strength = Math.Clamp( magnitude - CollisionHeight * 1.5f, 0f, 100f );
+
+				Velocity += normal * strength * strength + Vector3.Down * 20f;
+				Velocity /= 1 + Time.Delta * strength / 10f;
 			}
 
-		if ( IsGrabbing )
-		{
-			var delta = GrabbingPosition - Position;
-			var magnitude = delta.Length;
-			var normal = delta.Normal;
-			var strength = Math.Clamp( magnitude - CollisionHeight * 1.5f, 0f, 100f );
+			if ( IsBeingGrabbed )
+			{
+				var delta = Grabber.CollisionTop - CollisionTop;
+				var magnitude = delta.Length * (Grabber.GroundEntity == null ? 0.5f : 1f);
+				var normal = delta.Normal;
+				var strength = Math.Max( magnitude - CollisionHeight * 1.5f, 0f );
 
-			Velocity += normal * strength * strength + Vector3.Down * 20f;
-			Velocity /= 1 + Time.Delta * strength / 10f;
-		}
-
-		if ( IsBeingGrabbed )
-		{
-			var delta = Grabber.CollisionTop - CollisionTop;
-			var magnitude = delta.Length * ( Grabber.GroundEntity == null ? 0.5f : 1f );
-			var normal = delta.Normal;
-			var strength = Math.Max( magnitude - CollisionHeight * 1.5f, 0f );
-
-			Velocity += normal * strength * strength + Vector3.Down * 20f;
-			Velocity /= 1 + Time.Delta * strength / 10f;
+				Velocity += normal * strength * strength + Vector3.Down * 20f;
+				Velocity /= 1 + Time.Delta * strength / 10f;
+			}
 		}
 
 		foreach ( var toucher in touchingPlayers )
@@ -124,7 +140,7 @@ public partial class Player
 
 		var noTags = new string[4] { "puppet", "collider", "bot", "" };
 
-		if ( Client.IsBot || IsSafe )
+		if ( Client == null || Client.IsBot || IsSafe )
 			noTags[3] = "player";
 
 		moveHelper.Trace = moveHelper.Trace
