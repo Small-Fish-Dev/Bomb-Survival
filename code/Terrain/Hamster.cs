@@ -15,13 +15,16 @@ public class Hamster
 
 		LeftEye = new MagicEye();
 		LeftEye.Scale = scale;
-		LeftEye.Position = position + ( Vector3.Left * 100f + Vector3.Up * 200f ) * scale;
+		LeftEye.Position = position + ( Vector3.Forward * 40f + Vector3.Up * 70f ) * scale + Vector3.Left * 25f;
+		LeftEye.Rotation = Rotation.FromYaw( -90f );
 		RightEye = new MagicEye();
 		RightEye.Scale = scale;
-		RightEye.Position = position + (Vector3.Right * 100f + Vector3.Up * 200f) * scale;
+		RightEye.Position = position + ( Vector3.Backward * 35f + Vector3.Up * 70f ) * scale + Vector3.Left * 25f;
+		RightEye.Rotation = Rotation.FromYaw( -90f );
 		Mouth = new MagicMouth();
 		Mouth.Scale = scale;
-		Mouth.Position = position + ( Vector3.Up * 150f) * scale;
+		Mouth.Position = position + ( Vector3.Forward * 5f + Vector3.Down * 10f) * scale + Vector3.Left * 25f;
+		Mouth.Rotation = Rotation.FromYaw( -90f );
 
 		SetDialogue( dialogue );
 	}
