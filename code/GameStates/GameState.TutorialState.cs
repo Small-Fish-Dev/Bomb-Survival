@@ -3,6 +3,10 @@
 public partial class TutorialState : GameState
 {
 	bool timedBombSpawned = false;
+	bool enteredDeathRange = false;
+	int deathBombSpawned = 0;
+	TimeUntil nextDeathBomb = 0f;
+
 	public async override Task Start()
 	{
 		await base.Start();
@@ -43,6 +47,36 @@ public partial class TutorialState : GameState
 				timedBombSpawned = true;
 			}
 		}
+
+		if ( !enteredDeathRange )
+		{
+			var anyInDeathZone = Entity.All.OfType<Player>()
+				.Any( x => x.Position.Distance( new Vector3( 2930f, 0f, 3760f ) ) <= 100f );
+
+			if ( anyInDeathZone )
+				enteredDeathRange = true;
+		}
+		else
+		{
+			if ( deathBombSpawned < 10f )
+			{
+				if ( nextDeathBomb )
+				{
+					new InertBomb().Position = new Vector3( 3300f + Game.Random.Float( -200f, 200f ), 0f, 4000f );
+					nextDeathBomb = 0.2f;
+					deathBombSpawned++;
+				}
+			}
+			else
+			{
+				if ( nextDeathBomb )
+					if ( deathBombSpawned < 11 )
+					{
+						new TimedBomb().Position = new Vector3( 3300f, 0f, 4000f );
+						deathBombSpawned++;
+					}
+			}
+		}
 	}
 
 	public async override Task End()
@@ -61,6 +95,8 @@ public partial class TutorialState : GameState
 			puppet.Delete();
 
 		timedBombSpawned = false;
+		enteredDeathRange = false;
+		deathBombSpawned = 0;
 	}
 
 	void spawnHamsters()
