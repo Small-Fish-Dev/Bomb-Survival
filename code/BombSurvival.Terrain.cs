@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Sandbox.Sdf;
+using System.Threading.Tasks;
 
 namespace BombSurvival;
 
@@ -20,6 +21,7 @@ public partial class BombSurvival
 	public static Texture GrassBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/grass_background.png" );
 	public static Texture WoodBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/wood_background.png" );
 	public static Texture DirtBackgroundTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/dirt_background.png" );
+	public static Texture HamsterTexture => Texture.Load( FileSystem.Mounted, $"textures/hamster.png" );
 	public static Texture BombsTexture => Texture.Load( FileSystem.Mounted, $"levels/{CurrentLevel}/bombs.png" );
 
 	public static float LevelSize = 2048f;
@@ -80,6 +82,20 @@ public partial class BombSurvival
 	{
 		await Foreground?.ClearAsync();
 		await Background?.ClearAsync();
+	}
+
+	public async static void PlaceHamster( Vector2 position )
+	{
+		var hamsterTexture = new TextureSdf( HamsterTexture, 4, 512f )
+			.Transform( position );
+		await Foreground?.AddAsync( hamsterTexture, WoodForeground );
+	}
+
+	[ConCmd.Admin( "testhamster" )]
+	public static void TestHamster()
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player ) return;
+		PlaceHamster( PointToLocal( player.Position ) );
 	}
 
 	public static void PlaceBombs()
