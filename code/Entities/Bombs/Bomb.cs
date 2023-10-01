@@ -64,7 +64,8 @@ public abstract partial class Bomb : AnimatedEntity
 			abouttaBlow.Blow();
 
 		var charrableEntities = entitiesInChar
-			.OfType<ICharrable>();
+			.OfType<ICharrable>()
+			.Where( x => x is not Player ); // We char players different
 		foreach ( var abouttaChar in charrableEntities )
 			abouttaChar.Char();
 

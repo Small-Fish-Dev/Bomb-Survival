@@ -127,7 +127,8 @@
         "collider": "Collide",
         "bubble": "Collide",
         "nocollide": "Ignore",
-        "bot": "Collide"
+        "bot": "Collide",
+        "decoration": "Ignore"
       },
       "Pairs": [
         {
@@ -226,6 +227,11 @@
         {
           "a": "puppet",
           "b": "bot",
+          "r": "Ignore"
+        },
+        {
+          "a": "solid",
+          "b": "decoration",
           "r": "Ignore"
         }
       ]

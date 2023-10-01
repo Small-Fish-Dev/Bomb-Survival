@@ -62,7 +62,7 @@ public partial class TutorialState : GameState
 			{
 				if ( nextDeathBomb )
 				{
-					new InertBomb().Position = new Vector3( 3300f + Game.Random.Float( -200f, 200f ), 0f, 4000f );
+					new InertBomb().Position = new Vector3( 3350f + Game.Random.Float( -200f, 200f ), 0f, 4000f );
 					nextDeathBomb = 0.2f;
 					deathBombSpawned++;
 				}
@@ -72,7 +72,7 @@ public partial class TutorialState : GameState
 				if ( nextDeathBomb )
 					if ( deathBombSpawned < 11 )
 					{
-						new TimedBomb().Position = new Vector3( 3300f, 0f, 4000f );
+						new TimedBomb().Position = new Vector3( 3250f, 0f, 4000f );
 						deathBombSpawned++;
 					}
 			}
