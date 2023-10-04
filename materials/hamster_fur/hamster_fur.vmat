@@ -1,0 +1,36 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/foreground_scorch.shader"
+
+	AO "[1.000000 1.000000 1.000000 0.000000]"
+	BlendMask "materials/default/default_mask.tga"
+	Colour "materials/hamster_fur/hamster_fur_color.jpg"
+	Normal "materials/hamster_fur/hamster_fur_normal.jpg"
+	Rough "[1.000000 1.000000 1.000000 0.000000]"
+	ScorchAO "[1.000000 1.000000 1.000000 0.000000]"
+	ScorchBlendMask "materials/scorch/scorch_mask.jpg"
+	ScorchColour "materials/hamster_fur/hamster_fur_color.jpg"
+	ScorchNormal "materials/hamster_fur/hamster_fur_normal.jpg"
+	ScorchRough "[1.000000 1.000000 1.000000 0.000000]"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Position ----
+	g_flZPosition "0.000"
+	g_flZSmoothing "512.000"
+
+	//---- Scorch ----
+	g_flScorchBlendDistance "16.000"
+
+	//---- Textures ----
+	g_flTiling "2.000"
+
+	//---- Tint ----
+	g_bGradientTint "1"
+	g_bTintDirectionToggle "0"
+	g_vScorchTint_Colour "[0.000000 0.000000 0.000000 1.000000]"
+	g_vTint_Colour "[1.000000 1.000000 1.000000 1.000000]"
+}
