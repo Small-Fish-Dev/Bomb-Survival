@@ -10,6 +10,10 @@
 	position: absolute;
 	transition: all 0.3s ease-out;
 	color: white;
+	background-image: url("ui/menu/placeholder_background.jpg");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
 
 	&:intro {
 		opacity: 0;
