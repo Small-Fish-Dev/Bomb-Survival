@@ -24,6 +24,7 @@
 
 .button_white_medium {
 	cursor: pointer;
+	height: 80px;
 	pointer-events: all;
 	background-image: url( "ui/menu/rectangle_empty.svg" );
 	background-size: 100% 100%;
@@ -46,6 +47,7 @@
 
 .button_red_small {
 	cursor: pointer;
+	height: 80px;
 	pointer-events: all;
 	background-image: url( "ui/menu/rectangle_red.svg" );
 	background-size: 100% 100%;
@@ -69,6 +71,7 @@
 
 .button_blue_small {
 	cursor: pointer;
+	height: 80px;
 	pointer-events: all;
 	background-image: url( "ui/menu/rectangle_blue.svg" );
 	background-size: 100% 100%;
@@ -111,7 +114,6 @@ section
 	&.box
 	{
 		background-color: rgba( black, 0.5 );
-		
 	}
 }
 
@@ -146,7 +148,6 @@ h2
 	bottom: 0;
 	top: 0;
 	flex-direction: column;
-	padding: 100px 0px;
 }
 
 .hidden

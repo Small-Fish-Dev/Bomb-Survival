@@ -2,9 +2,11 @@
 .gamemainmenu frontpage {
 	justify-content: space-between;
 	align-items: center;
+	pointer-events: none;
 
 	.logo {
-		width: 35%;
+		width: 700px;
+		top: 80px;
 		aspect-ratio: 2;
 		background-image: url( "ui/LogoText.png" );
 		background-size: contain;
@@ -13,16 +15,25 @@
 	}
 
 	.controls {
-		flex-direction: column;
-		gap: 8px;
-		align-items: center;
-		justify-content: center;
-		flex-grow: 1;
-	}
-
-	.bottom {
+		width: 100%;
 		flex-direction: row;
 		gap: 8px;
 		justify-content: space-between;
+		align-items: flex-end;
+
+		.left {
+		}
+
+		.center {
+			flex-direction: column;
+			gap: 8px;
+			align-items: center;
+			justify-content: center;
+			flex-grow: 1;
+			bottom: 25px;
+		}
+
+		.right {
+		}
 	}
 }

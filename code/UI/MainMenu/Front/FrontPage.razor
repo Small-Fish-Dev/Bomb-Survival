@@ -5,31 +5,31 @@
 
     <div class="logo"></div>
     <div class="controls">
+        <div class="left">
+            <a class="button_red_small" @onclick=@Game.Menu.Close>Exit</a>
 
-        @if ( Game.InGame )
-        {
-            <a class="button" href="/active">Current Game</a>
-            <a class="button" onclick=@LeaveGame>Leave Game</a>
-            <span style="height: 20px;"></span>
-        }
-        else
-        {
-            <a class="button_white_medium" onclick="@CreateNewGame">Load your Pod</a>
-        }
+        </div>
+        <div class="center">
 
-        <a class="button_white_medium" onclick="@OpenServerList">Join another Pod</a>
-        <a class="button_white_medium" onclick="@OpenServerList">Settings</a>
+            @if (Game.InGame)
+            {
+                <a class="button" href="/active">Current Game</a>
+                <a class="button" onclick=@LeaveGame>Leave Game</a>
+                <span style="height: 20px;"></span>
+            }
+            else
+            {
+                <a class="button_white_medium" onclick="@CreateNewGame">Load your Pod</a>
+            }
 
-        <span style="height: 20px;"></span>
+            <a class="button_white_medium" onclick="@OpenServerList">Join another Pod</a>
+            <a class="button_white_medium" onclick="@OpenServerList">Settings</a>
+        </div>
+        <div class="right">
+            <a class="button_blue_small" @onclick=@Game.Menu.Close>Discord</a>
+        </div>
 
     </div>
-
-    <div class="bottom">
-        <a class="button_red_small" @onclick=@Game.Menu.Close>Exit</a>
-
-        <a class="button_blue_small" @onclick=@Game.Menu.Close>Discord</a>
-    </div>
-
 
 </root>
 
