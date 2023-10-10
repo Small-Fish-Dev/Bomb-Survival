@@ -22,6 +22,8 @@
 		align-items: flex-end;
 
 		.left {
+			width: 20%;
+			justify-content: flex-start;
 		}
 
 		.center {
@@ -34,6 +36,8 @@
 		}
 
 		.right {
+			width: 20%;
+			justify-content: flex-end;
 		}
 	}
 }
